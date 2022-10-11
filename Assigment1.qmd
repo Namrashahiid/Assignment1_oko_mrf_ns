@@ -4,6 +4,8 @@ format: html
 editor: visual
 author: Namra Shahid
 author2: Marit Rygg Fredheim
+bibliography: 
+csl: apa-no-ampersand.csl
 ---
 
 ## Quarto
