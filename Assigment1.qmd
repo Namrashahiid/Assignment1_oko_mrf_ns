@@ -29,6 +29,26 @@ You can add options to executable code like this
 2 * 2
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+The `echo: false` option disables the printing of code (only output is displayed)
 
-heihei
+```{r}
+library(readr)
+demo_r_pjanaggr3_custom_3558281_linear <- read_csv("demo_r_pjanaggr3__custom_3558281_linear.csv")
+View(demo_r_pjanaggr3_custom_3558281_linear)
+```
+
+```{r}
+library(readr)
+<- read_csv("demo_r_pjanaggr3__custom_3558281_linear.csv", 
+    na = "NA")
+View(demo_r_pjanaggr3_custom_3558281_linear)
+```
+
+```{r}
+populationfile <- read_csv('demo_r_pjanaggr3.csv')
+```
+
+```{r}
+populationdata <- populationfile %>%
+  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Country = geo)
+```
