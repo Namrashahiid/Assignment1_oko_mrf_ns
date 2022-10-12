@@ -10,24 +10,33 @@ csl: apa-no-ampersand.csl
 
 ```{r}
 library(readr)
-demo_r_pjanaggr3_custom_3558281_linear <- read_csv("demo_r_pjanaggr3__custom_3558281_linear.csv")
+gdpfile <- read.csv('nama_10r_3gdp_group2.csv')
+populationfile <- read_csv("demo_r_pjanaggr3__custom_3558281_linear.csv")
 View(demo_r_pjanaggr3_custom_3558281_linear)
-```
 
-```{r}
-library(readr)
-<- read_csv("demo_r_pjanaggr3__custom_3558281_linear.csv", 
-    na = "NA")
-View(demo_r_pjanaggr3_custom_3558281_linear)
-```
+gdpdata <- gdpfile %>%
+  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Country = geo)
 
-```{r}
-populationfile <- read_csv('demo_r_pjanaggr3.csv')
-```
-
-```{r}
-populationdata <- populationfile %>%
+populationdata <- populationfile %>% 
   rename(Year = TIME_PERIOD, Population = OBS_VALUE, Country = geo)
+
+mydata <- gdpdata %>%
+  #select only colums we need
+  select(Year, Country, GDP, unit) %>%
+  #select rows with MIO_EUR and the countries we need
+  filter(unit =='MIO_EUR' & Country %in% c('DE', 'FI', 'RO'))
+
+mydata <- mydata %>%
+  #combine gdpr data with population data with the same year and country
+  left_join(populationdata, by=c("Year", "Country"), 
+            suffix = c("", "_population")) %>%
+  # only rows with TOTAL and T from the population data
+  filter(age=='TOTAL' & sex=='T')
 ```
 
-heiii
+```{r}
+mydata <- mydata %>%
+  #select the fields that we need
+  select(Year, Country, GDP, Population) %>%
+  mutate(GDPpercapita = 1000000 * GDP / Population)
+```
