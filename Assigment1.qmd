@@ -9,6 +9,13 @@ csl: apa-no-ampersand.csl
 ---
 
 ```{r}
+library(tidyverse)
+library(vtable)
+library(dineq)
+library(dplyr)
+```
+
+```{r}
 library(readr)
 gdpfile <- read.csv('nama_10r_3gdp_group2.csv')
 populationfile <- read_csv("demo_r_pjanaggr3__custom_3558281_linear.csv")
