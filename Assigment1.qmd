@@ -73,9 +73,23 @@ tmp <- gdpdata %>%
 ggplot(data = tmp)
 ```
 
-**Description of the data!**
+### Describe the data (GDP per capita) using the meta data description from Eurostat:
 
-### Report the essential descriptive statistic
+What we can describe out from our data (GDP per capita) using meta data
+description is that the GDP measures the value of total final output.
+Now the
+question is how does GDP per capita calculated?
+To answer this, we can look at
+the formula over.
+
+Metadata can be defined as information that is needed to be able to use
+and intercepted statistics.
+Main function of metadata is to explain data by
+giving definition of for example according to our data, region, year, GDP, population,
+GDP_capita.
+
+### 
+Report the essential descriptive statistic
 
 ```{r}
 # Report the essential descriptive statistics 
