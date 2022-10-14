@@ -20,29 +20,41 @@ library(readr)
 gdpfile <- read.csv('nama_10r_3gdp.csv')
 populationfile <- read_csv("demo_r_pjanaggr3.csv")
 
-
 gdpdata <- gdpfile %>%
   rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region = geo)
 
 populationdata <- populationfile %>% 
   rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
+```
 
+```{r}
+# Calculate GDP per capita
 tmp <- gdpdata %>%
   #combine gdpr data with population data with 
   # the same year and country
-  left_join(populationdata, by=c("Region", "Year")) %>% 
+  left_join(populationdata, by = c("Region", "Year")) %>% 
   select(Region, Year, GDP, Population) %>% 
   mutate(
     GDP_capita = (GDP * 1000000)/Population
   )
-            
 ```
 
 ```{r}
-mydata <- mydata %>%
-  #select the fields that we need
-  select(Year, Country, GDP, Population) %>%
-  mutate(GDPpercapita = 1000000 * GDP / Population)
+tmp2 <- gdpdata %>%
+  #combine gdpr data with population data with 
+  # the same year and country
+  left_join(populationdata, by=c("Region", "Year")) %>%
+  select(Year, Region, GDP, Population) %>%
+  mutate(GDPpercapita = (1000000 * GDP) / Population)
+```
+
+```{r}
+# Report the essential descriptive statistics 
+# for you data set (Mean, Min, Max,..:)
+tmp %>% 
+  select(GDP, Population) %>% 
+  # . to stop RStudio complaining about no data
+  vtable::st(.)
 ```
 
 ```{r}
