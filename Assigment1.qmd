@@ -44,3 +44,7 @@ mydata <- mydata %>%
   select(Year, Country, GDP, Population) %>%
   mutate(GDPpercapita = 1000000 * GDP / Population)
 ```
+
+```{r}
+gdpdata
+```
