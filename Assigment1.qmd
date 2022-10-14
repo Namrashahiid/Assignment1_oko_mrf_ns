@@ -8,6 +8,8 @@ bibliography:
 csl: apa-no-ampersand.csl
 ---
 
+## Describe the data (GDP per capita)
+
 ```{r}
 library(tidyverse)
 library(vtable)
@@ -27,6 +29,14 @@ populationdata <- populationfile %>%
   rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
 ```
 
+## GDP per capita calculation:
+
+We are here calcualting GDP per capita:
+
+Statistically explained:
+
+**yi= GDPi/ populationi**
+
 ```{r}
 # Calculate GDP per capita
 tmp <- gdpdata %>%
@@ -39,14 +49,7 @@ tmp <- gdpdata %>%
   )
 ```
 
-```{r}
-tmp2 <- gdpdata %>%
-  #combine gdpr data with population data with 
-  # the same year and country
-  left_join(populationdata, by=c("Region", "Year")) %>%
-  select(Year, Region, GDP, Population) %>%
-  mutate(GDPpercapita = (1000000 * GDP) / Population)
-```
+## Report the essential descriptive statistic
 
 ```{r}
 # Report the essential descriptive statistics 
@@ -58,5 +61,77 @@ tmp %>%
 ```
 
 ```{r}
-gdpdata
+#NUTS2 files
+library(readr)
+gdpfile2 <- read.csv('nama_10r_3gdp_nuts2.csv')
+populationfile2 <- read_csv("demo_r_pjanaggr3_nuts2.csv")
+
+gdpdata2 <- gdpfile2 %>%
+  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region = geo)
+
+populationdata2 <- populationfile2 %>% 
+  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
 ```
+
+```{r}
+# Calculate GDP per capita
+tmp_ginie <- gdpdata2 %>%
+  #combine gdpr data with population data with 
+  # the same year and country
+  left_join(populationdata2, by = c("Region", "Year")) %>% 
+  select(Region, Year, GDP, Population) %>% 
+  mutate(
+    GDP_capita2 = (GDP * 1000000)/Population
+  )
+```
+
+```{r}
+# Skal nok vekk
+
+
+# Report the essential descriptive statistics 
+# for you data set (Mean, Min, Max,..:)
+tmp22 %>% 
+  select(GDP, Population) %>% 
+  # . to stop RStudio complaining about no data
+  vtable::st(.)
+```
+
+```{r}
+kable(summary(tmp_ginie[,3:5]))
+```
+
+```{r}
+tmp_ginie$GDP_capita <- as.numeric(tmp_ginie$GDP_capita)
+tmp_ginie$Population <- as.numeric(tmp_ginie$Population)
+```
+
+```{r}
+gini.wtd(tmp_ginie$GDP_capita, weights = tmp_ginie$Population)
+```
+
+```{r}
+tmp_ginie <- tmp_ginie %>%
+  mutate(NUTS2 = substr(tmp_ginie$Region,1,4))
+
+tmp_ginie <- tmp_ginie %>%
+  mutate(NUTS = substr(tmp_ginie$Region,1,2))
+
+na.omit(tmp_ginie)
+
+tmp_ginie %>% 
+  group_by(NUTS2) %>%
+  mutate(GINI_NUTS2 = gini.wtd(GDP_capita, weigths = Population)) %>%
+  ungroup()
+```
+
+Nuts 2
+
+## Discuss briefly if there are noteworthy outliers:
+
+## 
+
+An important thing to come up here is that an outlier is a value or an observation that is distant from another observations, that is to say, a data point that differs significantly from other observations.
+
+An observation must always be compared to other observations made on the same phenomenon.
+In this assignment the focus is gdp per capita and gdp.
