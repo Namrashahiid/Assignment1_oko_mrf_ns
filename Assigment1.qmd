@@ -1,5 +1,5 @@
 ---
-title: "Assignment 1"
+title: "Assignment 1 (Data and Descriptive)"
 format: html
 editor: visual
 author: Namra Shahid
@@ -8,7 +8,26 @@ bibliography:
 csl: apa-no-ampersand.csl
 ---
 
-## Describe the data (GDP per capita)
+In this assignment we are going to Calculate GDP per capita for 8 subset of countries sub-regional (NUTS3).
+We are group two and will therefore examine these countries:
+
+-   Ireland (IE)
+
+-   Poland (PL)
+
+-   Spain (ES)
+
+-   Slovania (SI)
+
+-   Netherlands (NL)
+
+-   Greece (EL)
+
+-   Norway (NO)
+
+-   Albania (AL
+
+## Sub-national GDP
 
 ```{r}
 library(tidyverse)
@@ -29,13 +48,13 @@ populationdata <- populationfile %>%
   rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
 ```
 
-## GDP per capita calculation:
+### GDP per capita calculation:
 
 We are here calcualting GDP per capita:
 
 Statistically explained:
 
-**yi= GDPi/ populationi**
+**y*i*= GDP*i*/ population*i***
 
 ```{r}
 # Calculate GDP per capita
@@ -49,7 +68,14 @@ tmp <- gdpdata %>%
   )
 ```
 
-## Report the essential descriptive statistic
+```{r}
+#Legg inn ein tabell for gdp per capita
+ggplot(data = tmp)
+```
+
+**Description of the data!**
+
+### Report the essential descriptive statistic
 
 ```{r}
 # Report the essential descriptive statistics 
@@ -59,6 +85,12 @@ tmp %>%
   # . to stop RStudio complaining about no data
   vtable::st(.)
 ```
+
+## Regional inequity
+
+The first files only contains data on NUTS3 level.
+In this part of the assignment we need data on NUTS2 level, therefore we need a new file.
+For the next submission, we can download a new data file with all data available, if needed.
 
 ```{r}
 #NUTS2 files
@@ -74,7 +106,7 @@ populationdata2 <- populationfile2 %>%
 ```
 
 ```{r}
-# Calculate GDP per capita
+# Calculate GDP per capita for NUTS2
 tmp_ginie <- gdpdata2 %>%
   #combine gdpr data with population data with 
   # the same year and country
@@ -85,10 +117,9 @@ tmp_ginie <- gdpdata2 %>%
   )
 ```
 
+### Essential descriptive statistics for NUTS2
+
 ```{r}
-# Skal nok vekk
-
-
 # Report the essential descriptive statistics 
 # for you data set (Mean, Min, Max,..:)
 tmp22 %>% 
@@ -125,11 +156,16 @@ tmp_ginie %>%
   ungroup()
 ```
 
-Nuts 2
+```{r}
+kable(summary(tmp_ginie[8]))
+```
+
+```{r}
+ggplot(data = tmp_ginie) + geom_density(aes(x = GINI_NUTS2), 
+fill = "maroon", col = "maroon", alpha = 0,2) + theme_bw()
+```
 
 ## Discuss briefly if there are noteworthy outliers:
-
-## 
 
 An important thing to come up here is that an outlier is a value or an observation that is distant from another observations, that is to say, a data point that differs significantly from other observations.
 
