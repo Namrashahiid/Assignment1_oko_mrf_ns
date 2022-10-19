@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1 (Data and Descriptive)"
-format: html
+format: pdf
 editor: visual
 author: Namra Shahid
 author2: Marit Rygg Fredheim
@@ -129,7 +129,7 @@ tmp_ginie <- gdpdata2 %>%
 ```{r}
 # Report the essential descriptive statistics 
 # for you data set (Mean, Min, Max,..:)
-tmp22 %>% 
+tmp_ginie %>% 
   select(GDP, Population) %>% 
   # . to stop RStudio complaining about no data
   vtable::st(.)
@@ -179,3 +179,18 @@ An important thing to come up here is that an outlier is a value or an observati
 
 An observation must always be compared to other observations made on the same phenomenon.
 In this assignment the focus is gdp per capita and gdp.
+
+```{r}
+#data %>% filer(id_nuts0=="FR") %>% 
+  #distinct(id_nuts, year,.keep_all=TRUE) %>% 
+  #ggplot(aes(x = year, y=gini_n2, fill=id_nuts2, coloR=id_nuts2)) + 
+  #geom_point(lwd = .8) + 
+  #labs(x = "Year", y = "Gini")
+```
+
+```{r}
+data %>%
+  filter(id_nuts0=="DE" , year==2010) %>%
+  select(id_nuts3, gdp_pc_n3) %>%
+  slice_min(gdp_pc_n3, n=3)
+```
