@@ -7,6 +7,8 @@ author2: Marit Rygg Fredheim
 csl: apa-no-ampersand.csl
 ---
 
+## Introduction:
+
 In this assignment we are going to Calculate GDP per capita for 8 subset of countries sub-regional (NUTS3).
 We are group two and will therefore examine these countries:
 
@@ -25,6 +27,17 @@ We are group two and will therefore examine these countries:
 -   Norway (NO)
 
 -   Albania (AL
+
+## Data:
+
+The main purpose to study this dataset from Eurostat is to analyse regional inequality.
+To do so we have to use GDP (Gross Domestic Product), at the market and population data by NUTS 3 regions.
+
+Like mentioned in this assignment we will use GDP per capita and which is based on population by NUTS.
+
+One important thing to come up here with is that, we calculate GDP per capita by using this formula:
+
+![](images/paste-1EADC664.png){width="253"}
 
 ## Sub-national GDP
 
@@ -78,7 +91,9 @@ Now the question is how does GDP per capita calculated?
 To answer this, we can look at the formula over.
 
 Metadata can be defined as information that is needed to be able to use and intercepted statistics.
-Main function of metadata is to explain data by giving definition of for example according to our data, region, year, GDP, population, GDP_capita.
+Main function of metadata is to explain data by giving definition of for example according to our data, region, year, GDP, population, GDP capita.
+
+When we talk about the table, what we can find is
 
 ### 
 
