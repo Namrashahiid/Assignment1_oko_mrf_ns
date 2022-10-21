@@ -46,18 +46,44 @@ library(tidyverse)
 library(vtable)
 library(dineq)
 library(dplyr)
+library(magrittr)
+library(readr)
+library(rio)
 ```
 
 ```{r}
-library(readr)
-gdpfile <- read.csv('nama_10r_3gdp.csv')
-populationfile <- read_csv("demo_r_pjanaggr3.csv")
+#Import data from Eurostat
+gdpdata <- import("nama_10r_3gdp.csv")
+popdata <- import("demo_r_pjanaggr3.csv")
 
-gdpdata <- gdpfile %>%
-  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region = geo)
+#Clean data 
+gdpdata %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
+popdata %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
 
-populationdata <- populationfile %>% 
-  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
+# Filter for gdp
+gdp <- filter(gdpdata,unit == "MIO_EUR") %>%
+  mutate(gdp_n3 = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
+  select(gdp_n3, year, id_nuts3)
+
+# Filter for gdp per capita
+GDP_capita <- filter(popdata,unit == "NR") %>% 
+  mutate(pop = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
+  select(pop, year, id_nuts3)
+
+#Generate main data frame
+tmp <- merge(GDP_capita, gdp, by = c("year", "id_nuts3"))
+
+# Calculate GDP per capita
+tmp %<>%
+  mutate(GDP_capita = (gdp_n3 * 1000000)/pop)
+
+#Gen Nuts 2 id
+tmp %<>%
+  mutate(id_nuts2 = substr(id_nuts3,1,4))
+
+#Gen Nuts 1 id
+tmp %<>%
+  mutate(id_nuts0 = substr(id_nuts3,1,2))
 ```
 
 ### GDP per capita calculation:
@@ -67,18 +93,6 @@ We are here calcualting GDP per capita:
 Statistically explained:
 
 **y*i*= GDP*i*/ population*i***
-
-```{r}
-# Calculate GDP per capita
-tmp <- gdpdata %>%
-  #combine gdpr data with population data with 
-  # the same year and country
-  left_join(populationdata, by = c("Region", "Year")) %>% 
-  select(Region, Year, GDP, Population) %>% 
-  mutate(
-    GDP_capita = (GDP * 1000000)/Population
-  )
-```
 
 ```{r}
 na.omit(tmp)
