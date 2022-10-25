@@ -41,7 +41,7 @@ One important thing to come up here with is that, we calculate GDP per capita by
 
 ## Sub-national GDP
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 library(vtable)
 library(dineq)
@@ -60,8 +60,8 @@ popdata <- import("demo_r_pjanaggr3.csv")
 gdpdata %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
 popdata %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
 
-# Filter for gdp
-gdp <- filter(gdpdata,unit == "MIO_EUR") %>%
+# Filter for the countries we are going to study and change variablenames
+gdp <- filter(gdpdata,unit == "MIO_EUR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('ES...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>%
   mutate(gdp_n3 = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
   select(gdp_n3, year, id_nuts3)
 
