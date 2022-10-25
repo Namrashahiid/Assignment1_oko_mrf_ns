@@ -51,6 +51,16 @@ library(readr)
 library(rio)
 ```
 
+Files "Nama_10r_3gdp.csv" and "demo_r\_pjanaggr3.csv" are different dataset.
+We will work with these two dataset throghout this assignment.
+
+When it comes to what these dataset contains, it is data for GDP on nuts 3 level for different countries.
+We find different data in the columns of the dataset of "Nama_10r_3gdp.csv".
+This dataset contains data on Nuts 3 level.
+
+We are also using dataset: "Demo_r\_pjanaggr3.csv".
+This dataset contains data for population data on Nuts 3 level.
+
 ```{r}
 #Import data from Eurostat
 gdpdata <- import("nama_10r_3gdp.csv")
@@ -86,16 +96,6 @@ tmp %<>%
   mutate(id_nuts0 = substr(id_nuts3,1,2))
 ```
 
-Files "Nama_10r_3gdp.csv" and "demo_r\_pjanaggr3.csv" are different dataset.
-We will work with these two dataset throghout this assignment.
-
-When it comes to what these dataset contains, it is data for GDP on nuts 3 level for different countries.
-We find different data in the columns of the dataset of "Nama_10r_3gdp.csv".
-This dataset contains data on Nuts 3 level.
-
-We are also using dataset: "Demo_r\_pjanaggr3.csv".
-This dataset contains data for population data on Nuts 3 level.
-
 ### GDP per capita calculation:
 
 We are here calcualting GDP per capita:
@@ -119,11 +119,7 @@ To answer this, we can look at the formula over.
 Metadata can be defined as information that is needed to be able to use and intercepted statistics.
 Main function of metadata is to explain data by giving definition of for example according to our data, region, year, GDP, population, GDP capita.
 
-When we talk about the table, what we can find is
-
-### 
-
-Report the essential descriptive statistic
+We have now information of GDP per capita of different regions.
 
 ```{r}
 # Report the essential descriptive statistics 
@@ -133,6 +129,13 @@ tmp_gdpcapita %>%
   # . to stop RStudio complaining about no data
   vtable::st(.)
 ```
+
+When we look at this table we can see is: deceptive statistics of data, we see data of different regions.
+
+When we see the Summay statistics, we can see different type of data, which is first of all: Variables such as: year, pop, GDP_capita.
+After that we find N Mean.
+When we look at the difference between the statistics such as Max and Min, and if we compare both variables, there is no such major difference between the numbers.
+This is quite sensible.
 
 ## Regional inequity
 
@@ -158,6 +161,9 @@ tmp_ginie %>%
   # . to stop RStudio complaining about no data
   vtable::st(.)
 ```
+
+We see here that we are filtering the data, and we are then getting a own file after doing so with name: tmp.
+By filtering our data, our data is more presentable and more clear and visible.
 
 ```{r}
 kable(summary(tmp_ginie[,3:5]))
