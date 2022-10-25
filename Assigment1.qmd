@@ -95,7 +95,9 @@ Statistically explained:
 **y*i*= GDP*i*/ population*i***
 
 ```{r}
-na.omit(tmp)
+tmp_gdpcapita <- tmp %>%
+  select(year, id_nuts3, pop, GDP_capita)
+na.omit(tmp_gdpcapita)
 ```
 
 ### Describe the data (GDP per capita) using the meta data description from Eurostat:
@@ -116,41 +118,26 @@ Report the essential descriptive statistic
 ```{r}
 # Report the essential descriptive statistics 
 # for you data set (Mean, Min, Max,..:)
-tmp %>% 
-  select(GDP, Population) %>% 
+tmp_gdpcapita %>% 
+  select(year, id_nuts3, pop, GDP_capita) %>% 
   # . to stop RStudio complaining about no data
   vtable::st(.)
 ```
 
 ## Regional inequity
 
-The first files only contains data on NUTS3 level.
-In this part of the assignment we need data on NUTS2 level, therefore we need a new file.
-For the next submission, we can download a new data file with all data available, if needed.
-
-```{r}
-#NUTS2 files
-library(readr)
-gdpfile2 <- read.csv('nama_10r_3gdp_nuts2.csv')
-populationfile2 <- read_csv("demo_r_pjanaggr3_nuts2.csv")
-
-gdpdata2 <- gdpfile2 %>%
-  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region = geo)
-
-populationdata2 <- populationfile2 %>% 
-  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
-```
+~~The first files only contains data on NUTS3 level. In this part of the assignment we need data on NUTS2 level, therefore we need a new file. For the next submission, we can download a new data file with all data available, if needed.~~
 
 ```{r}
 # Calculate GDP per capita for NUTS2
-tmp_ginie <- gdpdata2 %>%
+tmp_n2 <- tmp %>%
   #combine gdpr data with population data with 
   # the same year and country
-  left_join(populationdata2, by = c("Region", "Year")) %>% 
-  select(Region, Year, GDP, Population) %>% 
+  select(year, id_nuts2, pop) %>% 
   mutate(
-    GDP_capita2 = (GDP * 1000000)/Population
+    GDP_capita_n2 = (id_nuts2 * 1000000)/pop
   )
+
 ```
 
 ### Essential descriptive statistics for NUTS2
