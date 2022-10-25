@@ -273,6 +273,6 @@ eventuelle tabeller som me ikkje vil ha lenger oppe.
 ::: {#refs}
 :::
 
-#### Foornotes (visst me trenge det)
+#### Footnotes (visst me trenge det)
 
 #### 
