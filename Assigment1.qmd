@@ -1,10 +1,11 @@
 ---
-title: "Assignment 1 (Data and Descriptive)"
-format: pdf
+title: "Assignment (Data and Descriptive)"
 editor: visual
-author: Namra Shahid
-author2: Marit Rygg Fredheim
+author: Namra Shahid & Marit Rygg Fredheim
 csl: apa-no-ampersand.csl
+format: 
+  html: 
+    code-fold: true
 ---
 
 ## Introduction:
@@ -33,12 +34,6 @@ We are group two and will therefore examine these countries:
 The main purpose to study this dataset from Eurostat is to analyse regional inequality.
 To do so we have to use GDP (Gross Domestic Product), at the market and population data by NUTS 3 regions.
 
-Like mentioned in this assignment we will use GDP per capita and which is based on population by NUTS.
-
-One important thing to come up here with is that, we calculate GDP per capita by using this formula:
-
-![](images/paste-1EADC664.png){width="253"}
-
 ## Sub-national GDP
 
 ```{r, echo = FALSE}
@@ -63,29 +58,25 @@ This dataset contains data for population data on Nuts 3 level.
 
 ```{r}
 #Import data from Eurostat
-gdpdata <- import("nama_10r_3gdp.csv")
-popdata <- import("demo_r_pjanaggr3.csv")
+gdpfile <- import("nama_10r_3gdp.csv")
+popfile <- import("demo_r_pjanaggr3.csv")
 
 #Clean data 
-gdpdata %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
-popdata %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
+gdpfile %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
+popfile %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
 
 # Filter for the countries we are going to study and change variablenames
-gdp <- filter(gdpdata,unit == "MIO_EUR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('ES...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>%
+gdpdata <- filter(gdpfile,unit == "MIO_EUR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('ES...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>%
   mutate(gdp_n3 = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
   select(gdp_n3, year, id_nuts3)
 
 # Filter for gdp per capita
-GDP_capita <- filter(popdata,unit == "NR") %>% 
+popdata <- filter(popfile,unit == "NR") %>% 
   mutate(pop = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
   select(pop, year, id_nuts3)
 
 #Generate main data frame
-tmp <- merge(GDP_capita, gdp, by = c("year", "id_nuts3"))
-
-# Calculate GDP per capita
-tmp %<>%
-  mutate(GDP_capita = (gdp_n3 * 1000000)/pop)
+tmp <- merge(popdata, gdpdata, by = c("year", "id_nuts3"))
 
 #Gen Nuts 2 id
 tmp %<>%
@@ -98,16 +89,28 @@ tmp %<>%
 
 ### GDP per capita calculation:
 
+Like mentioned in this assignment we will use GDP per capita and which is based on population by NUTS.
+
+One important thing to come up here with is that, we calculate GDP per capita by using this formula:
+
+![](images/paste-1EADC664.png){width="253"}
+
 We are here calcualting GDP per capita:
 
 Statistically explained:
 
-**y*i*= GDP*i*/ population*i***
+**y*i* = GDP*i*/ population*i***
+
+```{r}
+# Calculate GDP per capita
+tmp %<>%
+  mutate(GDP_capita = (gdp_n3 * 1000000)/pop)
+```
 
 ```{r}
 tmp_gdpcapita <- tmp %>%
   select(year, id_nuts3, pop, GDP_capita)
-na.omit(tmp_gdpcapita)
+#na.omit(tmp_gdpcapita)
 ```
 
 ### Describe the data (GDP per capita) using the meta data description from Eurostat:
@@ -124,10 +127,11 @@ We have now information of GDP per capita of different regions.
 ```{r}
 # Report the essential descriptive statistics 
 # for you data set (Mean, Min, Max,..:)
-tmp_gdpcapita %>% 
-  select(year, id_nuts3, pop, GDP_capita) %>% 
+tmp %>% 
+  filter(year == 2010) %>%
+  select(id_nuts3, pop, GDP_capita) %>% 
   # . to stop RStudio complaining about no data
-  vtable::st(.)
+  st()
 ```
 
 When we look at this table we can see is: deceptive statistics of data, we see data of different regions.
@@ -137,70 +141,119 @@ After that we find N Mean.
 When we look at the difference between the statistics such as Max and Min, and if we compare both variables, there is no such major difference between the numbers.
 This is quite sensible.
 
-## Regional inequity
-
 ```{r}
-# Calculate GDP per capita for NUTS2
-tmp_n2 <- tmp %>%
-  #combine gdpr data with population data with 
-  # the same year and country
-  select(year, id_nuts2, pop) %>% 
-  mutate(
-    GDP_capita_n2 = (id_nuts2 * 1000000)/pop
-  )
-
-```
-
-### Essential descriptive statistics for NUTS2
-
-```{r}
-# Report the essential descriptive statistics 
-# for you data set (Mean, Min, Max,..:)
-tmp_ginie %>% 
-  select(GDP, Population) %>% 
-  # . to stop RStudio complaining about no data
-  vtable::st(.)
-```
-
-We see here that we are filtering the data, and we are then getting a own file after doing so with name: tmp.
-By filtering our data, our data is more presentable and more clear and visible.
-
-```{r}
-kable(summary(tmp_ginie[,3:5]))
+tmp %>%  distinct(id_nuts0, year,.keep_all=TRUE) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts0, color = id_nuts0)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
 ```
 
 ```{r}
-tmp_ginie$GDP_capita <- as.numeric(tmp_ginie$GDP_capita)
-tmp_ginie$Population <- as.numeric(tmp_ginie$Population)
+tmp_1 <- tmp %>% 
+  filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
+  slice_min(GDP_capita, n = 10) %>%  select(id_nuts3)
+
+tmp %>%   
+  filter(id_nuts3 %in% tmp_1 $ id_nuts3) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
 ```
 
 ```{r}
-gini.wtd(tmp_ginie$GDP_capita, weights = tmp_ginie$Population)
+tmp_1 <- tmp %>% 
+  filter(year==2010) %>%  
+  select(GDP_capita, id_nuts3)  %>% 
+  slice_max(GDP_capita, n = 10) %>%  
+  select(id_nuts3)
+
+tmp %>%   
+  filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
 ```
 
+## Individual country cases
+
+### GDP per capita for Norway
+
 ```{r}
-tmp_ginie <- tmp_ginie %>%
-  mutate(NUTS2 = substr(tmp_ginie$Region,1,4))
-
-tmp_ginie <- tmp_ginie %>%
-  mutate(NUTS = substr(tmp_ginie$Region,1,2))
-
-na.omit(tmp_ginie)
-
-tmp_ginie %>% 
-  group_by(NUTS2) %>%
-  na.exclude(tmp_ginie) %>%
-  mutate(GINI_NUTS2 = gini.wtd(GDP_capita, weigths = Population)) %>%
-  ungroup()
+tmp %>%
+  filter(id_nuts0 == "NO" , year == 2010) %>%
+  select(gdp_n3, pop, GDP_capita) %>%
+  st()
 ```
 
-```{r}
-kable(summary(tmp_ginie[8]))
-```
+The 3 wealthiest region in Spain:
 
 ```{r}
-ggplot(data = tmp_ginie) + geom_density(aes(x = GINI_NUTS2), 
-fill = "maroon", col = "maroon", alpha = 0,2) + theme_bw()
+tmp %>%
+  filter(id_nuts0 == "ES" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+3 Least wealthiest Spain:
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "ES" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+### GDP per capita for eit anna land
+
+## Regional inequity masseurs
+
+-   Generelt om GINW
+
+```{r}
+#gen weighted gini
+#for all
+gini.wtd(tmp$GDP_capita, w = tmp$pop)
+
+tmp  %<>% 
+  group_by(id_nuts2, year) %>% 
+  mutate(gini_n2 = gini.wtd(GDP_capita, w = pop)) %>%
+  ungroup() # to remove grouping
+```
+
+## Descriptive statistics Gini
+
+### Cross country perspective
+
+Tekst
+
+```{r}
+tmp %>% 
+  filter(year == 2010) %>%  
+  distinct(id_nuts2, year,.keep_all = TRUE) %>%  
+  select(gini_n2) %>%  
+  st()
+```
+
+Forklare data over
+
+(ikkje ES under kun brukt som eksempel no)
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "ES")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
+
+## Outlier discussion
+
+Tekst
+
+```{r}
+ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
+  geom_point()
 ```
 
 ## Discuss briefly if there are noteworthy outliers:
@@ -210,17 +263,16 @@ An important thing to come up here is that an outlier is a value or an observati
 An observation must always be compared to other observations made on the same phenomenon.
 In this assignment the focus is gdp per capita and gdp.
 
-```{r}
-#data %>% filer(id_nuts0=="FR") %>% 
-  #distinct(id_nuts, year,.keep_all=TRUE) %>% 
-  #ggplot(aes(x = year, y=gini_n2, fill=id_nuts2, coloR=id_nuts2)) + 
-  #geom_point(lwd = .8) + 
-  #labs(x = "Year", y = "Gini")
-```
+#### Appendix
 
-```{r}
-data %>%
-  filter(id_nuts0=="DE" , year==2010) %>%
-  select(id_nuts3, gdp_pc_n3) %>%
-  slice_min(gdp_pc_n3, n=3)
-```
+Feks.
+eventuelle tabeller som me ikkje vil ha lenger oppe.
+
+#### References
+
+::: {#refs}
+:::
+
+#### Foornotes (visst me trenge det)
+
+#### 

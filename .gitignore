@@ -7,6 +7,7 @@
 *.md
 *.tex
 .DS_Store
+Assignment1_files/
 
 # History files
 .Rhistory
