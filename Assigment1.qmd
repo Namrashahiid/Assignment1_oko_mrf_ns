@@ -86,6 +86,16 @@ tmp %<>%
   mutate(id_nuts0 = substr(id_nuts3,1,2))
 ```
 
+Files "Nama_10r_3gdp.csv" and "demo_r\_pjanaggr3.csv" are different dataset.
+We will work with these two dataset throghout this assignment.
+
+When it comes to what these dataset contains, it is data for GDP on nuts 3 level for different countries.
+We find different data in the columns of the dataset of "Nama_10r_3gdp.csv".
+This dataset contains data on Nuts 3 level.
+
+We are also using dataset: "Demo_r\_pjanaggr3.csv".
+This dataset contains data for population data on Nuts 3 level.
+
 ### GDP per capita calculation:
 
 We are here calcualting GDP per capita:
@@ -125,8 +135,6 @@ tmp_gdpcapita %>%
 ```
 
 ## Regional inequity
-
-~~The first files only contains data on NUTS3 level. In this part of the assignment we need data on NUTS2 level, therefore we need a new file. For the next submission, we can download a new data file with all data available, if needed.~~
 
 ```{r}
 # Calculate GDP per capita for NUTS2
