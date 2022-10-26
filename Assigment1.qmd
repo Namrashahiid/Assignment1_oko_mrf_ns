@@ -148,6 +148,10 @@ tmp %>%  distinct(id_nuts0, year,.keep_all=TRUE) %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
+***Graph: 1***
+
+When we look at graph 1, we can see that Norway´s GDP are on the top (the blue line on top. Norway have the highest GDP per capita. Albania on the other side have the lowest GDP per capita. Orange line is refering Albania´s GDP per capita. If we compare Norway´s GDP with Albania´s. There is huge difference there, because Norway is on the top and Albania on the other side at it´s lowest.
+
 ```{r}
 tmp_1 <- tmp %>% 
   filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
@@ -159,6 +163,8 @@ tmp %>%
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
+
+Polske regioner!
 
 ```{r}
 tmp_1 <- tmp %>% 
@@ -188,7 +194,7 @@ tmp %>%
   st()
 ```
 
-When we look at the GDP per capita for Norway, we can see that there is big difference between
+When we look at the GDP per capita for Norway, we can see that there is big difference between........
 
 ### GDP per capita for Spain:
 
@@ -199,9 +205,9 @@ tmp %>%
   slice_max(GDP_capita, n = 3)
 ```
 
-When we look at this GDP_capita formula up, we find 3 least wealthiest Spain
+When we look at this GDP_capita formula up, we find 3 least wealthiest Spain.....
 
-### GDP per capita for another country: 
+### 
 
 ```{r}
 tmp %>%
@@ -211,6 +217,10 @@ tmp %>%
 ```
 
 When we see the GDP_capita
+
+### GDP per capita for another country: 
+
+..............
 
 ## Regional inequity masseurs
 
