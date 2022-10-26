@@ -150,7 +150,18 @@ tmp %>%  distinct(id_nuts0, year,.keep_all=TRUE) %>%
 
 ***Graph: 1***
 
-When we look at graph 1, we can see that Norway´s GDP are on the top (the blue line on top. Norway have the highest GDP per capita. Albania on the other side have the lowest GDP per capita. Orange line is refering Albania´s GDP per capita. If we compare Norway´s GDP with Albania´s. There is huge difference there, because Norway is on the top and Albania on the other side at it´s lowest.
+When we look at graph 1, we can see that Norway´s GDP are on the top (the blue line on top).
+Norway have the highest GDP per capita.
+Albania on the other side have the lowest GDP per capita.
+Orange line is refering Albania´s GDP per capita.
+If we compare Norway´s GDP with Albania´s.
+There is huge difference there, because Norway is on the top and Albania on the other side at it´s lowest.
+
+If we specify the GDP per capita for Norway line (blue line), we can see that it started pretty nice in around 2006, but then suddenly we can see it´s kind of like had decline in GDP per capita.
+The reason behind this most probably because of the financial crisis, which affected the society in years 2008-2009.
+Suddenly if we see GDP per capita started raising from 2009 again, and had its small fall downs in around 2015.
+
+In the middle the lined are showing the other countries.
 
 ```{r}
 tmp_1 <- tmp %>% 
@@ -164,7 +175,10 @@ tmp %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
-Polske regioner!
+***Graph 2:***
+
+Here we can see the GDP per capita for polish regions.
+If we look at the orange line, which refers to PL214, we see that it had a
 
 ```{r}
 tmp_1 <- tmp %>% 
