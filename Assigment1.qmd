@@ -176,7 +176,10 @@ tmp %>%
 
 ## Individual country cases
 
-### GDP per capita for Norway
+With this GDP per capita for specific countries we can filter our information/data easily afterwards in this assignment.
+This can for example be done by finding the wealthiest and not wealthiest regions.
+
+### GDP per capita for Norway:
 
 ```{r}
 tmp %>%
@@ -185,7 +188,9 @@ tmp %>%
   st()
 ```
 
-The 3 wealthiest region in Spain:
+When we look at the GDP per capita for Norway, we can see that there is big difference between
+
+### GDP per capita for Spain:
 
 ```{r}
 tmp %>%
@@ -194,7 +199,9 @@ tmp %>%
   slice_max(GDP_capita, n = 3)
 ```
 
-3 Least wealthiest Spain:
+When we look at this GDP_capita formula up, we find 3 least wealthiest Spain
+
+### GDP per capita for another country: 
 
 ```{r}
 tmp %>%
@@ -203,7 +210,7 @@ tmp %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-### GDP per capita for eit anna land
+When we see the GDP_capita
 
 ## Regional inequity masseurs
 
