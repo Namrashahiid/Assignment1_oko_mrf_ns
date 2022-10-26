@@ -197,6 +197,11 @@ tmp %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
+Regional per capita for highest income reason for 10 regions.
+9 of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway NO071.
+We can see here that region in Netherlands NL113 (the orange line) shows us that it´s on the top.
+of all other regions in Netherlands and surprisingly Norway NO071 (the pink line).
+
 ## Individual country cases
 
 With this GDP per capita for specific countries we can filter our information/data easily afterwards in this assignment.
@@ -212,7 +217,10 @@ tmp %>%
 ```
 
 When we look at the GDP per capita for Norway, we can see that there is no such big difference between the values under summary statistics.
-Such as Min and Max values for GDP per Capita for Norway is exactly the same.
+Such as Min and Max, Mean, Std.
+Dev, Pctl values in summary statistics are exactly the same.
+The reason behind this is that N value is 1.
+When N is 1, than it makes sense why all these values are same.
 
 ### GDP per capita for Spain:
 
@@ -225,11 +233,13 @@ tmp %>%
 
 ***Table 1:***
 
-When we look at this GDP per capita formula up, we find 3 least wealthiest regions in Spain.
+When we look at this GDP per capita formula, we find 3 wealthiest regions in Spain.
 When we find GDP per capita for regions, we specify and go more in the depth of the GDP per capita research.
 What we see in table 1 is that the GDP per capita for ES211 (the first region) and ES300 (the second region and ES212 (the third region).
+This table shows us the wealthiest regions in Spain.
 There is no such big difference in them.
 We can say that there is no outliers in the dataset of the regions in Spain, because the observation between these regions are somehow consistent.
+If we look at our next table 2, we can see the least wealthiest regions in Spain.
 
 ### 
 
@@ -240,12 +250,15 @@ tmp %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-When we see the GDP_capita here, the conclusion here for this is the same for this country with no such big difference between the regions.
+***Table 2:***
+
+When we look at this table 2, we can see the least wealthiest regions in Spain.
+Comparing GDP per capita from Table 2 with Table 1 we can see that there is difference between values in both tables.
 
 ### GDP per capita for another country: 
 
 ..............
-hva skulle komme her?
+diskutere flere land......
 
 ## Regional inequity masseurs
 
