@@ -211,7 +211,8 @@ tmp %>%
   st()
 ```
 
-When we look at the GDP per capita for Norway, we can see that there is big difference between........
+When we look at the GDP per capita for Norway, we can see that there is no such big difference between the values under summary statistics.
+Such as Min and Max values for GDP per Capita for Norway is exactly the same.
 
 ### GDP per capita for Spain:
 
@@ -222,7 +223,13 @@ tmp %>%
   slice_max(GDP_capita, n = 3)
 ```
 
-When we look at this GDP_capita formula up, we find 3 least wealthiest Spain.....
+***Table 1:***
+
+When we look at this GDP per capita formula up, we find 3 least wealthiest regions in Spain.
+When we find GDP per capita for regions, we specify and go more in the depth of the GDP per capita research.
+What we see in table 1 is that the GDP per capita for ES211 (the first region) and ES300 (the second region and ES212 (the third region).
+There is no such big difference in them.
+We can say that there is no outliers in the dataset of the regions in Spain, because the observation between these regions are somehow consistent.
 
 ### 
 
@@ -233,11 +240,12 @@ tmp %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-When we see the GDP_capita
+When we see the GDP_capita here, the conclusion here for this is the same for this country with no such big difference between the regions.
 
 ### GDP per capita for another country: 
 
 ..............
+hva skulle komme her?
 
 ## Regional inequity masseurs
 
