@@ -27,7 +27,7 @@ We are group two and will therefore examine these countries:
 
 -   Norway (NO)
 
--   Albania (AL
+-   Albania (AL)
 
 ## Data:
 
@@ -224,6 +224,8 @@ When N is 1, than it makes sense why all these values are same.
 
 ### GDP per capita for Spain:
 
+3 Wealthiest regions in Spain:
+
 ```{r}
 tmp %>%
   filter(id_nuts0 == "ES" , year == 2010) %>%
@@ -241,7 +243,7 @@ There is no such big difference in them.
 We can say that there is no outliers in the dataset of the regions in Spain, because the observation between these regions are somehow consistent.
 If we look at our next table 2, we can see the least wealthiest regions in Spain.
 
-### 
+3 least wealthiest region in Spain
 
 ```{r}
 tmp %>%
@@ -255,10 +257,37 @@ tmp %>%
 When we look at this table 2, we can see the least wealthiest regions in Spain.
 Comparing GDP per capita from Table 2 with Table 1 we can see that there is difference between values in both tables.
 
-### GDP per capita for another country:
+### GDP per capita for Poland:
 
-..............
-diskutere flere land......
+Wealthiest regions in Poland:
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "PL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+***Table 3:***
+
+When we look at table 3 we see the wealthiest regions in Poland.
+In comparison with the wealthiest regions in Spain, there is somehow difference between the GDP per capita for the wealthiest regions in Poland and Spain.
+Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
+
+Least wealthiest regions in Poland:
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "PL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+***Table: 4***
+
+We can see here the least wealthiest regions in Poland.
+We can see that there is big difference between the wealthiest regions from table 3 and table table 4 (least wealthiest regions) in Poland.
+We can see that least wealthiest regions have GDP per capita approximately the same.
 
 ## Regional inequity masseurs
 
