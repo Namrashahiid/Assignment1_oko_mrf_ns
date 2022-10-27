@@ -255,7 +255,7 @@ tmp %>%
 When we look at this table 2, we can see the least wealthiest regions in Spain.
 Comparing GDP per capita from Table 2 with Table 1 we can see that there is difference between values in both tables.
 
-### GDP per capita for another country: 
+### GDP per capita for another country:
 
 ..............
 diskutere flere land......
