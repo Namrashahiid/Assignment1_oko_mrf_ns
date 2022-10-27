@@ -294,10 +294,10 @@ We can see that least wealthiest regions have GDP per capita approximately the s
 ## Regional inequity measures
 
 When we talk about regional inequity measures its normal to talk about GINWj.
-i tell us the abput NUTS3 regions.
+i tell us the about NUTS3 regions.
 j tells us NUTS 2 regions.
 i and j specify region data for us.
-GINI data shows us different sizes of regions etc.
+GINWj/i data shows us different sizes of regions etc.
 
 ```{r}
 #gen weighted gini
@@ -326,7 +326,7 @@ The data over tell us summary statistics.
 
 We can see that our N variables are 44 in quantity.
 
-Mean is 0, which is a little weird.
+Mean is 0, which is a little weird, it´s maybe because one of the regions have 0 as value as GINI value .
 On the other side Max value is 0.199 which is quite sensible.
 
 ```{r}
@@ -341,24 +341,32 @@ tmp %>%
 ***Graph: 4***
 
 In Graph 4 here we can see descriptive data for Spain.
-If we take a look at the green dots on top, we can see that it startet pretty good at start, than had its fell down in around 2008-2009.
+If we take a look at the green dots on top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
 ES30 is the wealthiest of all others.
+If w take a look at last dots, which are pink dots flat on the 0 line on the x-axis.
+The reason behind this most probably because of one of the values on GINW formula or N is 0.
 
 ## Outlier discussion
 
-Tekst
+When we talk about Outlier discussion part its normal to define the word outlier.
+The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
 
 ```{r}
 ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
   geom_point()
 ```
 
+***Graph: 5***
+
 ## Discuss briefly if there are noteworthy outliers:
 
-An important thing to come up here is that an outlier is a value or an observation that is distant from another observations, that is to say, a data point that differs significantly from other observations.
+An important thing to come up here is that an outlier is a value or an observation that is distant from another observations, that is to say, a data point that differs significantly from other observations like mentioned earlier.
 
-An observation must always be compared to other observations made on the same phenomenon.
-In this assignment the focus is gdp per capita and gdp.
+When we take a look at some kind of noteworthy outliers between these countries, we can take a look at the graph 5.
+We can point out here that Ireland (IE) have some weird appearance in this graph.
+We can see that somehow some outliers emerge for Ireland.
+It start with a point, than suddenly have a big gap before the Gini starts raising again.
+Than the gap continues and suddenly gini is back.
 
 #### Appendix
 
