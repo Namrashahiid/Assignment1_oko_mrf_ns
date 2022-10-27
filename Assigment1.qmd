@@ -197,6 +197,8 @@ tmp %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
+***Graph 3:***
+
 Regional per capita for highest income reason for 10 regions.
 9 of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway NO071.
 We can see here that region in Netherlands NL113 (the orange line) shows us that it´s on the top.
@@ -289,9 +291,13 @@ We can see here the least wealthiest regions in Poland.
 We can see that there is big difference between the wealthiest regions from table 3 and table table 4 (least wealthiest regions) in Poland.
 We can see that least wealthiest regions have GDP per capita approximately the same.
 
-## Regional inequity masseurs
+## Regional inequity measures
 
--   Generelt om GINW
+When we talk about regional inequity measures its normal to talk about GINWj.
+i tell us the abput NUTS3 regions.
+j tells us NUTS 2 regions.
+i and j specify region data for us.
+GINI data shows us different sizes of regions etc.
 
 ```{r}
 #gen weighted gini
@@ -308,8 +314,6 @@ tmp  %<>%
 
 ### Cross country perspective
 
-Tekst
-
 ```{r}
 tmp %>% 
   filter(year == 2010) %>%  
@@ -318,9 +322,12 @@ tmp %>%
   st()
 ```
 
-Forklare data over
+The data over tell us summary statistics.
 
-(ikkje ES under kun brukt som eksempel no)
+We can see that our N variables are 44 in quantity.
+
+Mean is 0, which is a little weird.
+On the other side Max value is 0.199 which is quite sensible.
 
 ```{r}
 tmp %>%
@@ -330,6 +337,12 @@ tmp %>%
   geom_point(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
+
+***Graph: 4***
+
+In Graph 4 here we can see descriptive data for Spain.
+If we take a look at the green dots on top, we can see that it startet pretty good at start, than had its fell down in around 2008-2009.
+ES30 is the wealthiest of all others.
 
 ## Outlier discussion
 
