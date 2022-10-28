@@ -370,7 +370,7 @@ We can see that somehow some outliers emerge for Ireland.
 It start with a point, than suddenly have a big gap before the Gini starts raising again.
 Than the gap continues and suddenly gini is back.
 
-# Assignment 2 
+# Assignment 2
 
 ## Growth and inequity
 
@@ -436,6 +436,12 @@ edudata <- filter(edufile,unit == "PC") %>%
 
 Feks.
 eventuelle tabeller som me ikkje vil ha lenger oppe.
+
+### Assigment 2
+
+In last assignment (Assigment 1) we focused on GDP per capita and different types of graphs and tables.
+
+In this assignment are we going to have our main focus on countries we have focused on in the first assignment......
 
 #### References
 
