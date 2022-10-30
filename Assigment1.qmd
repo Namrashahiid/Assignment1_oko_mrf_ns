@@ -437,11 +437,19 @@ edudata <- filter(edufile,unit == "PC") %>%
 Feks.
 eventuelle tabeller som me ikkje vil ha lenger oppe.
 
-### Assigment 2
+### Assignment 2
 
-In last assignment (Assigment 1) we focused on GDP per capita and different types of graphs and tables.
+In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs and tables.
 
-In this assignment are we going to have our main focus on countries we have focused on in the first assignment......
+In this assignment are we going to have our main focus on countries we have focused on in the first assignment
+
+In this assignment we will show the data that was presented in the last assignment.
+
+So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.
+
+Data: Ginidata....
+
+One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
 
 #### References
 
