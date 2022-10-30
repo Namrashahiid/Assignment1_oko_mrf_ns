@@ -481,6 +481,12 @@ Data: Ginidata....
 
 One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
 
+```{r}
+tmp_gdpcapita <- gdpdata %>%
+  filter(Year=="2010" & unit =='MIO_EUR' & (grepl( 'IE..', Region) |  grepl('PL..', Region) |   grepl('ES..', Region) |   grepl('SI..', Region) |   grepl('NL..', Region) |   grepl('EL..', Region) |    grepl('NO..', Region) |    grepl('AL..', Region) )) %>%
+  
+```
+
 #### References
 
 ::: {#refs}
