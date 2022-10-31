@@ -372,7 +372,16 @@ Than the gap continues and suddenly gini is back.
 
 # Assignment 2
 
-## Growth and inequity
+In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs and tables.
+
+In this assignment are we going to have our main focus on countries we have focused on in the first assignment
+
+In this assignment we will show the data that was presented in the last assignment.
+
+So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.Growth and inequity.
+
+One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
+When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
 
 "Estimate the effete of regional development yj on regional inequality GINIWj for the year 2010"
 
@@ -383,6 +392,8 @@ gdp_pc_n2 <- tmp %>%
   mutate(GDP_capita_n2 = (gdp_n3 * 1000000)/pop) %>%
   select(year, id_nuts2, GDP_capita_n2)
 ```
+
+What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
 ```{r}
 #Import new data from Eurostat
@@ -406,11 +417,25 @@ infra <- read_csv('tran_r_vehst.csv') %>%
   select(id_nuts2, year, infra1)
 ```
 
+Now in this formel/code are we generating new data set.
+We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
+
 ```{r}
 #tmp %>%
   #filter(id_nuts0 == "ES" , year == 2010) %>%
   #select(id_nuts3, GDP_capita) 
 ```
+
+Here are we filtering the data, with specified country, which is Spain (ES), in year 2010.
+Now when we take a look at the Summary Statistics, we can see that some values are 0.
+For example in this case we find that Min and Pctl.
+25 are equal to 0.
+As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
+
+On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
+
+Now the question is, whats the solution to those values of 0.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or nor there for this specific year which we have chosen.
 
 ## Other determinants of inequity
 
@@ -462,30 +487,19 @@ edudata <- filter(edufile,unit == "PC") %>%
 
 "Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings."
 
+```{r}
+edudata  <- edudata %>%
+  filter(gini(0))
+
+Spain2010 <- edudata %>%
+  filter(nuts0=="ES")
+
+```
+
 #### Appendix
 
 Feks.
 eventuelle tabeller som me ikkje vil ha lenger oppe.
-
-### Assignment 2
-
-In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs and tables.
-
-In this assignment are we going to have our main focus on countries we have focused on in the first assignment
-
-In this assignment we will show the data that was presented in the last assignment.
-
-So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.
-
-Data: Ginidata....
-
-One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
-
-```{r}
-tmp_gdpcapita <- gdpdata %>%
-  filter(Year=="2010" & unit =='MIO_EUR' & (grepl( 'IE..', Region) |  grepl('PL..', Region) |   grepl('ES..', Region) |   grepl('SI..', Region) |   grepl('NL..', Region) |   grepl('EL..', Region) |    grepl('NO..', Region) |    grepl('AL..', Region) )) %>%
-  
-```
 
 #### References
 
