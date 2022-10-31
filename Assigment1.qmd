@@ -395,39 +395,7 @@ gdp_pc_n2 <- tmp %>%
 
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
-```{r}
-#Import new data from Eurostat
-demo <- read_csv('demo_r_pjangroup.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & age == "TOTAL" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, demo1)
-
-
-edu <- read_csv('edat_lfse_16.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "PC" & age == "Y18-24" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES...', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, edu1)
-
-infra <- read_csv('tran_r_vehst.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, infra1)
-```
-
-Now in this formel/code are we generating new data set.
-We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
-
-```{r}
-#tmp %>%
-  #filter(id_nuts0 == "ES" , year == 2010) %>%
-  #select(id_nuts3, GDP_capita) 
-```
-
-Here are we filtering the data, with specified country, which is Spain (ES), in year 2010.
-Now when we take a look at the Summary Statistics, we can see that some values are 0.
+......Now when we take a look at the Summary Statistics, we can see that some values are 0.
 For example in this case we find that Min and Pctl.
 25 are equal to 0.
 As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
@@ -435,7 +403,18 @@ As we mentioned earlier, the values are always between 0 and 1, and when the val
 On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
 
 Now the question is, whats the solution to those values of 0.
-One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or nor there for this specific year which we have chosen.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
+
+Now in this formel/code are we generating new data set.
+We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "ES" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) 
+```
+
+kommetar
 
 ## Other determinants of inequity
 
@@ -486,15 +465,6 @@ edudata <- filter(edufile,unit == "PC") %>%
 ```
 
 "Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings."
-
-```{r}
-edudata  <- edudata %>%
-  filter(gini(0))
-
-Spain2010 <- edudata %>%
-  filter(nuts0=="ES")
-
-```
 
 #### Appendix
 
