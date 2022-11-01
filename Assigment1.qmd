@@ -378,7 +378,8 @@ In this assignment are we going to have our main focus on countries we have focu
 
 In this assignment we will show the data that was presented in the last assignment.
 
-So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.Growth and inequity.
+So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.
+Growth and inequity.
 
 One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
 When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
@@ -395,7 +396,7 @@ gdp_pc_n2 <- tmp %>%
 
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
-......Now when we take a look at the Summary Statistics, we can see that some values are 0.
+Now when we take a look at the Summary Statistics, we can see that some values are 0.
 For example in this case we find that Min and Pctl.
 25 are equal to 0.
 As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
