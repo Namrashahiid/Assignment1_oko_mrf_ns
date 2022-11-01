@@ -1,5 +1,5 @@
 ---
-title: "Assignment (Data and Descriptive)"
+title: "MSB104 Assignments"
 editor: visual
 author: Namra Shahid & Marit Rygg Fredheim
 csl: apa-no-ampersand.csl
@@ -8,11 +8,9 @@ format:
     code-fold: true
 ---
 
-# Assignment 1
+## 1. Introduction:
 
-## Introduction:
-
-In this assignment we are going to Calculate GDP per capita for 8 subset of countries sub-regional (NUTS3).
+In this assignment are we going to study the regional inequality of our selected Europe countries.
 We are group two and will therefore examine these countries:
 
 -   Ireland (IE)
@@ -31,12 +29,15 @@ We are group two and will therefore examine these countries:
 
 -   Albania (AL)
 
-## Data:
+## 2. Assignment 1
+
+### 2.1 Data
+
+The main in this assignment is going to be calculation of GDP per capita and our dataset from Eurostat.
+In this assignment we are going to Calculate GDP per capita for 8 subset of countries sub-regional (NUTS3).
 
 The main purpose to study this dataset from Eurostat is to analyse regional inequality.
 To do so we have to use GDP (Gross Domestic Product), at the market and population data by NUTS 3 regions.
-
-## Sub-national GDP
 
 ```{r, echo = FALSE}
 library(tidyverse)
@@ -52,11 +53,11 @@ Files "Nama_10r_3gdp.csv" and "demo_r\_pjanaggr3.csv" are different dataset.
 We will work with these two dataset throghout this assignment.
 
 When it comes to what these dataset contains, it is data for GDP on nuts 3 level for different countries.
-We find different data in the columns of the dataset of "Nama_10r_3gdp.csv".
+We find different data in the columns of the dataset "Nama_10r_3gdp.csv".
 This dataset contains data on Nuts 3 level.
 
 We are also using dataset: "Demo_r\_pjanaggr3.csv".
-This dataset contains data for population data on Nuts 3 level.
+This dataset contains information for population data on Nuts 3 level.
 
 ```{r}
 #Import data from Eurostat
@@ -91,7 +92,7 @@ tmp %<>%
 
 ### GDP per capita calculation:
 
-Like mentioned in this assignment we will use GDP per capita and which is based on population by NUTS.
+Like mentioned in this assignment we will use GDP per capita, which is based on population by NUTS.
 
 One important thing to come up here with is that, we calculate GDP per capita by using this formula:
 
@@ -115,15 +116,16 @@ tmp_gdpcapita <- tmp %>%
 #na.omit(tmp_gdpcapita)
 ```
 
-### Describe the data (GDP per capita) using the meta data description from Eurostat:
+## 2.2 Descriptive statistics raw data:
 
-What we can describe out from our data (GDP per capita) using meta data description is that the GDP measures the value of total final output.
-Now the question is how does GDP per capita calculated?
+### Cross country perspective:
+
+What we can describe out from our data (GDP per capita), using meta data description is that the GDP measures the value of total final output.
+Now the question is how is GDP per capita calculated?
 To answer this, we can look at the formula over.
 
 Metadata can be defined as information that is needed to be able to use and intercepted statistics.
-Main function of metadata is to explain data by giving definition of for example according to our data, region, year, GDP, population, GDP capita.
-
+Main function of metadata is to explain data by giving definition, for example according to our data, region, year, GDP, population and GDP per capita.
 We have now information of GDP per capita of different regions.
 
 ```{r}
@@ -136,11 +138,11 @@ tmp %>%
   st()
 ```
 
-When we look at this table we can see is: deceptive statistics of data, we see data of different regions.
+When we look at this table what we can see is: decriptive statistics of data, we see data of different regions.
 
-When we see the Summay statistics, we can see different type of data, which is first of all: Variables such as: year, pop, GDP_capita.
-After that we find N Mean.
-When we look at the difference between the statistics such as Max and Min, and if we compare both variables, there is no such major difference between the numbers.
+In this summay statistics table we can see different type of data, which is first of all: variables such as: year, population (pop), GDP per capita (GDP_capita).
+After that we find N and Mean.
+When we look at the difference between the statistics such as Max and Min, and if we compare both variables, there is no such major difference between the values.
 This is quite sensible.
 
 ```{r}
@@ -159,11 +161,13 @@ Orange line is refering Albania´s GDP per capita.
 If we compare Norway´s GDP with Albania´s.
 There is huge difference there, because Norway is on the top and Albania on the other side at it´s lowest.
 
-If we specify the GDP per capita for Norway line (blue line), we can see that it started pretty nice in around 2006, but then suddenly we can see it kind of like had decline in GDP per capita.
+If we specify the GDP per capita for Norway (blue line), we can see that it started pretty nice in around 2006, but then suddenly we can see it kind of like had decline in GDP per capita.
 The reason behind this most probably because of the financial crisis, which affected the society in years 2008-2009.
 Suddenly if we see GDP per capita started raising from 2009 again, and had its small fall downs in around 2015, and it raised again.
 
-In the middle the lined are showing the other countries.
+In the middle the lines are showing the other countries.
+If we look at the other countries, for example Poland.
+We can see that, it does also had an effect of financial crisis in years 2008-2009 like Norway had.
 
 ```{r}
 tmp_1 <- tmp %>% 
@@ -180,7 +184,7 @@ tmp %>%
 ***Graph 2:***
 
 Here we can see the GDP per capita for polish regions.
-If we look at the orange line, which refers to PL214, we see that it had its down period to start with.
+If we take a look at the orange line, which refers to PL214, we see that it had its down period to start with.
 Not only (PL214) the orange line, but also all the other regions, does not start good.
 PL214 (the orange line) had it´s real rise after 2010.
 PL214 had its down time between years 2008-2009, most probably because of the financial crisis, which caused chaos in the whole world.
@@ -205,6 +209,8 @@ Regional per capita for highest income reason for 10 regions.
 9 of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway NO071.
 We can see here that region in Netherlands NL113 (the orange line) shows us that it´s on the top.
 of all other regions in Netherlands and surprisingly Norway NO071 (the pink line).
+Its most probably, because the region in Norway are only based on one specific region.
+We can say that this region NO071 has low GDP per capita, compared to other regions in the Netherlands, such as NL113.
 
 ## Individual country cases
 
@@ -241,13 +247,11 @@ tmp %>%
 
 When we look at this GDP per capita formula, we find 3 wealthiest regions in Spain.
 When we find GDP per capita for regions, we specify and go more in the depth of the GDP per capita research.
-What we see in table 1 is that the GDP per capita for ES211 (the first region) and ES300 (the second region and ES212 (the third region).
+What we see in table 1 is that the GDP per capita for ES211 (the first region) and ES300 (the second region) and ES212 (the third region).
 This table shows us the wealthiest regions in Spain.
 There is no such big difference in them.
-We can say that there is no outliers in the dataset of the regions in Spain, because the observation between these regions are somehow consistent.
+The observation between these regions are somehow consistent.
 If we look at our next table 2, we can see the least wealthiest regions in Spain.
-
-3 least wealthiest region in Spain
 
 ```{r}
 tmp %>%
@@ -278,8 +282,6 @@ When we look at table 3 we see the wealthiest regions in Poland.
 In comparison with the wealthiest regions in Spain, there is somehow difference between the GDP per capita for the wealthiest regions in Poland and Spain.
 Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
 
-Least wealthiest regions in Poland:
-
 ```{r}
 tmp %>%
   filter(id_nuts0 == "PL" , year == 2010) %>%
@@ -290,10 +292,10 @@ tmp %>%
 ***Table: 4***
 
 We can see here the least wealthiest regions in Poland.
-We can see that there is big difference between the wealthiest regions from table 3 and table table 4 (least wealthiest regions) in Poland.
+We can see that there is big difference between the wealthiest regions from table 3 and table 4 (least wealthiest regions) in Poland.
 We can see that least wealthiest regions have GDP per capita approximately the same.
 
-## Regional inequity measures
+## 2.3 Regional inequity measures:
 
 When we talk about regional inequity measures its normal to talk about GINWj.
 i tell us the about NUTS3 regions.
@@ -312,9 +314,9 @@ tmp  %<>%
   ungroup() # to remove grouping
 ```
 
-## Descriptive statistics Gini
+## 2.4 Descriptive statistics Gini
 
-### Cross country perspective
+### Cross country perspective:
 
 ```{r}
 tmp %>% 
@@ -345,10 +347,10 @@ tmp %>%
 In Graph 4 here we can see descriptive data for Spain.
 If we take a look at the green dots on top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
 ES30 is the wealthiest of all others.
-If w take a look at last dots, which are pink dots flat on the 0 line on the x-axis.
+If we take a look at last dots, which are pink dots flat on the 0 line on the x-axis.
 The reason behind this most probably because of one of the values on GINW formula or N is 0.
 
-## Outlier discussion
+## 2.5 Outlier discussion
 
 When we talk about Outlier discussion part its normal to define the word outlier.
 The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
@@ -360,15 +362,18 @@ ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
 
 ***Graph: 5***
 
-## Discuss briefly if there are noteworthy outliers:
-
-An important thing to come up here is that an outlier is a value or an observation that is distant from another observations, that is to say, a data point that differs significantly from other observations like mentioned earlier.
+### Discuss briefly if there are noteworthy outliers:
 
 When we take a look at some kind of noteworthy outliers between these countries, we can take a look at the graph 5.
 We can point out here that Ireland (IE) have some weird appearance in this graph.
 We can see that somehow some outliers emerge for Ireland.
 It start with a point, than suddenly have a big gap before the Gini starts raising again.
 Than the gap continues and suddenly gini is back.
+
+If we compare Ireland´s (IE) gini with other countries, such as Netherland´s (NL), we can see that there is outliers here.
+We can say that Ireland (IE) has an abnormal appearance, in comparison to for example Netherland´s (NL).
+
+Albania (AL) on the other side has no outliers, because it does not have those gaps as Ireland (IE).
 
 # Assignment 2
 
