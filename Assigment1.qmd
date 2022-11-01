@@ -396,16 +396,6 @@ gdp_pc_n2 <- tmp %>%
 
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
-Now when we take a look at the Summary Statistics, we can see that some values are 0.
-For example in this case we find that Min and Pctl.
-25 are equal to 0.
-As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
-
-On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
-
-Now the question is, whats the solution to those values of 0.
-One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
-
 ```{r}
 #tmp %>%
   #filter(id_nuts0 == "ES" , year == 2010) %>%
@@ -434,6 +424,16 @@ infra <- read_csv('tran_r_vehst.csv') %>%
   select(id_nuts2, year, infra1)
 ```
 
+Now when we look at our summary statistics, we can see that some of our values are equal to 0(?).
+For example in this case we find that Min and Pctl.
+25 are equal to 0.
+As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
+
+On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
+
+Now the question is, whats the solution to those values of 0.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
+
 ```{r}
 data2010 <- gdp_pc_n2 %>%
   left_join(edu, by = c("year", "id_nuts2")) %>%
@@ -443,8 +443,9 @@ data2010 <- gdp_pc_n2 %>%
   # level of economic development = log(gdp per capita)
   mutate(log_gdppc = log(gdp_pc_n2)) %>% #....Det e denna som ikkje funka....
   # create column to easily filter by country
-  mutate(nuts0 = substr(nuts2, 1, 2)) %>%
+  mutate(nuts0 = substr(nuts2,1,2)) %>%
   filter(year == 2010)
+
 data2010 %>%
   st(.)
 ```
@@ -502,7 +503,11 @@ lm_residuals_plot <- function(lmdata){
     labs(x = "log(GDP per capita)", y = "Gini")}
 ```
 
-### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010
+### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
+
+What we are going to do here to describe the effect of regional development on regional inequality, is that we are going to is to analyze this by the help of using using regression analysis.
+Now the question is, what is regression analysis.
+Regression analysis is a group of statistical processes and statistics, that help us or are useful to control the relationship between dataset variables.
 
 ```{r}
 #| label: tbl-log-gdppc
