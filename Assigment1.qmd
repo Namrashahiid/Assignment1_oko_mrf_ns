@@ -405,13 +405,110 @@ On the other hand we can see that, there is max, mean Std.Dev value that are not
 Now the question is, whats the solution to those values of 0.
 One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
 
-Now in this formel/code are we generating new data set.
-We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
+```{r}
+#tmp %>%
+  #filter(id_nuts0 == "ES" , year == 2010) %>%
+  #select(id_nuts3, GDP_capita)
+```
 
 ```{r}
-tmp %>%
-  filter(id_nuts0 == "ES" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) 
+data2010 <- data2010 %>%
+  filter(gini > 0)
+IE2010 <- data2010 %>%
+  filter(nuts0 == "IE") 
+PL2010 <- data2010 %>%
+  filter(nuts0 == "PL") 
+ES2010 <- data2010 %>%
+  filter(nuts0 == "ES") 
+SI2010 <- data2010 %>%
+  filter(nuts0 == "SI") 
+NL2010 <- data2010 %>%
+  filter(nuts0 == "NL") 
+EL2010 <- data2010 %>%
+  filter(nuts0 == "EL")
+NO2010 <- data2010 %>%
+  filter(nuts0 == "NO") 
+AL2010 <- data2010 %>%
+  filter(nuts0 == "AL")
+
+# create function to calculate linear regression model
+lm_function_plot <- function(lmdata){
+  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x = log_gdppc, y = gini, fill=nuts2, color=nuts2, label = nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust = -0.3, vjust=0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+
+```
+
+```{r}
+# create function to calculate linear regression model
+lm_residuals_plot <- function(lmdata){
+  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+  lmdata$predicted <- predict(lm_gdppc)
+  lmdata$residuals <- residuals(lm_gdppc)
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x = log_gdppc, y = gini, fill =  nuts2, color = nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend = log_gdppc,yend = predicted)) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")}
+```
+
+### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010
+
+```{r}
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
+lm.1 = lm(gini ~ log_gdppc, data = IE2010)
+lm.2 = lm(gini ~ log_gdppc, data = PL2010)
+lm.3 = lm(gini ~ log_gdppc, data = ES2010)
+lm.4 = lm(gini ~ log_gdppc, data = SI2010)
+lm.5 = lm(gini ~ log_gdppc, data = NL2010)
+lm.6 = lm(gini ~ log_gdppc, data = EL2010)
+lm.7 = lm(gini ~ log_gdppc, data = NO2010)
+lm.8 = lm(gini ~ log_gdppc, data = AL2010)
+lm.9 = lm(gini ~ log_gdppc, data = data2010)
+
+#Gen Table
+  huxreg(
+  list("Ireland" = lm.1, "Poland" = lm.2, "Spain" = lm.3, "Slovenia" = lm.4, "Netherlands" = lm.5, "Greece" = lm.6, "Norway" = lm.7, "Albania" = lm.8, "Total" = lm.9),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
+### Discuss the goodness of fit of your estimated model
+
+### Plot the relationship between regional development yj and regional inequality GINIWj and the fitted line corresponding to your estimate.
+
+```{r}
+#do this for at least 3 countries....
+#| label: fig-lm-Spain
+#| fig-cap: Estimate for Spain
+lm_function_plot(ES2010)
+```
+
+### Plot the residuals against the predicted values of your model
+
+### Discuss the classical assumptions OLS in light of your data and plots
+
+```{r}
+data2010 %>%
+  filter(year == 2010 & nuts0 == "NO") %>%
+ggplot(aes(x = eduval, y = gini, fill = nuts2, color = nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
 ```
 
 kommetar
@@ -420,38 +517,84 @@ kommetar
 
 "Download from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
 
+Now in this formel/code are we generating new data set.
+We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
+
 ```{r}
-#Import data from Eurostat
-infrafile <- import("tran_r_vehst.csv")
-demofile <- import("demo_r_pjangroup.csv")
-edufile <- import("edat_lfse_16.csv")
+#Import new data from Eurostat
+demo <- read_csv('demo_r_pjangroup.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & age == "TOTAL" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, demo1)
 
 
-#Clean data 
-infrafile %<>% select(vehicle, unit, geo, TIME_PERIOD, OBS_VALUE)
-demofile %<>% select(unit, sex, age, geo, TIME_PERIOD, OBS_VALUE)
-edufile %<>% select(unit, sex, age, geo, TIME_PERIOD, OBS_VALUE)
+edu <- read_csv('edat_lfse_16.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "PC" & age == "Y18-24" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES...', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, edu1)
 
+infra <- read_csv('tran_r_vehst.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, infra1)
+```
 
-# Filter for the countries we are going to study and change variablenames
-infradata <- filter(infrafile, unit == "NR") %>%
-  mutate(gdp_n3 = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
-  select(gdp_n3, year, id_nuts3)
+```{r}
+data2010 <- gdp_pc_n2 %>%
+  left_join(edu, by = c("year", "id_nuts2")) %>%
+  left_join(infra, by = c("year", "id_nuts2")) %>%
+  left_join(demo, by = c("year", "id_nuts2")) %>%
+  left_join(gdp_pc_n2, by = c("year", "id_nuts2")) %>%
+  # level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_pc_n2)) %>%
+  # create column to easily filter by country
+  mutate(nuts0 = substr(nuts2, 1, 2)) %>%
+  filter(year == 2010)
+data2010 %>%
+  st(.)
+```
 
-# Filter for gdp per capita
-demodata <- filter(demofile,unit == "NR") %>% 
-  mutate(pop = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
-  select(pop, year, id_nuts3)
+```{r}
+data2010 %>%
+  filter(Year == 2010 & nuts0 == "ES") %>%
+ggplot(aes(x = eduval, y = gini, fill = nuts_id2, color = nuts_id2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Edu", y = "Gini")
+```
 
-# Filter for gdp per capita
-edudata <- filter(edufile,unit == "PC") %>% 
- mutate(pop = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
- select(pop, year, id_nuts3)
+```{r}
+multi_linear_regression_model_1 <- function(mlrdata){
+lm.1 = lm(gini ~ eduval , mlrdata) 
+lm.2 = lm(gini ~  motorway, mlrdata)
+lm.3 = lm(gini ~ eduval + motorway, mlrdata)
+lm.4 = lm(gini ~  lifeexpectancyage, mlrdata)
+lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(education = "eduval","motorway", life.exp. = "lifeexpectancyage", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+```
 
-#Koden funka til hit ---- 
+### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings
 
-# & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('ES...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) 
+```{r}
+#| label: tbl-mlr-germany
+#| tbl-cap: Multi linear regression model Spain
+multi_linear_regression_model_1(ES2010)
+```
 
+### Discuss the overall fit of your model
+
+### Discuss the inference related to your findings
+
+```{r}
 #Generate main data frame
 #tmp_ass2 <- merge(infradata, demodata, edudata, by = c("year", "id_nuts3", ))
 
