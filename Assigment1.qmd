@@ -509,6 +509,9 @@ What we are going to do here to describe the effect of regional development on r
 Now the question is, what is regression analysis.
 Regression analysis is a group of statistical processes and statistics, that help us or are useful to control the relationship between dataset variables.
 
+What we are going to take in the first place is the selected countries and data we have got for the year 2010.
+After that are we going to use simple regression model to look at the result of regional development inequality.
+
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
