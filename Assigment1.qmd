@@ -9,7 +9,7 @@ format:
 abstract: 'This is an assignment in the subject MSB104 Econometrics. It will study regional inequity of eight different European countries.' 
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, results = 'hide', message = FALSE}
 library(tidyverse)
 library(vtable)
 library(dineq)
@@ -30,7 +30,7 @@ We are group two and will therefore examine these countries:
 
 -   Spain (ES)
 
--   Slovania (SI)
+-   Slovenia (SI)
 
 -   Netherlands (NL)
 
@@ -53,13 +53,9 @@ We will calculate GDP per capita and Ginie coefficients for eight subgroups of s
 
 [^1]: https://ec.europa.eu/eurostat/web/regions/data/database
 
-We are calculating GDP per capita by
+We are calculating GDP per capita by:
 
-![](images/paste-1EADC664.png){width="253"}
-
-```{r}
-#...yi=GDPi/populationi
-```
+![](images/GDPperCapita.png){fig-align="center"}
 
 where *i* refers to NUTS3 regions.
 
@@ -150,7 +146,7 @@ When we look at graph 1, we see a common trend in forward growth in all of the c
 Norway´s GDP are on the top (the blue line on top).
 Norway have the highest GDP per capita.
 Albania on the other side have the lowest GDP per capita.
-Orange line is refering Albania´s GDP per capita.
+Orange line is referring Albania´s GDP per capita.
 If we compare Norway´s GDP with Albania´s.
 There is huge difference there, because Norway is on the top and Albania on the other side at it´s lowest.
 
@@ -317,9 +313,14 @@ Albania is generally not that rich compared to the other countries in graph 1.
 ## 2.3 Regional inequity measures:
 
 When we talk about regional inequity measures, it is normal to talk about GINWj.
-i tell us the about NUTS3 regions.
-j tells us about NUTS 2 regions.
-i and j specify region data for us.
+This is the inequality indicator that we use in our analysis in the population weighted gini coefficient.
+It has a range 0 (low/no inequaliy) to 1 (perfect inequality between regions).
+The indicator is calculated like this:
+
+![](images/GINI.png){fig-align="center"}
+
+where *i* refers to NUTS3 regions and *j* refers to NUTS2 regions.
+The indicators *i* and *j* specify region data for us.
 GINWj/i data shows us different sizes of regions etc.
 
 ```{r}
@@ -345,12 +346,28 @@ tmp %>%
   st()
 ```
 
-The data over tell us summary statistics.
+The data over tell us descriptive statistics for inequality masseurs for the year 2010.
+In our dataset we have 44 different European NUTS2 regions.
+In averange we can see a very low level of inequality within all regions.
+Even the maximum inequality is vey low with 0,199.
+We can also see that mean is 0, which means that some regions have no inequality.
+We look more at this in the next graph.
 
-We can see that our N variables are 44 in quantity.
+```{r}
+tmp %>%
+  filter(id_nuts0 == "NL")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
 
-Mean is 0, which is a little weird, it´s maybe because one of the regions have 0 as value as GINI value .
-On the other side Max value is 0.199 which is quite sensible.
+***Graph 4:***
+
+Studying the level of inequality over time we see that most regions follow a common trend.
+There are not a lot of changes over time.
+This is for example shown in the graph over NUTS2 regions in the Netherlands.
+We also see that one region has 0 for all observations, wich means low/no inequality.
 
 ```{r}
 tmp %>%
@@ -361,13 +378,15 @@ tmp %>%
    labs(x = "Year", y = "Gini")
 ```
 
-***Graph: 4***
+***Graph 5:***
 
 In Graph 4 here we can see descriptive data for Spain.
 If we take a look at the green dots on top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
 ES30 is the wealthiest of all others.
 If we take a look at last dots, which are pink dots flat on the 0 line on the x-axis.
-The reason behind this most probably because of one of the values on GINW formula or N is 0.
+The reason behind this most probably because the region has no inequality as discusses earlier.
+In this graph over level og inequality over time for Spain, there are som exceptions compared to the graph for Nederlands.
+Taking a closer look at the light blue dotted line, we see that it is starting quite low, around 0,04, and increasing to almost 0,06 over 20 years.
 
 ## 2.5 Outlier discussion
 
@@ -379,7 +398,7 @@ ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
   geom_point()
 ```
 
-***Graph: 5***
+***Graph 6:***
 
 ### Discuss briefly if there are noteworthy outliers:
 
@@ -424,6 +443,6 @@ tmp %>%
 ::: {#refs}
 :::
 
-#### Footnotes 
+#### Footnotes
 
 #### 
