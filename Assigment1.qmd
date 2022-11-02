@@ -114,7 +114,7 @@ tmp_gdpcapita <- tmp %>%
 What we can describe from our data (GDP per capita), using metadata description is that GDP measures the value of total final production.
 Metadata can be defined as information that is necessary to be able to use and intercept statistics.
 The main function of metadata is to explain data by giving definitions, for example according to our data, region, year, GDP, population and GDP per capita.
-We now have information on GDP per capita in different regions.
+We now have information on GDP per capita in different regions from different countries that we have chosen.
 
 To calculate GDP per capita we need to multiply the GDP value with 1 million because it is in million euro and dividing it by the population value.
 
@@ -128,10 +128,10 @@ tmp %>%
   st()
 ```
 
-Looking at [Table 1] and the table decriptive statistics table over, we can see substantial differences in region size as well as economic development.
-The largest region ...insert region name... is almost 1000 times bigger than the smallest region ...insert region name... .
+Looking at [Table 1] and the table descriptive statistics table over, we can see substantial differences in region size as well as economic development.
+The largest region is Rest of Dronningen (NL113) is almost 1000 times bigger than the smallest region, which is Agglomeratie Leiden en Bollenstreek (NL337).
 We also see a big difference in gdp per capita.
-The least wealthiest region (...insert region name...) has a gdp per capita of 5652, while the wealthiest region (...insert region name...) has a gdp per capita of 55857.
+The least wealthiest region in Poland Nowotarski (PL219) has a gdp per capita of 5652, while the wealthiest region Rest og Groningen (NL113) has a gdp per capita of 55857.
 We also see a big difference in population.
 The smallest region has a population of 10 603, and the largest have a population of 6 373 546.
 
@@ -394,6 +394,10 @@ We can say that Ireland (IE) has an abnormal appearance, in comparison to for ex
 
 Albania (AL) on the other side has no outliers, because it does not have those gaps as Ireland (IE).
 
+As we have seen Poland (PL) under individual country cases, we can see that Poland have very rich regions at the same time very poor regions as well.
+As we can see on graph 5, we can see that there is no clear outliers on graph for Poland (PL), because there is a long line with with small gaps.
+We can see that there are many wealthy and on the other side not wealthy regions in Poland.
+
 #### Appendix
 
 #### Table 1
@@ -415,14 +419,11 @@ tmp %>%
   slice_min(GDP_capita, n = 10)
 ```
 
-Feks.
-eventuelle tabeller som me ikkje vil ha lenger oppe.
-
 #### References
 
 ::: {#refs}
 :::
 
-#### Footnotes (visst me trenge det)
+#### Footnotes 
 
 #### 
