@@ -111,19 +111,6 @@ tmp_gdpcapita <- tmp %>%
 
 ### Cross country perspective:
 
-```{r}
-#Skal leggast i appendix
-tmp %>% 
-  filter(year == 2010) %>%
-  select(GDP_capita, id_nuts3, id_nuts0) %>%
-  slice_max(GDP_capita, n = 10)
-
-tmp %>%
-  filter(year == 2010) %>%
-  select(GDP_capita, id_nuts3, id_nuts0) %>%
-  slice_min(GDP_capita, n = 10)
-```
-
 What we can describe from our data (GDP per capita), using metadata description is that GDP measures the value of total final production.
 Metadata can be defined as information that is necessary to be able to use and intercept statistics.
 The main function of metadata is to explain data by giving definitions, for example according to our data, region, year, GDP, population and GDP per capita.
@@ -141,16 +128,17 @@ tmp %>%
   st()
 ```
 
-Looking at this table, we can see decriptive statistics of data different regions.
+Looking at [Table 1] and the table decriptive statistics table over, we can see substantial differences in region size as well as economic development.
+The largest region ...insert region name... is almost 1000 times bigger than the smallest region ...insert region name... .
+We also see a big difference in gdp per capita.
+The least wealthiest region (...insert region name...) has a gdp per capita of 5652, while the wealthiest region (...insert region name...) has a gdp per capita of 55857.
+We also see a big difference in population.
+The smallest region has a population of 10 603, and the largest have a population of 6 373 546.
 
-In this summay statistics table, we can see different type of data, which are primarily variables such as: year, population (pop), GDP per capita (GDP_capita).
-After that we find N and mean.
-N stands for how many regions are in the dataset.
-When we look at the difference between the statistics, such as max and min, and if we compare both variables, there is not much difference between the values.
-This is quite reasonable.
+From [Table 1] and [Table 2] we see that the wealthiest regions in our dataset are located in the Netherlands and in Norway, and that the least wealthiest regions are located in Poland.
 
 ```{r}
-tmp %>%  distinct(id_nuts0, year,.keep_all= TRUE) %>% 
+tmp %>%  distinct(id_nuts0, year,.keep_all = TRUE) %>% 
   ggplot(aes(x = year, y = GDP_capita, fill = id_nuts0, color = id_nuts0)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
@@ -158,7 +146,8 @@ tmp %>%  distinct(id_nuts0, year,.keep_all= TRUE) %>%
 
 ***Graph: 1***
 
-When we look at graph 1, we can see that Norway´s GDP are on the top (the blue line on top).
+When we look at graph 1, we see a common trend in forward growth in all of the countries.
+Norway´s GDP are on the top (the blue line on top).
 Norway have the highest GDP per capita.
 Albania on the other side have the lowest GDP per capita.
 Orange line is refering Albania´s GDP per capita.
@@ -168,10 +157,10 @@ There is huge difference there, because Norway is on the top and Albania on the 
 If we specify the GDP per capita for Norway (blue line), we can see that it started pretty nice in around 2006, but then suddenly we can see it kind of like had decline in GDP per capita.
 The reason behind this most probably because of the financial crisis, which affected the society in years 2008-2009.
 Suddenly if we see GDP per capita started raising from 2009 again, and had its small fall downs in around 2015, and it raised again.
+We see the same trend for the purple line and Poland.
 
 In the middle the lines are showing the other countries.
-If we look at the other countries, for example Poland.
-We can see that, it does also had an effect of financial crisis in years 2008-2009 like Norway had.
+They are mostly slightly rising.
 
 ```{r}
 tmp_1 <- tmp %>% 
@@ -192,6 +181,7 @@ If we take a look at the orange line, which refers to PL214, we see that it had 
 Not only (PL214) the orange line, but also all the other regions, does not start good.
 PL214 (the orange line) had it´s real rise after 2010.
 PL214 had its down time between years 2008-2009, most probably because of the financial crisis, which caused chaos in the whole world.
+Except from this we see that all of the regions have a stable rising curve.
 
 ```{r}
 tmp_1 <- tmp %>% 
@@ -209,17 +199,17 @@ tmp %>%
 
 ***Graph 3:***
 
-Regional per capita for highest income reason for 10 regions.
-9 of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway NO071.
+This table shows regional GDP per capita for the 10 highest income regions.
+Nine of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway NO071.
 We can see here that region in Netherlands NL113 (the orange line) shows us that it´s on the top.
 of all other regions in Netherlands and surprisingly Norway NO071 (the pink line).
 Its most probably, because the region in Norway are only based on one specific region.
 We can say that this region NO071 has low GDP per capita, compared to other regions in the Netherlands, such as NL113.
 
-## Individual country cases
+### Individual country cases
 
-With this GDP per capita for specific countries we can filter our information/data easily afterwards in this assignment.
-This can for example be done by finding the wealthiest and not wealthiest regions.
+With this GDP per capita for specific countries, we can easily filter our information/data afterwards in this assignment.
+This can for example be done, for example, by finding the wealthiest and least wealthiest regions in each country.
 
 ### GDP per capita for Norway:
 
@@ -230,15 +220,16 @@ tmp %>%
   st()
 ```
 
-When we look at the GDP per capita for Norway, we can see that there is no such big difference between the values under summary statistics.
-Such as Min and Max, Mean, Std.
-Dev, Pctl values in summary statistics are exactly the same.
+Since Norway is the country with the highest BNP per capita it is interesting to stydy Norway closer.
+When we look at the GDP per capita for Norway, we can see that there is no such big difference between the values under summary statistics, such as Min and Max, Mean, Std.
+Dev, Pctl.
+The values are exactly the same.
 The reason behind this is that N value is 1.
 When N is 1, than it makes sense why all these values are same.
+Our dataset only have numbers for one region on NUTS3 level in Norway, even though there should be 19 counties.
+We are therefore take a closer look at another country.
 
 ### GDP per capita for Spain:
-
-3 Wealthiest regions in Spain:
 
 ```{r}
 tmp %>%
@@ -249,10 +240,7 @@ tmp %>%
 
 ***Table 1:***
 
-When we look at this GDP per capita formula, we find 3 wealthiest regions in Spain.
-When we find GDP per capita for regions, we specify and go more in the depth of the GDP per capita research.
-What we see in table 1 is that the GDP per capita for ES211 (the first region) and ES300 (the second region) and ES212 (the third region).
-This table shows us the wealthiest regions in Spain.
+Looking at this table for the tree wealthiest regions in Spain we see the GDP per capita for ES211 (the first region) and ES300 (the second region) and ES212 (the third region).
 There is no such big difference in them.
 The observation between these regions are somehow consistent.
 If we look at our next table 2, we can see the least wealthiest regions in Spain.
@@ -268,10 +256,9 @@ tmp %>%
 
 When we look at this table 2, we can see the least wealthiest regions in Spain.
 Comparing GDP per capita from Table 2 with Table 1 we can see that there is difference between values in both tables.
+The three wealthiest regions are twice as wealthy as the least wealthiest.
 
-### GDP per capita for Poland:
-
-Wealthiest regions in Poland:
+### GDP per capita for Poland
 
 ```{r}
 tmp %>%
@@ -283,7 +270,7 @@ tmp %>%
 ***Table 3:***
 
 When we look at table 3 we see the wealthiest regions in Poland.
-In comparison with the wealthiest regions in Spain, there is somehow difference between the GDP per capita for the wealthiest regions in Poland and Spain.
+There are a difference of over 10 000 gdp per capita from the most wealthiest to the third most wealthy region.
 Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
 
 ```{r}
@@ -293,17 +280,45 @@ tmp %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-***Table: 4***
+***Table 4:***
 
-We can see here the least wealthiest regions in Poland.
+We can here see the least wealthiest regions in Poland.
 We can see that there is big difference between the wealthiest regions from table 3 and table 4 (least wealthiest regions) in Poland.
-We can see that least wealthiest regions have GDP per capita approximately the same.
+The wealthiest region in Poland are almost 5 times wealthier than the least wealthy region in Poland.
+This shows us that there are big differences in living conditions in Poland.
+
+### GDP per capita for Albania
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "SI" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+When we look at table 3 we see the wealthiest regions in Albania.
+
+***Table 5:***
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "SI" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+***Table 6:***
+
+Here we see the least wealthiest regions in Albania.
+In comparison to the wealthiest regions in Albania there are not that big gap.
+Compared to the other countries we have looked at (Poland and Spain), there are smaller differences between the richest and the poorest regions.
+Albania is generally not that rich compared to the other countries in graph 1.
 
 ## 2.3 Regional inequity measures:
 
-When we talk about regional inequity measures its normal to talk about GINWj.
+When we talk about regional inequity measures, it is normal to talk about GINWj.
 i tell us the about NUTS3 regions.
-j tells us NUTS 2 regions.
+j tells us about NUTS 2 regions.
 i and j specify region data for us.
 GINWj/i data shows us different sizes of regions etc.
 
@@ -380,6 +395,25 @@ We can say that Ireland (IE) has an abnormal appearance, in comparison to for ex
 Albania (AL) on the other side has no outliers, because it does not have those gaps as Ireland (IE).
 
 #### Appendix
+
+#### Table 1
+
+```{r}
+#Skal leggast i appendix
+tmp %>% 
+  filter(year == 2010) %>%
+  select(GDP_capita, id_nuts3, id_nuts0) %>%
+  slice_max(GDP_capita, n = 10)
+```
+
+#### Table 2
+
+```{r}
+tmp %>%
+  filter(year == 2010) %>%
+  select(GDP_capita, id_nuts3, id_nuts0) %>%
+  slice_min(GDP_capita, n = 10)
+```
 
 Feks.
 eventuelle tabeller som me ikkje vil ha lenger oppe.
