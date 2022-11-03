@@ -446,10 +446,23 @@ When the value is equal to 0 or close enough to 0, then this shows us that the m
 
 ```{r}
 #Regenerate gdp per capita for nuts 2 
-gdp_pc_n2 <- tmp %>%
+gdp_pc_n2_1 <- tmp %>%
   select(year, pop, gdp_n3, id_nuts2) %>% 
-  mutate(GDP_capita_n2 = (gdp_n3 * 1000000)/pop) %>%
-  select(year, id_nuts2, GDP_capita_n2)
+  group_by(id_nuts2, year) %>% 
+  mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
+  ungroup() %>%
+  distinct(id_nuts2, year, gdp_n2, pop_n2) %>%
+  mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2)
+```
+
+```{r}
+tmp_n2 <- tmp %>%
+  select(year, pop, gdp_n3, id_nuts2, gini_n2) %>% 
+  group_by(id_nuts2, year) %>% 
+  mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
+  ungroup() %>%
+  distinct(id_nuts2, year, gdp_n2, pop_n2, gini_n2) %>%
+  mutate(gdp_capita_n2 = (gdp_n2 * 1000000)/pop_n2)
 ```
 
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
@@ -461,7 +474,7 @@ ggplot() +
 
 ```{r}
 tmp_gdp_gini <- tmp %>% 
-  filter(year == 2010) %>%  
+  filter(year == 2010, ) %>%  
   select(GDP_capita, id_nuts2)  
 
 tmp %>%
@@ -549,15 +562,16 @@ Now the question is, whats the solution to those values of 0.
 One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
 
 ```{r}
-data2010 <- gdp_pc_n2 %>%
+data2010 <- tmp_n2 %>%
   left_join(edu, by = c("year", "id_nuts2")) %>%
   left_join(infra, by = c("year", "id_nuts2")) %>%
   left_join(demo, by = c("year", "id_nuts2")) %>%
-  left_join(gdp_pc_n2, by = c("year", "id_nuts2")) %>%
-  # level of economic development = log(gdp per capita)
+  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
+
+# level of economic development = log(gdp per capita)
   mutate(log_gdppc = log(gdp_pc_n2)) %>% #....Det e denna som ikkje funka....
   # create column to easily filter by country
-  mutate(nuts0 = substr(nuts2,1,2)) %>%
+  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
   filter(year == 2010)
 
 data2010 %>%
@@ -565,24 +579,24 @@ data2010 %>%
 ```
 
 ```{r}
-data2010 <- data2010 %>%
-  filter(gini > 0)
+data2010 <- data2010 #%>%
+  #filter(gini > 0)
 IE2010 <- data2010 %>%
-  filter(nuts0 == "IE") 
+  filter(id_nuts0 == "IE") 
 PL2010 <- data2010 %>%
-  filter(nuts0 == "PL") 
+  filter(id_nuts0 == "PL") 
 ES2010 <- data2010 %>%
-  filter(nuts0 == "ES") 
+  filter(id_nuts0 == "ES") 
 SI2010 <- data2010 %>%
-  filter(nuts0 == "SI") 
+  filter(id_nuts0 == "SI") 
 NL2010 <- data2010 %>%
-  filter(nuts0 == "NL") 
+  filter(id_nuts0 == "NL") 
 EL2010 <- data2010 %>%
-  filter(nuts0 == "EL")
+  filter(id_nuts0 == "EL")
 NO2010 <- data2010 %>%
-  filter(nuts0 == "NO") 
+  filter(id_nuts0 == "NO") 
 AL2010 <- data2010 %>%
-  filter(nuts0 == "AL")
+  filter(id_nuts0 == "AL")
 
 # create function to calculate linear regression model
 lm_function_plot <- function(lmdata){
@@ -716,19 +730,6 @@ multi_linear_regression_model_1(ES2010)
 ### Discuss the overall fit of your model
 
 ### Discuss the inference related to your findings
-
-```{r}
-#Generate main data frame
-#tmp_ass2 <- merge(infradata, demodata, edudata, by = c("year", "id_nuts3", ))
-
-#Gen Nuts 2 id
-#tmp_ass2 %<>%
- # mutate(id_nuts2 = substr(id_nuts3,1,4))
-
-#Gen Nuts 1 id
-#tmp_ass2 %<>%
- # mutate(id_nuts0 = substr(id_nuts3,1,2))
-```
 
 "Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings."
 
