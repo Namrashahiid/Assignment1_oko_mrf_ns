@@ -532,7 +532,7 @@ tmp %>%
 ```{r, echo = FALSE, show_col_types = FALSE}
 #Import new data from Eurostat
 demo <- read_csv('demo_r_pjangroup.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & age == "TOTAL" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
   select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
   mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
   select(id_nuts2, year, demo1)
@@ -569,7 +569,7 @@ data2010 <- tmp_n2 %>%
   left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
 
 # level of economic development = log(gdp per capita)
-  mutate(log_gdppc = log(gdp_pc_n2)) %>% #....Det e denna som ikkje funka....
+  mutate(log_gdppc = log(gdp_pc_n2)) %>% 
   # create column to easily filter by country
   mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
   filter(year == 2010)
@@ -579,8 +579,8 @@ data2010 %>%
 ```
 
 ```{r}
-data2010 <- data2010 #%>%
-  #filter(gini > 0)
+data2010 <- data2010 %>%
+  filter(gini_n2 > 0)
 IE2010 <- data2010 %>%
   filter(id_nuts0 == "IE") 
 PL2010 <- data2010 %>%
@@ -605,11 +605,11 @@ lm_function_plot <- function(lmdata){
   b2_gdppc <- lm_gdppc$coefficients[2]
   # create plot for l.reg. model
   lmdata %>%
-    ggplot(aes(x = log_gdppc, y = gini, fill=nuts2, color=nuts2, label = nuts2)) +
+    ggplot(aes(x = log_gdppc, y = gini, fill = nuts2, color = nuts2, label = nuts2)) +
     geom_point(lwd = .8) +
-    geom_text(hjust = -0.3, vjust=0, check_overlap = FALSE) +
-    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
-    labs(x = "log(GDP per capita)", y = "Gini")
+    geom_text(hjust = -0.3, vjust = 0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini") }
 
 ```
 
@@ -643,15 +643,15 @@ After that are we going to use simple regression model to look at the result of 
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
-lm.1 = lm(gini ~ log_gdppc, data = IE2010)
-lm.2 = lm(gini ~ log_gdppc, data = PL2010)
-lm.3 = lm(gini ~ log_gdppc, data = ES2010)
-lm.4 = lm(gini ~ log_gdppc, data = SI2010)
-lm.5 = lm(gini ~ log_gdppc, data = NL2010)
-lm.6 = lm(gini ~ log_gdppc, data = EL2010)
-lm.7 = lm(gini ~ log_gdppc, data = NO2010)
-lm.8 = lm(gini ~ log_gdppc, data = AL2010)
-lm.9 = lm(gini ~ log_gdppc, data = data2010)
+lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
+lm.2 = lm(gini_n2 ~ log_gdppc, data = PL2010)
+lm.3 = lm(gini_n2 ~ log_gdppc, data = ES2010)
+lm.4 = lm(gini_n2 ~ log_gdppc, data = SI2010)
+lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
+lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
+lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
+lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
+lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
 
 #Gen Table
   huxreg(
@@ -700,7 +700,7 @@ If the relationship between two variables are linear, then straight line can be 
 
 The regression have this formula:
 
-##      y= mx + c
+## y= mx + c
 
 y can be defined as the response (dependent) variable, m is the slope, x is the predictor and c the intercept.
 
@@ -709,7 +709,7 @@ What advantages we get after using this scatterplot is that we get the so called
 ```{r}
 data2010 %>%
   filter(year == 2010 & nuts0 == "NO") %>%
-ggplot(aes(x = eduval, y = gini, fill = nuts2, color = nuts2)) +
+ggplot(aes(x = edu1, y = gini, fill = nuts2, color = nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 ```
@@ -726,18 +726,18 @@ We are here generating new dataflies, which is related to education and transpor
 ```{r}
 data2010 %>%
   filter(Year == 2010 & nuts0 == "ES") %>%
-ggplot(aes(x = eduval, y = gini, fill = nuts_id2, color = nuts_id2)) +
+ggplot(aes(x = edu1, y = gini, fill = nuts_id2, color = nuts_id2)) +
   geom_point(lwd = .8) +
    labs(x = "Edu", y = "Gini")
 ```
 
 ```{r}
 multi_linear_regression_model_1 <- function(mlrdata){
-lm.1 = lm(gini ~ eduval , mlrdata) 
-lm.2 = lm(gini ~  motorway, mlrdata)
-lm.3 = lm(gini ~ eduval + motorway, mlrdata)
-lm.4 = lm(gini ~  lifeexpectancyage, mlrdata)
-lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
+lm.1 = lm(gini_n2 ~ edu1 , mlrdata) 
+lm.2 = lm(gini_n2 ~  infra1, mlrdata)
+lm.3 = lm(gini_n2 ~ edu1 + infra1, mlrdata)
+lm.4 = lm(gini_n2 ~  demo1, mlrdata)
+lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
 #Gen Table
   huxreg(
   list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
