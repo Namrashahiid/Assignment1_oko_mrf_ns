@@ -648,6 +648,12 @@ lm.9 = lm(gini ~ log_gdppc, data = data2010)
   )
 ```
 
+We have read Lessmann & Seidel (2017) we can find that development can be found by log GDP.
+
+The table/graph up shows us that we have an relationship between X and Y.
+X which is regional development in this case and Y which refers to regional inequality.
+The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
+
 ### Discuss the goodness of fit of your estimated model
 
 ### Plot the relationship between regional development yj and regional inequality GINIWj and the fitted line corresponding to your estimate.
@@ -659,9 +665,32 @@ lm.9 = lm(gini ~ log_gdppc, data = data2010)
 lm_function_plot(ES2010)
 ```
 
+```{r}
+#| label: fig-lm-Poland
+#| fig-cap: Residuals Poland 
+lm_residuals_plot(PL2010)
+```
+
+```{r}
+#| label: fig-lm-Netherlands
+#| fig-cap: Residuals Netherlands
+lm_residuals_plot(NL2010)
+```
+
 ### Plot the residuals against the predicted values of your model
 
 ### Discuss the classical assumptions OLS in light of your data and plots
+
+First of all a definition to this classical OLS assumption: Ordinary Least Squares (OLS) linear regression is a statistical technique for analyzing and designing linear relationship between a response and for one and even more variables.
+If the relationship between two variables are linear, then straight line can be fit to the specific data which we have worked with.
+
+The regression have this formula:
+
+##      y= mx + c
+
+y can be defined as the response (dependent) variable, m is the slope, x is the predictor and c the intercept.
+
+What advantages we get after using this scatterplot is that we get the so called stregth, direction and form of the relationship that can be defined.
 
 ```{r}
 data2010 %>%
@@ -704,6 +733,8 @@ lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
   )
 }
 ```
+
+Now looking at the
 
 ### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings
 
