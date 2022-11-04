@@ -442,7 +442,7 @@ Growth and inequity.
 One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
 When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
 
-"Estimate the effete of regional development yj on regional inequality GINIWj for the year 2010"
+### "Estimate the effete of regional development yj on regional inequality GINIWj for the year 2010"
 
 ```{r}
 #Regenerate gdp per capita for nuts 2 
@@ -454,6 +454,8 @@ gdp_pc_n2_1 <- tmp %>%
   distinct(id_nuts2, year, gdp_n2, pop_n2) %>%
   mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2)
 ```
+
+What we are doing here is that, we are regenerating data for GDP per capita from the last assignment.
 
 ```{r}
 tmp_n2 <- tmp %>%
@@ -578,6 +580,13 @@ data2010 %>%
   st(.)
 ```
 
+Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
+What value 0 expresses is that there is perfect equality, where all the values are the same.
+As we have mentioned earlier, the gini value is from 0 and 1 in the table.
+
+The reason behind the values 0, can also be because of that maybe one of the values are missing.
+Therefor this leads us to gini values 0.
+
 ```{r}
 data2010 <- data2010 %>%
   filter(gini_n2 > 0)
@@ -697,6 +706,9 @@ lm_residuals_plot(NL2010)
 
 First of all a definition to this classical OLS assumption: Ordinary Least Squares (OLS) linear regression is a statistical technique for analyzing and designing linear relationship between a response and for one and even more variables.
 If the relationship between two variables are linear, then straight line can be fit to the specific data which we have worked with.
+
+In practice we can use OLS to estimate the regression coefficients using an estimator, which is called Ordinary Least Squares.
+We use this OLS estimation to close parameters and to minimize the residual sum of squares.
 
 The regression have this formula:
 
