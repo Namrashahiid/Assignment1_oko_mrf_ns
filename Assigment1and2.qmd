@@ -40,9 +40,9 @@ We are group two and will therefore examine these countries:
 
 -   Albania (AL)
 
-## 2 Assignment 1
+2 Assignment 1
 
-### 2.1 Data
+2.1 Data
 
 The main task in this assignment will be to study regional inequality from 2000-2020 for our selected European countries.
 We are in assignment 1 using two datasets from Eurostat.[^1]
@@ -483,8 +483,8 @@ What we can see here from this table is GDP_capita mapping.
 In this part are we using the fundamentals of mapping, we are using ggplot.
 
 ```{r}
-=======
->>>>>>> a6cb429d1add71857695fceb310a856095b4cc74
+
+a6cb429d1add71857695fceb310a856095b4cc74
 tmp_gdp_gini <- tmp %>% 
   filter(year == 2010, ) %>%  
   select(GDP_capita, id_nuts2)  
@@ -539,17 +539,17 @@ tmp %>%
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
 
-<<<<<<< HEAD
-Table:
+Table:\*
+
+From
 
 ```{r}
 #tmp %>%
   #filter(id_nuts0 == "ES" , year == 2010) %>%
   #select(id_nuts3, GDP_capita)
 ```
-=======
+
 ## Other determinants of inequity
->>>>>>> a6cb429d1add71857695fceb310a856095b4cc74
 
 ```{r, echo = FALSE, show_col_types = FALSE}
 #Import new data from Eurostat
@@ -660,7 +660,7 @@ lm_residuals_plot <- function(lmdata){
     labs(x = "log(GDP per capita)", y = "Gini")}
 ```
 
-### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
+###Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
 
 What we are going to do here to describe the effect of regional development on regional inequality, is that we are going to is to analyze this by the help of using using regression analysis.
 Now the question is, what is regression analysis.
