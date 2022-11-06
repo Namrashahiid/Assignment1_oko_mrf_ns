@@ -472,6 +472,7 @@ tmp_n2 <- tmp %>%
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
 ```{r}
+<<<<<<< HEAD
 ggplot() +
   geom_point(data = tmp, mapping = aes(x = GDP_capita, y = gini_n2))
 ```
@@ -482,6 +483,8 @@ What we can see here from this table is GDP_capita mapping.
 In this part are we using the fundamentals of mapping, we are using ggplot.
 
 ```{r}
+=======
+>>>>>>> a6cb429d1add71857695fceb310a856095b4cc74
 tmp_gdp_gini <- tmp %>% 
   filter(year == 2010, ) %>%  
   select(GDP_capita, id_nuts2)  
@@ -506,18 +509,6 @@ We call these values prediction of the depended variable, fitted values.
 We see that together these values gives us a trace line: Gini nuts 2i = β\^1 + β\^2GDP per capitai.
 
 Here from this table\* the β\^1 value is ca: 0.12 and β\^2 value is ca: 5800
-
-```{r}
-tmp_gdp_gini <- tmp %>% 
-  filter(year == 2010, id_nuts0 == "NO") %>%  
-  select(GDP_capita, id_nuts2)  
-
-tmp %>%   
-  filter(year == 2010 & id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>% 
-  ggplot(aes(x = GDP_capita, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "GDP per capita", y = "Gini nuts 2")
-```
 
 ```{r}
 tmp_gdp_gini <- tmp %>% 
@@ -548,6 +539,7 @@ tmp %>%
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
 
+<<<<<<< HEAD
 Table:
 
 ```{r}
@@ -555,6 +547,9 @@ Table:
   #filter(id_nuts0 == "ES" , year == 2010) %>%
   #select(id_nuts3, GDP_capita)
 ```
+=======
+## Other determinants of inequity
+>>>>>>> a6cb429d1add71857695fceb310a856095b4cc74
 
 ```{r, echo = FALSE, show_col_types = FALSE}
 #Import new data from Eurostat
