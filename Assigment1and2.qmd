@@ -470,11 +470,6 @@ tmp_n2 <- tmp %>%
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
 ```{r}
-ggplot() +
-  geom_point(data = tmp, mapping = aes(x = GDP_capita, y = gini_n2))
-```
-
-```{r}
 tmp_gdp_gini <- tmp %>% 
   filter(year == 2010, ) %>%  
   select(GDP_capita, id_nuts2)  
@@ -486,18 +481,6 @@ tmp %>%
   ggplot(aes(x = GDP_capita, y = gini_n2)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-   labs(x = "GDP per capita", y = "Gini nuts 2")
-```
-
-```{r}
-tmp_gdp_gini <- tmp %>% 
-  filter(year == 2010, id_nuts0 == "NO") %>%  
-  select(GDP_capita, id_nuts2)  
-
-tmp %>%   
-  filter(year == 2010 & id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>% 
-  ggplot(aes(x = GDP_capita, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
 
@@ -525,11 +508,7 @@ tmp %>%
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
 
-```{r}
-#tmp %>%
-  #filter(id_nuts0 == "ES" , year == 2010) %>%
-  #select(id_nuts3, GDP_capita)
-```
+## Other determinants of inequity
 
 ```{r, echo = FALSE, show_col_types = FALSE}
 #Import new data from Eurostat
