@@ -482,7 +482,7 @@ We can see by looking this method what Y value would be when X = 0.
 
 The formula we use for estimating the connection between regional development and regional inequality is:
 
-\$\$ Regional inequality_i = \beta\_1 + \beta\_2Regional development_i+u_im\$
+$$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
 
 ```{r}
 tmp_gdp_gini <- tmp %>% 
@@ -545,7 +545,8 @@ tmp %>%
 
 Table:\*
 
-From
+From this table we can see the data set for regions Spain ES41 which is Castilla Y Le has the highest Gini nuts 2.
+What we fin under Gini nuts 2 is the data for income, consumption and standard of living.
 
 ```{r}
 #tmp %>%
@@ -665,7 +666,7 @@ lm_residuals_plot <- function(lmdata){
     labs(x = "log(GDP per capita)", y = "Gini")}
 ```
 
-###Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
+### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
 
 What we are going to do here to describe the effect of regional development on regional inequality, is that we are going to is to analyze this by the help of using using regression analysis.
 Now the question is, what is regression analysis.
@@ -702,9 +703,21 @@ The table/graph up shows us that we have an relationship between X and Y.
 X which is regional development in this case and Y which refers to regional inequality.
 The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
 
-### Discuss the goodness of fit of your estimated model
+### Discuss the goodness of fit of your estimated model:
+
+We have now worked with simple regression model previously.
+Coefficients
 
 ### Plot the relationship between regional development yj and regional inequality GINIWj and the fitted line corresponding to your estimate.
+
+### Plot the residuals against the predicted values of your model:
+
+A can be defined as the difference between the values, which we observe and analyze.
+These values are linked to the regression model.
+
+$$
+Residual = Observed value - Predicted value
+$$
 
 ```{r}
 #do this for at least 3 countries....
@@ -712,6 +725,13 @@ The formula which we have worked with above can clearly show us the relationship
 #| fig-cap: Estimate for Spain
 lm_function_plot(ES2010)
 ```
+
+Table:\*
+
+What we see here from this table is data/ information of regions in Spain.
+We can here see different types of region from Spain.
+
+If we use the OLS formula here, we find that: β\^1 is approximately 0.3 and the β\^2 value is 10.3.
 
 ```{r}
 #| label: fig-lm-Poland
@@ -724,8 +744,6 @@ lm_residuals_plot(PL2010)
 #| fig-cap: Residuals Netherlands
 lm_residuals_plot(NL2010)
 ```
-
-### Plot the residuals against the predicted values of your model
 
 ### Discuss the classical assumptions OLS in light of your data and plots
 
