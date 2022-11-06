@@ -437,7 +437,9 @@ In this assignment are we going to have our main focus on countries we have focu
 In this assignment we will show the data that was presented in the last assignment.
 
 So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.
-Growth and inequity.
+
+To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
+GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
 
 Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption.
 
@@ -457,7 +459,7 @@ gdp_pc_n2_1 <- tmp %>%
   mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2)
 ```
 
-What we are doing here is that, we are regenerating data for GDP per capita from the last assignment.
+What we are doing here is that, we are regenerating data for GDP per capita from the last assignment from nuts 2 level.
 
 ```{r}
 tmp_n2 <- tmp %>%
@@ -470,6 +472,17 @@ tmp_n2 <- tmp %>%
 ```
 
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
+
+The question now is, what is regression analysis?
+Regression analysis is a process which is used to see the relationship between different data set variables.
+This analysis data method is used to see the relationship between independent and depended variables.
+
+We can see by looking this method what Y value would be when X = 0.
+
+The formula we use for estimating the connection between regional development and regional inequality is:
+
+$$
+Regional\ inequality_i = \beta_1 + \beta_2Regional\ development_i+u_im$
 
 ```{r}
 tmp_gdp_gini <- tmp %>% 
@@ -486,7 +499,11 @@ tmp %>%
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
 
-Table:
+Table: \*
+
+The table shows us that when prosperity increases, income and GDP per capita are less different.
+
+To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
 
 What we can see from this table is a estimate.
 The parameters we are looking at here is: GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
@@ -655,11 +672,6 @@ Regression analysis is a group of statistical processes and statistics, that hel
 
 What we are going to take in the first place is the selected countries and data we have got for the year 2010.
 After that are we going to use simple regression model to look at the result of regional development inequality.
-
-```{r}
-Y_i = \beta_1 + \beta_2X_i+u_i
-$$
-```
 
 ```{r}
 #| label: tbl-log-gdppc
