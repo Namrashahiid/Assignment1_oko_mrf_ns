@@ -439,6 +439,8 @@ In this assignment we will show the data that was presented in the last assignme
 So the first task in this assignment is to estimate the effete of regional development yi on regional inequality GINIWj for the year 2010.
 Growth and inequity.
 
+Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption.
+
 One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
 When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
 
@@ -474,6 +476,11 @@ ggplot() +
   geom_point(data = tmp, mapping = aes(x = GDP_capita, y = gini_n2))
 ```
 
+table:
+
+What we can see here from this table is GDP_capita mapping.
+In this part are we using the fundamentals of mapping, we are using ggplot.
+
 ```{r}
 tmp_gdp_gini <- tmp %>% 
   filter(year == 2010, ) %>%  
@@ -488,6 +495,17 @@ tmp %>%
   geom_smooth(method = "lm", se = FALSE) +
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
+
+Table:
+
+What we can see from this table is a estimate.
+The parameters we are looking at here is: GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
+If we call these parameters with econometric language, we call them β1 and β2 values.
+We call these values prediction of the depended variable, fitted values.
+
+We see that together these values gives us a trace line: Gini nuts 2i = β\^1 + β\^2GDP per capitai.
+
+Here from this table\* the β\^1 value is ca: 0.12 and β\^2 value is ca: 5800
 
 ```{r}
 tmp_gdp_gini <- tmp %>% 
@@ -513,6 +531,11 @@ tmp %>%
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
 
+Table\*
+
+Here from this table we see only GDP per capita for Norway.
+The Gini nuts 2 value is 0 and GDP per capita for this region NO07 (Tønsberg) in Norway is ca: 44626.55.
+
 ```{r}
 tmp_gdp_gini <- tmp %>% 
   filter(year == 2010, id_nuts0 == "ES") %>%  
@@ -524,6 +547,8 @@ tmp %>%
   geom_point(lwd = .8) +
    labs(x = "GDP per capita", y = "Gini nuts 2")
 ```
+
+Table:
 
 ```{r}
 #tmp %>%
@@ -648,6 +673,11 @@ Regression analysis is a group of statistical processes and statistics, that hel
 
 What we are going to take in the first place is the selected countries and data we have got for the year 2010.
 After that are we going to use simple regression model to look at the result of regional development inequality.
+
+```{r}
+Y_i = \beta_1 + \beta_2X_i+u_i
+$$
+```
 
 ```{r}
 #| label: tbl-log-gdppc
