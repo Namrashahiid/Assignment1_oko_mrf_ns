@@ -17,6 +17,7 @@ library(dplyr)
 library(magrittr)
 library(readr)
 library(rio)
+library(huxtable)
 ```
 
 ## 1 Introduction
@@ -481,8 +482,7 @@ We can see by looking this method what Y value would be when X = 0.
 
 The formula we use for estimating the connection between regional development and regional inequality is:
 
-$$
-Regional\ inequality_i = \beta_1 + \beta_2Regional\ development_i+u_im$
+\$\$ Regional inequality_i = \beta\_1 + \beta\_2Regional development_i+u_im\$
 
 ```{r}
 tmp_gdp_gini <- tmp %>% 
@@ -631,14 +631,15 @@ NO2010 <- data2010 %>%
 AL2010 <- data2010 %>%
   filter(id_nuts0 == "AL")
 
+
 # create function to calculate linear regression model
 lm_function_plot <- function(lmdata){
-  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
   b2_gdppc <- lm_gdppc$coefficients[2]
   # create plot for l.reg. model
   lmdata %>%
-    ggplot(aes(x = log_gdppc, y = gini, fill = nuts2, color = nuts2, label = nuts2)) +
+    ggplot(aes(x = log_gdppc, y = gini_n2, fill = id_nuts2, color = id_nuts2, label = id_nuts2)) +
     geom_point(lwd = .8) +
     geom_text(hjust = -0.3, vjust = 0, check_overlap = FALSE) +
     geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
@@ -649,7 +650,7 @@ lm_function_plot <- function(lmdata){
 ```{r}
 # create function to calculate linear regression model
 lm_residuals_plot <- function(lmdata){
-  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
   b2_gdppc <- lm_gdppc$coefficients[2]
   lmdata$predicted <- predict(lm_gdppc)
@@ -657,7 +658,7 @@ lm_residuals_plot <- function(lmdata){
   
   # create plot for l.reg. model
   lmdata %>%
-    ggplot(aes(x = log_gdppc, y = gini, fill =  nuts2, color = nuts2)) +
+    ggplot(aes(x = log_gdppc, y = gini_n2, fill =  id_nuts2, color = id_nuts2)) +
     geom_point(lwd = .8) +
     geom_segment(aes(xend = log_gdppc,yend = predicted)) +
     geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
@@ -676,19 +677,19 @@ After that are we going to use simple regression model to look at the result of 
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
-lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
+#lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
 lm.2 = lm(gini_n2 ~ log_gdppc, data = PL2010)
 lm.3 = lm(gini_n2 ~ log_gdppc, data = ES2010)
 lm.4 = lm(gini_n2 ~ log_gdppc, data = SI2010)
 lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
-lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
-lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
-lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
-lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
+#lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
+#lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
+#lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
+#lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
 
 #Gen Table
   huxreg(
-  list("Ireland" = lm.1, "Poland" = lm.2, "Spain" = lm.3, "Slovenia" = lm.4, "Netherlands" = lm.5, "Greece" = lm.6, "Norway" = lm.7, "Albania" = lm.8, "Total" = lm.9),
+  list("Poland" = lm.2, "Spain" = lm.3, "Slovenia" = lm.4, "Netherlands" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
@@ -744,8 +745,8 @@ What advantages we get after using this scatterplot is that we get the so called
 
 ```{r}
 data2010 %>%
-  filter(year == 2010 & nuts0 == "NO") %>%
-ggplot(aes(x = edu1, y = gini, fill = nuts2, color = nuts2)) +
+  filter(year == 2010 & id_nuts0 == "NL") %>%
+ggplot(aes(x = edu1, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 ```
@@ -761,8 +762,8 @@ We are here generating new dataflies, which is related to education and transpor
 
 ```{r}
 data2010 %>%
-  filter(Year == 2010 & nuts0 == "ES") %>%
-ggplot(aes(x = edu1, y = gini, fill = nuts_id2, color = nuts_id2)) +
+  filter(year == 2010 & id_nuts0 == "PL") %>%
+ggplot(aes(x = edu1, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Edu", y = "Gini")
 ```
@@ -790,8 +791,8 @@ Now looking at the
 
 ```{r}
 #| label: tbl-mlr-germany
-#| tbl-cap: Multi linear regression model Spain
-multi_linear_regression_model_1(ES2010)
+#| tbl-cap: Multi linear regression model NL
+multi_linear_regression_model_1(NL2010)
 ```
 
 ### Discuss the overall fit of your model
