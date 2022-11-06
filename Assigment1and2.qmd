@@ -472,19 +472,6 @@ tmp_n2 <- tmp %>%
 What we have done in this formula up, so that we have regenerated the formula, so that we can get the right values for our next steps.
 
 ```{r}
-<<<<<<< HEAD
-ggplot() +
-  geom_point(data = tmp, mapping = aes(x = GDP_capita, y = gini_n2))
-```
-
-table:
-
-What we can see here from this table is GDP_capita mapping.
-In this part are we using the fundamentals of mapping, we are using ggplot.
-
-```{r}
-
-a6cb429d1add71857695fceb310a856095b4cc74
 tmp_gdp_gini <- tmp %>% 
   filter(year == 2010, ) %>%  
   select(GDP_capita, id_nuts2)  
