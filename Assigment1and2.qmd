@@ -706,7 +706,7 @@ The formula which we have worked with above can clearly show us the relationship
 ### Discuss the goodness of fit of your estimated model:
 
 We have now worked with simple regression model previously.
-Coefficients
+Coefficients of resolution is important for pur next steps in this assignment.
 
 ### Plot the relationship between regional development yj and regional inequality GINIWj and the fitted line corresponding to your estimate.
 
