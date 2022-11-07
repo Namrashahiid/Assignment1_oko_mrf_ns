@@ -471,7 +471,61 @@ tmp_n2 <- tmp %>%
   mutate(gdp_capita_n2 = (gdp_n2 * 1000000)/pop_n2)
 ```
 
-What we have done in this formel up, is that we have regenerated the data, so that we can get the right values for our next steps.
+```{r, echo = FALSE, show_col_types = FALSE}
+#Import new data from Eurostat
+demo <- read_csv('demo_r_pjangroup.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, demo1)
+
+
+edu <- read_csv('edat_lfse_16.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "PC" & age == "Y18-24" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES...', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, edu1)
+
+infra <- read_csv('tran_r_vehst.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, infra1)
+```
+
+```{r}
+data2010 <- tmp_n2 %>%
+  left_join(edu, by = c("year", "id_nuts2")) %>%
+  left_join(infra, by = c("year", "id_nuts2")) %>%
+  left_join(demo, by = c("year", "id_nuts2")) %>%
+  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
+
+# level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_pc_n2)) %>% 
+  # create column to easily filter by country
+  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
+  filter(year == 2010)
+
+data2010 %>%
+  st(.)
+```
+
+Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
+What value 0 expresses is that there is perfect equality, where all the values are the same.
+As we have mentioned earlier, the gini value is from 0 and 1 in the table.
+
+The reason behind the values 0, can also be because of that maybe one of the values are missing.
+Therefor this leads us to gini values 0.
+
+We can also see that, many values are the same.
+Now when we look at our summary statistics, we can see that some of our values are equal to 0(?).
+For example in this case we find that Min and Pctl.
+25 are equal to 0.
+As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
+
+On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
+Now the question is, whats the solution to those values of 0.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.What we have done in this formel up, is that we have regenerated the data, so that we can get the right values for our next steps.
 
 The question now is, what is regression analysis?
 Regression analysis is a process which is used to see the relationship between different data set variables.
@@ -646,7 +700,7 @@ As mentioned the value 0 can be due to low WHAT?
 
 ### 
 
-## Discuss the goodness of Fit of your estimated model: 
+## Discuss the goodness of Fit of your estimated model:
 
 In this part are we going to analyze estimation for 3 countries.
 Countries which we are going to use as a estimation for our plots are: Spain, Poland and Netherlands.
@@ -732,64 +786,6 @@ From this table we can see the data set for regions Spain ES41 which is Castilla
 What we fin under Gini nuts 2 is the data for income, consumption and standard of living.
 
 ## Other determinants of inequity:
-
-legge inn info om dei 3 nye data settene.
-
-```{r, echo = FALSE, show_col_types = FALSE}
-#Import new data from Eurostat
-demo <- read_csv('demo_r_pjangroup.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, demo1)
-
-
-edu <- read_csv('edat_lfse_16.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "PC" & age == "Y18-24" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES...', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, edu1)
-
-infra <- read_csv('tran_r_vehst.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, infra1)
-```
-
-```{r}
-data2010 <- tmp_n2 %>%
-  left_join(edu, by = c("year", "id_nuts2")) %>%
-  left_join(infra, by = c("year", "id_nuts2")) %>%
-  left_join(demo, by = c("year", "id_nuts2")) %>%
-  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
-
-# level of economic development = log(gdp per capita)
-  mutate(log_gdppc = log(gdp_pc_n2)) %>% 
-  # create column to easily filter by country
-  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
-  filter(year == 2010)
-
-data2010 %>%
-  st(.)
-```
-
-Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
-What value 0 expresses is that there is perfect equality, where all the values are the same.
-As we have mentioned earlier, the gini value is from 0 and 1 in the table.
-
-The reason behind the values 0, can also be because of that maybe one of the values are missing.
-Therefor this leads us to gini values 0.
-
-We can also see that, many values are the same.
-Now when we look at our summary statistics, we can see that some of our values are equal to 0(?).
-For example in this case we find that Min and Pctl.
-25 are equal to 0.
-As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
-
-On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
-Now the question is, whats the solution to those values of 0.
-One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
 
 ```{r}
 data2010 %>%
