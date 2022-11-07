@@ -485,18 +485,14 @@ The formula we use for estimating the connection between regional development an
 $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
 
 ```{r}
-tmp_gdp_gini <- tmp %>% 
-  filter(year == 2010, ) %>%  
-  select(GDP_capita, id_nuts2)  
-
-tmp %>%
-  filter(year == 2010) %>%  
-  select(GDP_capita, id_nuts2, gini_n2) %>%   
- # filter(id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>% 
-  ggplot(aes(x = GDP_capita, y = gini_n2)) +
+tmp_n2 %>%
+  filter(year == 2010) %>%
+  select(gdp_capita_n2, id_nuts2, gini_n2) %>%
+  # filter(id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>%
+  ggplot(aes(x = gdp_capita_n2, y = gini_n2)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-   labs(x = "GDP per capita", y = "Gini nuts 2")
+   labs(x = "GDP er capita", y = "Gini nuts 2")
 ```
 
 Table: \*
@@ -612,6 +608,8 @@ As we have mentioned earlier, the gini value is from 0 and 1 in the table.
 The reason behind the values 0, can also be because of that maybe one of the values are missing.
 Therefor this leads us to gini values 0.
 
+We can also see that, many values are the same.
+
 ```{r}
 data2010 <- data2010 %>%
   filter(gini_n2 > 0)
@@ -675,6 +673,20 @@ Regression analysis is a group of statistical processes and statistics, that hel
 What we are going to take in the first place is the selected countries and data we have got for the year 2010.
 After that are we going to use simple regression model to look at the result of regional development inequality.
 
+Simple Regression analysis can be expressed like this:
+
+$$
+B1 = intercept or constant 
+$$
+
+$$
+B2 =Slope coefficient
+$$
+
+$$
+ui = error term
+$$
+
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
@@ -702,6 +714,14 @@ We have read Lessmann & Seidel (2017) we can find that development can be found 
 The table/graph up shows us that we have an relationship between X and Y.
 X which is regional development in this case and Y which refers to regional inequality.
 The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
+
+From this table we can see different values:
+
+What wee see here for Poland is: there is 10 numbers for this country and the coefficient of determination is 0.398
+
+What we see here for Spain is: there is there is 11 numbers and the coefficient of determination is 0.
+
+As mentioned the value 0 can be due to low
 
 ### Discuss the goodness of fit of your estimated model:
 
