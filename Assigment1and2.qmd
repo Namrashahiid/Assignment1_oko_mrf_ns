@@ -533,7 +533,7 @@ NO2010 <- data2010 %>%
 AL2010 <- data2010 %>%
   filter(id_nuts0 == "AL")
 
-lm_function_plot <- function(lmdata) {
+lm_function <- function(lmdata) {
   lm(gini_n2 ~ log_gdppc, data = lmdata)
 }
 
@@ -643,18 +643,15 @@ First of all we can see that there is data for only 4 countries.
 The countries are: Slovenia (SI), Spain (ES), Netherlands (NL) and Poland (PL).
 If we plus the values R2 for all 4 countries, we get a value over 1.
 Due to missing values in some of our countries are those countries with missing values not showing up.
-Therefore our focus here is countries which are showing
-up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL) and Spain (ES).
+Therefore our focus here is countries which are showing up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL) and Spain (ES).
 
 We are here looking at R2, which is value for coefficient of determination.
 This R2 coefficient of determination can be defined as a regression problem metric, that help the performance or the result of the model in R to be better.
 
 If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high.
 It is the highest value, which is 1.000.
-What we can analyze here by
-looking at this value R2 1.000 for Slovenia (SI), is that the value that is analyzed is suitable or fitted for each other.
-On the other hand when we look at the R2 value for Spain (ES), we can see that it
-is 0.0.
+What we can analyze here by looking at this value R2 1.000 for Slovenia (SI), is that the value that is analyzed is suitable or fitted for each other.
+On the other hand when we look at the R2 value for Spain (ES), we can see that it is 0.0.
 This value indicates that, this model is not suitable for our model.
 
 ## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
@@ -683,8 +680,7 @@ We call these values prediction of the depended variable, fitted values.
 
 Now we are going to look at a simple regression model for our 4 countries.
 In this case: Spain (ES), Poland (PL), Netherlands (NL) and Slovenia (SI).
-We can see that the line on this graph is negative, this indicates that one of values on regression model
-formel, is negative.
+We can see that the line on this graph is negative, this indicates that one of values on regression model formel, is negative.
 The line on y-axis is on around value 0.12 and on x-axis on ca.
 12.0.
 
@@ -820,15 +816,7 @@ y can be defined as the response (dependent) variable, m is the slope, x is the 
 
 What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
 
-Below we will look at how Spain (ES), Netherlands (NL) and Poland (PL) fit the assumptions of OSL.
-
-```{r}
-#| label: fig-par-plot
-#| fig-cap: Diagnostic plots
-mylm = lm_function(ES2010)
-par(mfrow = c(2,2))
-plot(mylm)
-```
+Below we will look at how Netherlands (NL) fit the assumptions of OSL.
 
 ```{r}
 #| label: fig-par-plot
@@ -838,17 +826,18 @@ par(mfrow = c(2,2))
 plot(mylm)
 ```
 
-```{r}
-#| label: fig-par-plot
-#| fig-cap: Diagnostic plots
-mylm = lm_function(PL2010)
-par(mfrow = c(2,2))
-plot(mylm)
-```
+Graphs:\*
 
-Breusch-Pagan Test can be discussed here also.
+What we can analyze here is that in the first graph for Netherlands (NL), we can see the comparison between Residuals and fitted values.
+The fact of the matter is that we want the red line as flat as possible.
+When we analyze the first graph we can see that the red line is kind of like a mountain shaped.
+The fitted values goes from 0.00 to 0.12.
+The values relies between these numbers.
+
+We could have also discussed Breusch-Pagan Test here.
 This test is used to determine if heteroscedasticy is present in a present regression analysis.
-This test fits regression model, because it fits the residuals of a linear regression model
+This test fits regression model, because it fits the residuals of a linear regression model.
+We will look more in depth on this in our next assignment 3.
 
 ## Other determinants of inequity:
 
@@ -934,7 +923,7 @@ lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
 }
 ```
 
-### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings
+### Estimate a multiple linear regression model with your new variables for 2010 and give a small interpretation of your findings
 
 When we look at the Multiple regression model, we use these variables:
 
@@ -948,6 +937,8 @@ $$
 multi_linear_regression_model_1(NL2010)
 
 ```
+
+Table: \*
 
 ```{r}
 #| label: tbl-mlr-spain
