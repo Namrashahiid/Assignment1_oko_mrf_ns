@@ -486,6 +486,23 @@ data2010 %>%
   st(.)
 ```
 
+Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
+What value 0 expresses is that there is perfect equality, where all the values are the same.
+As we have mentioned earlier, the gini value is from 0 and 1 in the table.
+
+The reason behind the values 0, can also be because of that maybe one of the values are missing.
+Therefor this leads us to gini values 0.
+
+We can also see that, many values are the same.
+Now when we look at our summary statistics, we can see that some of our values are equal to 0(?).
+For example in this case we find that Min and Pctl.
+25 are equal to 0.
+As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
+
+On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
+Now the question is, whats the solution to those values of 0.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.What we have done in this formel up, is that we have regenerated the data, so that we can get the right values for our next steps.
+
 ### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
 
 What we are going to do here to describe the effect of regional development on regional inequality, and then we are going to analyze this by the help of using regression analysis.
@@ -537,33 +554,21 @@ The table/graph up shows us that we have an relationship between X and Y.
 X which is regional development in this case and Y which refers to regional inequality.
 The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
 
+One important thing here to come up with here is that when we look at the estimation effect of regional development on regional inequality above on table, we see data for only countries: Poland (PL), Spain (ES), Slovenia (SI) and Netherlands (NL).
+Other countries such as Greece (EL), Norway (NO), Ireland (IE) and Albania (AL) have no data.
+Therefore are we going to take initially countries with dataset, in this case: Poland (PL), Spain (ES), Norway (NO) and Albania (AL).
+
 From this table we can see different values:
 
-What wee see here for Poland is: there is 10 numbers for this country and the coefficient of determination R2 is 0.398
+What wee see here for Poland (PL) is: there is 10 numbers for this country and the coefficient of determination R2 is 0.398
 
-What we see here for Spain is: there is there is 11 numbers and the coefficient of determination R2 is 0.
-Value 0 can be due to
+What we see here for Spain (ES) is: there is there is 11 numbers and the coefficient of determination R2 is 0.
+Value 0 can be due to.
+As mentioned the value 0 can be due to low fitness of the model.
 
-As mentioned the value 0 can be due to low
+**Regression analysis:**
 
-\-\-\-\-\-\-\--Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
-What value 0 expresses is that there is perfect equality, where all the values are the same.
-As we have mentioned earlier, the gini value is from 0 and 1 in the table.
-
-The reason behind the values 0, can also be because of that maybe one of the values are missing.
-Therefor this leads us to gini values 0.
-
-We can also see that, many values are the same.
-Now when we look at our summary statistics, we can see that some of our values are equal to 0(?).
-For example in this case we find that Min and Pctl.
-25 are equal to 0.
-As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
-
-On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
-Now the question is, whats the solution to those values of 0.
-One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.What we have done in this formel up, is that we have regenerated the data, so that we can get the right values for our next steps.
-
-The question now is, what is regression analysis?
+Our next steps in this assignment is to take a look at what is regression analysis and what it tells us.
 Regression analysis is a process which is used to see the relationship between different data set variables.
 This analysis data method is used to see the relationship between independent and depended variables.
 
@@ -766,24 +771,6 @@ Breusch-Pagan Test can be discussed here also.
 This test is used to determine if heteroscedasticy is present in a present regression analysis.
 This test fits regression model, because it fits the residuals of a linear regression model
 
-```{r}
-#Usikker på om vi skal ha denne?
-tmp_gdp_gini <- tmp %>% 
-  filter(year == 2010, id_nuts0 == "ES") %>%  
-  select(GDP_capita, id_nuts2)  
-
-tmp %>%   
-  filter(year == 2010 & id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>% 
-  ggplot(aes(x = GDP_capita, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "GDP per capita", y = "Gini nuts 2")
-```
-
-Table:\*
-
-From this table we can see the data set for regions Spain ES41 which is Castilla Y Le has the highest Gini nuts 2.
-What we fin under Gini nuts 2 is the data for income, consumption and standard of living.
-
 ## Other determinants of inequity:
 
 ```{r, echo = FALSE, show_col_types = FALSE}
@@ -820,26 +807,16 @@ data2010 <- tmp_n2 %>%
   group_by(id_nuts2, year) 
 ```
 
-```{r}
-data2010 %>%
-  filter(year == 2010 & id_nuts0 == "NL") %>%
-ggplot(aes(x = edu1, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Education", y = "Gini")
-```
-
-"Download from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
+"Downloaded data from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
 
 Now in this formel/code are we generating new data set.
 We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
 
-```{r}
-data2010 %>%
-  filter(year == 2010 & id_nuts0 == "PL") %>%
-ggplot(aes(x = edu1, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Edu", y = "Gini")
-```
+**Multiple Regression model:**
+
+After focusing on simple regression model, are we now moving on to multiple regression model.
+Question is what is multiple regression model?
+It can be defined as a statistical technique that can be used to analyze the relationship or the connection between several independent and only one single depended variable.
 
 ```{r}
 multi_linear_regression_model_1 <- function(mlrdata){
@@ -857,8 +834,6 @@ lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
   )
 }
 ```
-
-Now looking at the
 
 ### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings
 
