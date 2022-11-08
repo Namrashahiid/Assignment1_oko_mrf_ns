@@ -513,6 +513,61 @@ On the other side we see Spain (ES) have 19 variables.
 We can not find our other countries, which are: Albania (AL), Ireland (IE), Greece (EL).
 The reason behind this most probably, we are missing some observation in our ...dataset
 
+```{r}
+data2010 <- data2010 %>%
+  filter(gini_n2 > 0)
+IE2010 <- data2010 %>%
+  filter(id_nuts0 == "IE") 
+PL2010 <- data2010 %>%
+  filter(id_nuts0 == "PL") 
+ES2010 <- data2010 %>%
+  filter(id_nuts0 == "ES") 
+SI2010 <- data2010 %>%
+  filter(id_nuts0 == "SI") 
+NL2010 <- data2010 %>%
+  filter(id_nuts0 == "NL") 
+EL2010 <- data2010 %>%
+  filter(id_nuts0 == "EL")
+NO2010 <- data2010 %>%
+  filter(id_nuts0 == "NO") 
+AL2010 <- data2010 %>%
+  filter(id_nuts0 == "AL")
+
+lm_function_plot <- function(lmdata) {
+  lm(gini_n2 ~ log_gdppc, data = lmdata)
+}
+
+# create function to calculate linear regression model
+lm_function_plot <- function(lmdata) {
+  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x = log_gdppc, y = gini_n2, fill = id_nuts2, color = id_nuts2, label = id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust = -0.3, vjust = 0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini") }
+
+# create function to calculate linear regression model
+lm_residuals_plot <- function(lmdata) {
+  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+  lmdata$predicted <- predict(lm_gdppc)
+  lmdata$residuals <- residuals(lm_gdppc)
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x = log_gdppc, y = gini_n2, fill =  id_nuts2, color = id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend = log_gdppc,yend = predicted)) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")}
+```
+
 ### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
 
 What we are going to do here to describe the effect of regional development on regional inequality, and then we are going to analyze this by the help of using regression analysis.
@@ -539,19 +594,15 @@ $$
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
-#lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
-lm.2 = lm(gini_n2 ~ log_gdppc, data = PL2010)
-lm.3 = lm(gini_n2 ~ log_gdppc, data = ES2010)
-lm.4 = lm(gini_n2 ~ log_gdppc, data = SI2010)
-lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
-#lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
-#lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
-#lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
-lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
+lm.1 = lm(gini_n2 ~ log_gdppc, data = PL2010)
+lm.2 = lm(gini_n2 ~ log_gdppc, data = ES2010)
+lm.3 = lm(gini_n2 ~ log_gdppc, data = SI2010)
+lm.4 = lm(gini_n2 ~ log_gdppc, data = NL2010)
+lm.5 = lm(gini_n2 ~ log_gdppc, data = data2010)
 
 #Gen Table
   huxreg(
-  list("Poland" = lm.2, "Spain" = lm.3, "Slovenia" = lm.4, "Netherlands" = lm.5),
+  list("Poland" = lm.1, "Spain" = lm.2, "Slovenia" = lm.3, "Netherlands" = lm.4, "All four" = lm.5 ),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
@@ -598,65 +649,6 @@ On the y-axis the values on the graph relies between 0 and 0,20.
 Observations that are the black dots on the graph are spread all over.
 
 ## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
-
-```{r}
-data2010 <- data2010 %>%
-  filter(gini_n2 > 0)
-IE2010 <- data2010 %>%
-  filter(id_nuts0 == "IE") 
-PL2010 <- data2010 %>%
-  filter(id_nuts0 == "PL") 
-ES2010 <- data2010 %>%
-  filter(id_nuts0 == "ES") 
-SI2010 <- data2010 %>%
-  filter(id_nuts0 == "SI") 
-NL2010 <- data2010 %>%
-  filter(id_nuts0 == "NL") 
-EL2010 <- data2010 %>%
-  filter(id_nuts0 == "EL")
-NO2010 <- data2010 %>%
-  filter(id_nuts0 == "NO") 
-AL2010 <- data2010 %>%
-  filter(id_nuts0 == "AL")
-
-
-# create function to calculate linear regression model
-lm_function_plot <- function(lmdata){
-  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
-  b1_gdppc <- lm_gdppc$coefficients[1]
-  b2_gdppc <- lm_gdppc$coefficients[2]
-  # create plot for l.reg. model
-  lmdata %>%
-    ggplot(aes(x = log_gdppc, y = gini_n2, fill = id_nuts2, color = id_nuts2, label = id_nuts2)) +
-    geom_point(lwd = .8) +
-    geom_text(hjust = -0.3, vjust = 0, check_overlap = FALSE) +
-    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
-    labs(x = "log(GDP per capita)", y = "Gini") }
-```
-
-```{r}
-tmp_gdp_gini <- tmp %>% 
-  filter(year == 2010, id_nuts0 == "NL") %>%  
-  select(GDP_capita, id_nuts2)  
-```
-
-```{r}
-# create function to calculate linear regression model
-lm_residuals_plot <- function(lmdata){
-  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
-  b1_gdppc <- lm_gdppc$coefficients[1]
-  b2_gdppc <- lm_gdppc$coefficients[2]
-  lmdata$predicted <- predict(lm_gdppc)
-  lmdata$residuals <- residuals(lm_gdppc)
-  
-  # create plot for l.reg. model
-  lmdata %>%
-    ggplot(aes(x = log_gdppc, y = gini_n2, fill =  id_nuts2, color = id_nuts2)) +
-    geom_point(lwd = .8) +
-    geom_segment(aes(xend = log_gdppc,yend = predicted)) +
-    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
-    labs(x = "log(GDP per capita)", y = "Gini")}
-```
 
 In this part are we going to analyze estimation for 3 countries.
 Countries which we are going to use as a estimation for our plots are: Spain, Poland and Netherlands.
@@ -783,6 +775,32 @@ y can be defined as the response (dependent) variable, m is the slope, x is the 
 
 What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
 
+Below we will look at how Spain, Netherland and Poland fit the assumptions of OSL........
+
+```{r}
+#| label: fig-par-plot
+#| fig-cap: Diagnostic plots
+mylm = lm_function(ES2010)
+par(mfrow = c(2,2))
+plot(mylm)
+```
+
+```{r}
+#| label: fig-par-plot
+#| fig-cap: Diagnostic plots
+mylm = lm_function(NL2010)
+par(mfrow = c(2,2))
+plot(mylm)
+```
+
+```{r}
+#| label: fig-par-plot
+#| fig-cap: Diagnostic plots
+mylm = lm_function(PL2010)
+par(mfrow = c(2,2))
+plot(mylm)
+```
+
 Breusch-Pagan Test can be discussed here also.
 This test is used to determine if heteroscedasticy is present in a present regression analysis.
 This test fits regression model, because it fits the residuals of a linear regression model
@@ -791,7 +809,7 @@ This test fits regression model, because it fits the residuals of a linear regre
 
 "Downloaded data from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
 
-```{r, echo = FALSE, show_col_types = FALSE}
+```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE}
 #Import new data from Eurostat
 demo <- read_csv('demo_r_pjangroup.csv') %>%
   filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
@@ -820,13 +838,33 @@ data2010 <- tmp_n2 %>%
 
   # create id_nuts0 to filter by country
   mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
-  filter(year == 2010) %>%
+  filter(year == "2010") %>%
 
   group_by(id_nuts2, year) 
+
+data2010 <- data2010 %>%
+  filter(gini_n2 > 0)
+
+PL2010 <- data2010 %>%
+  filter(id_nuts0 == "PL") 
+ES2010 <- data2010 %>%
+  filter(id_nuts0 == "ES") 
+SI2010 <- data2010 %>%
+  filter(id_nuts0 == "SI") 
+NL2010 <- data2010 %>%
+  filter(id_nuts0 == "NL") 
 ```
 
 Now in this formel/code are we generating new data set.
 We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
+
+```{r}
+data2010 %>%
+  filter(year == 2010 & id_nuts0 == "ES") %>%
+ggplot(aes(x = edu1, y = gini_n2 , fill = id_nuts2, color = id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+```
 
 **Multiple Regression model:**
 
@@ -860,10 +898,22 @@ Yi = B0 + B1X1i + B2X2i + ...+ BkXki + ui
 $$
 
 ```{r}
-#| label: tbl-mlr-germany
+#| label: tbl-mlr-netherlands
 #| tbl-cap: Multi linear regression model NL
 multi_linear_regression_model_1(NL2010)
 
+```
+
+```{r}
+#| label: tbl-mlr-spain
+#| tbl-cap: Multi linear regression model ES
+multi_linear_regression_model_1(ES2010)
+```
+
+```{r}
+#| label: tbl-mlr-poland
+#| tbl-cap: Multi linear regression model PL
+multi_linear_regression_model_1(PL2010)
 ```
 
 ### Discuss the overall fit of your model
@@ -871,6 +921,34 @@ multi_linear_regression_model_1(NL2010)
 ### Discuss the inference related to your findings
 
 "Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings."
+
+For this last part we ar only looking at one country.
+We have chosen Netherlands because it is the country with the highest GDP per capita and the most NUTS2 regions.
+
+#### Education
+
+```{r}
+#| label: tbl-inference-education
+#| tbl-cap: Education linear model
+lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
+```
+
+#### Infrastructure
+
+```{r}
+#| label: tbl-inference-motorway
+#| tbl-cap: Motorway linear model
+lm(gini_n2 ~ infra1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
+```
+
+#### Demographics
+
+```{r}
+#| label: tbl-inference-lifexp
+#| tbl-cap: Life expectancy age linear model
+lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
+#qt(0.95,100)
+```
 
 #### Appendix
 
