@@ -433,10 +433,11 @@ However we need to test later the sensitivity of our findings regarding the pres
 
 In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs, Gini and tables
 
-In this assignment we are going to have our main focus on countries we have focused on in the first assignment.
+In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
 
-So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
+So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.
+To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
 GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
 
 Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption.
@@ -491,10 +492,10 @@ data2010 %>%
 
 Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
 What value 0 expresses is that there is perfect equality, where all the values are the same.
-As we have mentioned earlier, the gini value is from 0 and 1 in the table.
+As we have mentioned earlier, the gini value is from 0 to 1 in the table.
 
 The reason behind the values 0, can also be because of that maybe one of the values are missing.
-Therefor this leads us to gini values 0.
+Therefore this leads us to gini values 0.
 We can also see that, many values are the same.
 Now when we look at our summary statistics, we can see that some of our values are equal to 0.
 For example in this case we find that Min and Pctl.
@@ -504,14 +505,16 @@ As we mentioned earlier, the values are always between 0 and 1, and when the val
 
 On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
 Now the question is, whats the solution to those values of 0.
-One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.What we have done in this formel up, is that we have regenerated the data, so that we can get the right values for our next steps.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
 
 Further down in Summary Statistics, we find N variables for countries: Spain (ES), Netherlands (NL), Norway (NO), Poland (PL) and Slovenia (SL).
 What we can see is that Norway (NO) only have 1 variable, that is because it is only one region that is related to Norway (NO).
 On the other side we see Spain (ES) have 19 variables.
 
 We can not find our other countries, which are: Albania (AL), Ireland (IE), Greece (EL).
-The reason behind this most probably, we are missing some observation in our ...dataset
+The reason behind this most probably, that we are missing some observation, because we have Nuts 3 regions values and it is maybe same as in the Nuts 2 regions.
+We should have generated our data in another way, to include the Nuts 3 regions that are equal to Nuts 2 regions.
+Because we don´t have values of the countries which can not see, which are Albania (AL), Ireland (IE), Greece (EL), are we not going to focus on these countries in this assignment.
 
 ```{r}
 data2010 <- data2010 %>%
@@ -952,7 +955,16 @@ multi_linear_regression_model_1(ES2010)
 multi_linear_regression_model_1(PL2010)
 ```
 
-### Discuss the overall fit of your model
+### Discuss the overall fit of your model:
+
+What has happend here is that we get many values that are 0.
+The reason behind this can be that we have many repeating regions (example: 16 ES11 regions).
+We came to a solution some days ago, but suddenly at the last minute the problem occurred.
+
+If we analyze or discuss our table above we find we can see that education, infra and life.exp has 0 as value.
+We see that Netherlands and Poland has same quantity of values.
+We are going to analyze Netherlands here, because this is country which we have looked at much in our assignment.
+What we are analyzing here: education, infrastructure, transport and demography.
 
 ### Discuss the inference related to your findings
 
@@ -960,6 +972,21 @@ multi_linear_regression_model_1(PL2010)
 
 For this last part we ar only looking at one country.
 We have chosen Netherlands because it is the country with the highest GDP per capita and the most NUTS2 regions.
+
+We will now test and analyze is if the variables has an effect upon growth and inequality.
+
+When it comes to calculation of variables, we use hypothesis test.
+Hypothesis test can be defined as a statistical inference that uses data.
+
+We use:
+
+$$
+H_0: β = 0
+$$
+
+$$
+H_a: β ≠ 0
+$$
 
 #### Education
 
@@ -969,6 +996,11 @@ We have chosen Netherlands because it is the country with the highest GDP per ca
 lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 ```
 
+What we can find here is that education has its p-value on 0.79.
+The estimation value is on the intercept 0.05.
+A large p value, indicated a weak evidence against the null hypothesis.
+Therefore we can not reject it.
+
 #### Infrastructure
 
 ```{r}
@@ -976,6 +1008,10 @@ lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 #| tbl-cap: Motorway linear model
 lm(gini_n2 ~ infra1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 ```
+
+When wee look at the p value for the infrastructure, we find that the p value is 0.68.
+A large p-value indicates that it is a weak evidence against the null hypothesis, so you fail to reject it.
+In this case p-value on 0.68 is pretty high and there is weak evidence against the null hypothesis.
 
 #### Demographics
 
@@ -985,6 +1021,8 @@ lm(gini_n2 ~ infra1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
 #qt(0.95,100)
 ```
+
+Here the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
 
 #### Appendix
 
