@@ -433,17 +433,13 @@ However we need to test later the sensitivity of our findings regarding the pres
 
 In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs, Gini and tables
 
-In this assignment we are going to have our main focus on countries we have focused on in the first assignment
-
+In this assignment we are going to have our main focus on countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
 
-So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.
-
-To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
+So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
 GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
 
 Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption.
-
 One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
 When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
 On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.
@@ -472,6 +468,13 @@ tmp_n2 <- tmp %>%
   filter(year == "2010" & (grepl('IE..', id_nuts2) | grepl('PL..', id_nuts2) | grepl('ES..', id_nuts2) | grepl('SI..', id_nuts2) | grepl('NL..', id_nuts2) | grepl('NO..', id_nuts2) | grepl('AL..', id_nuts2)))
 ```
 
+**Log:**
+
+Further are we going to use log data in our codes.
+The question is why are we going to use log?
+A log in R wil transform our data in a way that will apply a logarithm to our data that will help reduce its skew.
+In other words it will reproduce or rescale our data more in a statistical way.
+
 ```{r}
 data2010 <- tmp_n2 %>%
   left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
@@ -492,16 +495,23 @@ As we have mentioned earlier, the gini value is from 0 and 1 in the table.
 
 The reason behind the values 0, can also be because of that maybe one of the values are missing.
 Therefor this leads us to gini values 0.
-
 We can also see that, many values are the same.
-Now when we look at our summary statistics, we can see that some of our values are equal to 0(?).
+Now when we look at our summary statistics, we can see that some of our values are equal to 0.
 For example in this case we find that Min and Pctl.
 25 are equal to 0.
+Under gini_n2 we find these 0 values.
 As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
 
 On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
 Now the question is, whats the solution to those values of 0.
 One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.What we have done in this formel up, is that we have regenerated the data, so that we can get the right values for our next steps.
+
+Further down in Summary Statistics, we find N variables for countries: Spain (ES), Netherlands (NL), Norway (NO), Poland (PL) and Slovenia (SL).
+What we can see is that Norway (NO) only have 1 variable, that is because it is only one region that is related to Norway (NO).
+On the other side we see Spain (ES) have 19 variables.
+
+We can not find our other countries, which are: Albania (AL), Ireland (IE), Greece (EL).
+The reason behind this most probably, we are missing some observation in our ...dataset
 
 ### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
 
@@ -537,7 +547,7 @@ lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
 #lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
 #lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
 #lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
-#lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
+lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
 
 #Gen Table
   huxreg(
@@ -558,11 +568,9 @@ One important thing here to come up with here is that when we look at the estima
 Other countries such as Greece (EL), Norway (NO), Ireland (IE) and Albania (AL) have no data.
 Therefore are we going to take initially countries with dataset, in this case: Poland (PL), Spain (ES), Norway (NO) and Albania (AL).
 
-From this table we can see different values:
-
-What wee see here for Poland (PL) is: there is 10 numbers for this country and the coefficient of determination R2 is 0.398
-
-What we see here for Spain (ES) is: there is there is 11 numbers and the coefficient of determination R2 is 0.
+From this table we can see different values.
+What wee see here for Poland (PL) is that there is 10 numbers for this country and the coefficient of determination R2 is 0.398.
+What we see here for Spain (ES) is that there is there is 11 numbers and the coefficient of determination R2 is 0.
 Value 0 can be due to.
 As mentioned the value 0 can be due to low fitness of the model.
 
@@ -571,56 +579,25 @@ As mentioned the value 0 can be due to low fitness of the model.
 Our next steps in this assignment is to take a look at what is regression analysis and what it tells us.
 Regression analysis is a process which is used to see the relationship between different data set variables.
 This analysis data method is used to see the relationship between independent and depended variables.
-
 We can see by looking at this method what Y value would be when X = 0.
 
 The formel we use for estimating the connection between regional development and regional inequality is:
 
 $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
 
-```{r}
-#SJEKK DENNE!
-tmp_n2 %>%
-  filter(year == 2010) %>%
-  select(gdp_capita_n2, id_nuts2, gini_n2) %>%
-  # filter(id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>%
-  ggplot(aes(x = gdp_capita_n2, y = gini_n2)) +
-  geom_point()
-```
-
 ### Discuss the goodness of fit of your estimated model:
 
-What we have done here is that we are analyzing our model.
+In this discussion part are we going to discuss our estimation in previous task.
+First of all we can see that there is data for only 4 countries.
+The countries are: Slovenia, Spain, Netherlands and Poland.
+If we plus the
+
 What we can see here in this model is GDP per capita on the x-axis (nuts 2 level) and gini (nuts 2) on y-axis.
 The fact of the matter is that the coefficient value relies between 0 and 1.
+On the y-axis the values on the graph relies between 0 and 0,20.
+Observations that are the black dots on the graph are spread all over.
 
 ## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
-
-```{r}
-tmp_n2 %>%
-  filter(year == 2010) %>%
-  select(gdp_capita_n2, id_nuts2, gini_n2) %>%
-  # filter(id_nuts2 %in% tmp_gdp_gini$id_nuts2) %>%
-  ggplot(aes(x = log(gdp_capita_n2), y = gini_n2)) +
-  geom_point()+
-  geom_smooth(method = "lm", se = FALSE)+
-  labs(x = "GDP per capita", y = "Gini nuts 2")
-```
-
-Table: \*
-
-The table shows us that when prosperity increases, income and GDP per capita are less different.
-
-To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
-
-What we can see from this table is a estimate.
-The parameters we are looking at here is: GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
-If we call these parameters with econometric language, we call them β1 and β2 values.
-We call these values prediction of the depended variable, fitted values.
-
-We see that together these values gives us a trace line: Gini nuts 2i = β\^1 + β\^2GDP per capitai.
-
-Here from this table\* the β\^1 value is ca: 0.12 and β\^2 value is ca: 5800
 
 ```{r}
 data2010 <- data2010 %>%
@@ -681,14 +658,33 @@ lm_residuals_plot <- function(lmdata){
     labs(x = "log(GDP per capita)", y = "Gini")}
 ```
 
-## Plot the residual against the predicted values of your model:
-
 In this part are we going to analyze estimation for 3 countries.
 Countries which we are going to use as a estimation for our plots are: Spain, Poland and Netherlands.
 
 We have now worked with simple regression model previously.
 Coefficients of resolution is important for put next steps in this assignment.
 So the first country, which we are going to look at is Spain.
+
+```{r}
+#| label: fig-lm-data2010
+#| fig-cap: Estimate for data2010
+lm_function_plot(data2010)
+```
+
+Table: \*
+
+The table shows us that when prosperity increases, income and GDP per capita are less different.
+
+To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
+
+What we can see from this table is a estimate.
+The parameters we are looking at here is: GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
+If we call these parameters with econometric language, we call them β1 and β2 values.
+We call these values prediction of the depended variable, fitted values.
+
+We see that together these values gives us a trace line: Gini nuts 2i = β\^1 + β\^2GDP per capitai.
+
+Here from this table\* the β\^1 value is ca: 0.12 and β\^2 value is ca: 11.0
 
 ```{r}
 #| label: fig-lm-Spain
@@ -700,6 +696,32 @@ Graph \*:
 
 Graph\* shows us the estimation plotted in this graph for Spain, we can see that it lies in the middle and is more flat like a horizontal line on the graph.
 We can see different regions from Spain spread all over the graph.
+
+```{r}
+#| label: fig-lm-Netherlands
+#| fig-cap: Estimate for Netherlands
+lm_function_plot(NL2010)
+```
+
+Table: \*
+
+```{r}
+#| label: fig-lm-Poland
+#| fig-cap: Estimate for Poland
+lm_function_plot(PL2010)
+```
+
+Table:\*
+
+```{r}
+#| label: fig-lm-Slovenia
+#| fig-cap: Estimate for Slovenia
+lm_function_plot(SI2010)
+```
+
+Table:\*
+
+## Plot the residual against the predicted values of your model:
 
 ```{r}
 #| label: fig-lm-Poland
@@ -733,20 +755,14 @@ $$
 
 ```{r}
 #| label: fig-lm-Spain
-#| fig-cap: Estimate for Spain
-lm_function_plot(ES2010)
+#| fig-cap: Residuals Spain
+lm_residuals_plot(ES2010)
 ```
 
 ```{r}
-#| label: fig-lm-Poland
-#| fig-cap: Residuals Poland 
-lm_residuals_plot(PL2010)
-```
-
-```{r}
-#| label: fig-lm-Netherlands
-#| fig-cap: Residuals Netherlands
-lm_residuals_plot(NL2010)
+#| label: fig-lm-Slovenia
+#| fig-cap: Residuals Slovenia
+lm_residuals_plot(SI2010)
 ```
 
 ## Discuss the classical the assumption OLS in light of your data and plots:
@@ -772,6 +788,8 @@ This test is used to determine if heteroscedasticy is present in a present regre
 This test fits regression model, because it fits the residuals of a linear regression model
 
 ## Other determinants of inequity:
+
+"Downloaded data from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
 
 ```{r, echo = FALSE, show_col_types = FALSE}
 #Import new data from Eurostat
@@ -807,8 +825,6 @@ data2010 <- tmp_n2 %>%
   group_by(id_nuts2, year) 
 ```
 
-"Downloaded data from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
-
 Now in this formel/code are we generating new data set.
 We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
 
@@ -837,10 +853,17 @@ lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
 
 ### Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings
 
+When we look at the Multiple regression model, we use these variables:
+
+$$
+Yi = B0 + B1X1i + B2X2i + ...+ BkXki + ui
+$$
+
 ```{r}
 #| label: tbl-mlr-germany
 #| tbl-cap: Multi linear regression model NL
 multi_linear_regression_model_1(NL2010)
+
 ```
 
 ### Discuss the overall fit of your model
