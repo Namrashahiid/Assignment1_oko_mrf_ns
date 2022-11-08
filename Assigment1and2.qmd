@@ -750,7 +750,7 @@ Residual = Observed value - Predicted value
 $$
 
 ```{r}
-#| label: fig-lm-Poland
+#| label: fig-lm-Poland-res
 #| fig-cap: Residuals Poland 
 lm_residuals_plot(PL2010)
 ```
@@ -761,7 +761,7 @@ What we can see from this graph is a ascending linear regression.
 For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.
 
 ```{r}
-#| label: fig-lm-Netherlands
+#| label: fig-lm-Netherlands-res
 #| fig-cap: Residuals Netherlands
 lm_residuals_plot(NL2010)
 ```
@@ -774,7 +774,7 @@ NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini
 It is also the region which is furthest away from the regression line.
 
 ```{r}
-#| label: fig-lm-Spain
+#| label: fig-lm-Spain-res
 #| fig-cap: Residuals Spain
 lm_residuals_plot(ES2010)
 
@@ -788,7 +788,7 @@ What we can see here is how far away those regions are from the regression line.
 We can analyze that there are many region dots further from the mean value.
 
 ```{r}
-#| label: fig-lm-Slovenia
+#| label: fig-lm-Slovenia-res
 #| fig-cap: Residuals Slovenia
 lm_residuals_plot(SI2010)
 ```
@@ -873,7 +873,7 @@ data2010 <- tmp_n2 %>%
   # create id_nuts0 to filter by country
   mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
   filter(year == "2010") %>%
-
+  
   group_by(id_nuts2, year) 
 
 data2010 <- data2010 %>%
@@ -917,7 +917,7 @@ lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
   huxreg(
   list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "edu1","infra1", life.exp. = "demo1", const. = "(Intercept)"),
+  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 }
