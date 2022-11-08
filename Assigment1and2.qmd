@@ -493,6 +493,67 @@ infra <- read_csv('tran_r_vehst.csv') %>%
   select(id_nuts2, year, infra1)
 ```
 
+### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
+
+What we are going to do here to describe the effect of regional development on regional inequality, and then we are going to analyze this by the help of using regression analysis.
+Now the question is, what is regression analysis.
+Regression analysis is a group of statistical processes and statistics, that help us or are useful to control the relationship between data set variables.
+
+What we are going to take in the first place is the selected countries and data we have got for the year 2010.
+After that are we going to use simple regression model to look at the result of regional development inequality.
+
+Simple Regression analysis can be expressed like this:
+
+$$
+B1 = intercept or constant 
+$$
+
+$$
+B2 =Slope coefficient
+$$
+
+$$
+ui = error term
+$$
+
+```{r}
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
+#lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
+lm.2 = lm(gini_n2 ~ log_gdppc, data = PL2010)
+lm.3 = lm(gini_n2 ~ log_gdppc, data = ES2010)
+lm.4 = lm(gini_n2 ~ log_gdppc, data = SI2010)
+lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
+#lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
+#lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
+#lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
+#lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
+
+#Gen Table
+  huxreg(
+  list("Poland" = lm.2, "Spain" = lm.3, "Slovenia" = lm.4, "Netherlands" = lm.5),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+
+```
+
+We have read Lessmann & Seidel (2017) we can find that development can be found by log GDP.
+
+The table/graph up shows us that we have an relationship between X and Y.
+X which is regional development in this case and Y which refers to regional inequality.
+The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
+
+From this table we can see different values:
+
+What wee see here for Poland is: there is 10 numbers for this country and the coefficient of determination R2 is 0.398
+
+What we see here for Spain is: there is there is 11 numbers and the coefficient of determination R2 is 0.
+Value 0 can be due to
+
+As mentioned the value 0 can be due to low
+
 ```{r}
 data2010 <- tmp_n2 %>%
   left_join(edu, by = c("year", "id_nuts2")) %>%
@@ -549,7 +610,9 @@ tmp_n2 %>%
 
 ### Discuss the goodness of fit of your estimated model:
 
-.........Se på det
+What we have done here is that we are analyzing our model.
+What we can see here in this model is GDP per capita on the x-axis (nuts 2 level) and gini (nuts 2) on y-axis.
+The fact of the matter is that the coefficient value relies between 0 and 1.
 
 ## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
 
@@ -638,79 +701,16 @@ lm_residuals_plot <- function(lmdata){
     labs(x = "log(GDP per capita)", y = "Gini")}
 ```
 
-### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
-
-What we are going to do here to describe the effect of regional development on regional inequality, and then we are going to analyze this by the help of using regression analysis.
-Now the question is, what is regression analysis.
-Regression analysis is a group of statistical processes and statistics, that help us or are useful to control the relationship between data set variables.
-
-What we are going to take in the first place is the selected countries and data we have got for the year 2010.
-After that are we going to use simple regression model to look at the result of regional development inequality.
-
-Simple Regression analysis can be expressed like this:
-
-$$
-B1 = intercept or constant 
-$$
-
-$$
-B2 =Slope coefficient
-$$
-
-$$
-ui = error term
-$$
-
-```{r}
-#| label: tbl-log-gdppc
-#| tbl-cap: Estimate effect of regional development on regional inequality
-#lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
-lm.2 = lm(gini_n2 ~ log_gdppc, data = PL2010)
-lm.3 = lm(gini_n2 ~ log_gdppc, data = ES2010)
-lm.4 = lm(gini_n2 ~ log_gdppc, data = SI2010)
-lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
-#lm.6 = lm(gini_n2 ~ log_gdppc, data = EL2010)
-#lm.7 = lm(gini_n2 ~ log_gdppc, data = NO2010)
-#lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
-#lm.9 = lm(gini_n2 ~ log_gdppc, data = data2010)
-
-#Gen Table
-  huxreg(
-  list("Poland" = lm.2, "Spain" = lm.3, "Slovenia" = lm.4, "Netherlands" = lm.5),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-```
-
-We have read Lessmann & Seidel (2017) we can find that development can be found by log GDP.
-
-The table/graph up shows us that we have an relationship between X and Y.
-X which is regional development in this case and Y which refers to regional inequality.
-The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
-
-From this table we can see different values:
-
-What wee see here for Poland is: there is 10 numbers for this country and the coefficient of determination R2 is 0.398
-
-What we see here for Spain is: there is there is 11 numbers and the coefficient of determination R2 is 0.
-MER HER!!!
-
-As mentioned the value 0 can be due to low WHAT?
-
-### 
-
-## Discuss the goodness of Fit of your estimated model:
+## Plot the residual against the predicted values of your model:
 
 In this part are we going to analyze estimation for 3 countries.
 Countries which we are going to use as a estimation for our plots are: Spain, Poland and Netherlands.
 
 We have now worked with simple regression model previously.
-Coefficients of resolution is important for pur next steps in this assignment.
+Coefficients of resolution is important for put next steps in this assignment.
 So the first country, which we are going to look at is Spain.
 
 ```{r}
-#do this for at least 3 countries....
 #| label: fig-lm-Spain
 #| fig-cap: Estimate for Spain
 lm_function_plot(ES2010)
@@ -727,18 +727,22 @@ We can see different regions from Spain spread all over the graph.
 lm_residuals_plot(PL2010)
 ```
 
+Graph: \*
+
+What we can see from this graph is a ascending linear regression.
+For example the region in Poland PL52 Polnocho-Zachodni has high GDP per capita, and at the same time high Gini.
+
 ```{r}
 #| label: fig-lm-Netherlands
 #| fig-cap: Residuals Netherlands
 lm_residuals_plot(NL2010)
 ```
 
-+Table\*
+Graph: \*
 
-Here from this table we see only GDP per capita for Norway.
-The Gini nuts 2 value is 0 and GDP per capita for this region NO07 (Tønsberg) in Norway is ca: 44626.55.
-
-## Plot the residual against the predicted values of your model:
+What we see here from this graph is a regression analysis for Netherlands.
+We can see different type of spread data all over the graph.
+NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph.
 
 A can be defined as the difference between the values, which we observe and analyze.
 These values are linked to the regression model.
@@ -746,6 +750,24 @@ These values are linked to the regression model.
 $$
 Residual = Observed value - Predicted value
 $$
+
+```{r}
+#| label: fig-lm-Spain
+#| fig-cap: Estimate for Spain
+lm_function_plot(ES2010)
+```
+
+```{r}
+#| label: fig-lm-Poland
+#| fig-cap: Residuals Poland 
+lm_residuals_plot(PL2010)
+```
+
+```{r}
+#| label: fig-lm-Netherlands
+#| fig-cap: Residuals Netherlands
+lm_residuals_plot(NL2010)
+```
 
 ## Discuss the classical the assumption OLS in light of your data and plots:
 
@@ -765,7 +787,9 @@ y can be defined as the response (dependent) variable, m is the slope, x is the 
 
 What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
 
-breusch-pagan!!!!
+Breusch-Pagan Test can be discussed here also.
+This test is used to determine if heteroscedasticy is present in a present regression analysis.
+This test fits regression model, because it fits the residuals of a linear regression model
 
 ```{r}
 #Usikker på om vi skal ha denne?
