@@ -468,29 +468,22 @@ tmp_n2 <- tmp %>%
   mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
   ungroup() %>%
   distinct(id_nuts2, year, gdp_n2, pop_n2, gini_n2) %>%
-  mutate(gdp_capita_n2 = (gdp_n2 * 1000000)/pop_n2)
+  mutate(gdp_capita_n2 = (gdp_n2 * 1000000)/pop_n2) %>%
+  filter(year == "2010" & (grepl('IE..', id_nuts2) | grepl('PL..', id_nuts2) | grepl('ES..', id_nuts2) | grepl('SI..', id_nuts2) | grepl('NL..', id_nuts2) | grepl('NO..', id_nuts2) | grepl('AL..', id_nuts2)))
 ```
 
-```{r, echo = FALSE, show_col_types = FALSE}
-#Import new data from Eurostat
-demo <- read_csv('demo_r_pjangroup.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, demo1)
+```{r}
+data2010 <- tmp_n2 %>%
+  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
 
+# level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_pc_n2)) %>% 
+  # create column to easily filter by country
+  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
+  filter(year == 2010)
 
-edu <- read_csv('edat_lfse_16.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "PC" & age == "Y18-24" & sex == "T" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES...', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, edu1)
-
-infra <- read_csv('tran_r_vehst.csv') %>%
-  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
-  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
-  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
-  select(id_nuts2, year, infra1)
+data2010 %>%
+  st(.)
 ```
 
 ### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
@@ -536,7 +529,6 @@ lm.5 = lm(gini_n2 ~ log_gdppc, data = NL2010)
   coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
-
 ```
 
 We have read Lessmann & Seidel (2017) we can find that development can be found by log GDP.
@@ -554,24 +546,7 @@ Value 0 can be due to
 
 As mentioned the value 0 can be due to low
 
-```{r}
-data2010 <- tmp_n2 %>%
-  left_join(edu, by = c("year", "id_nuts2")) %>%
-  left_join(infra, by = c("year", "id_nuts2")) %>%
-  left_join(demo, by = c("year", "id_nuts2")) %>%
-  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
-
-# level of economic development = log(gdp per capita)
-  mutate(log_gdppc = log(gdp_pc_n2)) %>% 
-  # create column to easily filter by country
-  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
-  filter(year == 2010)
-
-data2010 %>%
-  st(.)
-```
-
-Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
+\-\-\-\-\-\-\--Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
 What value 0 expresses is that there is perfect equality, where all the values are the same.
 As we have mentioned earlier, the gini value is from 0 and 1 in the table.
 
@@ -811,6 +786,40 @@ What we fin under Gini nuts 2 is the data for income, consumption and standard o
 
 ## Other determinants of inequity:
 
+```{r, echo = FALSE, show_col_types = FALSE}
+#Import new data from Eurostat
+demo <- read_csv('demo_r_pjangroup.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, demo1)
+
+edu <- read_csv('edat_lfse_04.csv') %>%
+  filter(TIME_PERIOD == "2010", age == "Y25-64" & grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES..', geo) | grepl('NO..', geo) | grepl('AL..', geo)) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, edu1)
+
+infra <- read_csv('tran_r_vehst.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, infra1)
+```
+
+```{r}
+data2010 <- tmp_n2 %>%
+  left_join(edu, by = c("year", "id_nuts2")) %>%
+  left_join(infra, by = c("year", "id_nuts2")) %>%
+  left_join(demo, by = c("year", "id_nuts2")) %>%
+
+  # create id_nuts0 to filter by country
+  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
+  filter(year == 2010) %>%
+
+  group_by(id_nuts2, year) 
+```
+
 ```{r}
 data2010 %>%
   filter(year == 2010 & id_nuts0 == "NL") %>%
@@ -818,10 +827,6 @@ ggplot(aes(x = edu1, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 ```
-
-kommetar
-
-## Other determinants of inequity
 
 "Download from Eurostat for you subset of countries regional (NUTS2, j ) data related to transport infrastructure, education and demographics. Select on variable per category that you would like to explore further in there relationship to regional inequality GINIWj."
 
@@ -847,7 +852,7 @@ lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
   huxreg(
   list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "eduval","motorway", life.exp. = "lifeexpectancyage", const. = "(Intercept)"),
+  coefs = c(education = "edu1","infra1", life.exp. = "demo1", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 }
