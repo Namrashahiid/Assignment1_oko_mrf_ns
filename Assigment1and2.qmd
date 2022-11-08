@@ -640,22 +640,30 @@ $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
 
 In this discussion part are we going to discuss our estimation in previous task.
 First of all we can see that there is data for only 4 countries.
-The countries are: Slovenia, Spain, Netherlands and Poland.
-If we plus the
+The countries are: Slovenia (SI), Spain (ES), Netherlands (NL) and Poland (PL).
+If we plus the values R2 for all 4 countries, we get a value over 1.
+Due to missing values in some of our countries are those countries with missing values not showing up.
+Therefore our focus here is countries which are showing
+up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL) and Spain (ES).
 
-What we can see here in this model is GDP per capita on the x-axis (nuts 2 level) and gini (nuts 2) on y-axis.
-The fact of the matter is that the coefficient value relies between 0 and 1.
-On the y-axis the values on the graph relies between 0 and 0,20.
-Observations that are the black dots on the graph are spread all over.
+We are here looking at R2, which is value for coefficient of determination.
+This R2 coefficient of determination can be defined as a regression problem metric, that help the performance or the result of the model in R to be better.
+
+If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high.
+It is the highest value, which is 1.000.
+What we can analyze here by
+looking at this value R2 1.000 for Slovenia (SI), is that the value that is analyzed is suitable or fitted for each other.
+On the other hand when we look at the R2 value for Spain (ES), we can see that it
+is 0.0.
+This value indicates that, this model is not suitable for our model.
 
 ## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
 
-In this part are we going to analyze estimation for 3 countries.
-Countries which we are going to use as a estimation for our plots are: Spain, Poland and Netherlands.
+In this part are we going to analyze estimation for four countries.
+Countries which we are going to use as a estimation for our plots are: Spain (ES), Poland (PL), Slovenia (SI) and Netherlands (NL).
 
-We have now worked with simple regression model previously.
-Coefficients of resolution is important for put next steps in this assignment.
-So the first country, which we are going to look at is Spain.
+Coefficients of resolution is important for our next steps in this assignment.
+So the first we are going to do is to analyze all four countries in one table.
 
 ```{r}
 #| label: fig-lm-data2010
@@ -663,20 +671,24 @@ So the first country, which we are going to look at is Spain.
 lm_function_plot(data2010)
 ```
 
-Table: \*
+Graph: \*
 
-The table shows us that when prosperity increases, income and GDP per capita are less different.
-
+The graph shows us that when prosperity increases, income and GDP per capita are less different.
 To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
 
-What we can see from this table is a estimate.
-The parameters we are looking at here is: GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
+What we can see from this graph is a estimate.
+The parameters we are looking at here is: Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
 If we call these parameters with econometric language, we call them β1 and β2 values.
 We call these values prediction of the depended variable, fitted values.
 
-We see that together these values gives us a trace line: Gini nuts 2i = β\^1 + β\^2GDP per capitai.
+Now we are going to look at a simple regression model for our 4 countries.
+In this case: Spain (ES), Poland (PL), Netherlands (NL) and Slovenia (SI).
+We can see that the line on this graph is negative, this indicates that one of values on regression model
+formel, is negative.
+The line on y-axis is on around value 0.12 and on x-axis on ca.
+12.0.
 
-Here from this table\* the β\^1 value is ca: 0.12 and β\^2 value is ca: 11.0
+The dots or the different colors indicates the regions in those 4 countries mentioned above.
 
 ```{r}
 #| label: fig-lm-Spain
@@ -686,8 +698,12 @@ lm_function_plot(ES2010)
 
 Graph \*:
 
-Graph\* shows us the estimation plotted in this graph for Spain, we can see that it lies in the middle and is more flat like a horizontal line on the graph.
+Graph\* shows us the estimation plotted for Spain (ES).
+We can see that it lies in the middle and is more flat a like horizontal line on the graph.
 We can see different regions from Spain spread all over the graph.
+The slope/line is on around 0.03 on y-axis and it is not touching or crossing the x-axis.
+We can analyze that the line on the graph is going a little towards the x-axis.
+There is no region that are crossing or touching the horizontal line.
 
 ```{r}
 #| label: fig-lm-Netherlands
@@ -695,7 +711,11 @@ We can see different regions from Spain spread all over the graph.
 lm_function_plot(NL2010)
 ```
 
-Table: \*
+Graph: \*
+
+We find that the slope/line here for Netherlands (NL) is positive.
+It seems like NL34 Zeelandic Flanders is approximately touching the slope/line in the graph.
+All other regions are spread all over.
 
 ```{r}
 #| label: fig-lm-Poland
@@ -705,15 +725,33 @@ lm_function_plot(PL2010)
 
 Table:\*
 
+We find that the slope/line here for Poland (PL) is also positive as for Netherlands (NL) above.
+The slope/line is on 0.05 on y-axis.
+
 ```{r}
 #| label: fig-lm-Slovenia
 #| fig-cap: Estimate for Slovenia
 lm_function_plot(SI2010)
 ```
 
-Table:\*
+Graph:\*
+
+This graph for Slovenia (SI) is special compared to those 3 above, which we mentioned earlier.
+What we find here is that there is only two variables or values for only two regions in Slovenia (SI).
+These regions are touching the slope/line perfectly, which indicates that the regression model is a fitted model.
+This is obvious since when there are only two values, it is natural that they touch the slope/line on the graph.
 
 ## Plot the residual against the predicted values of your model:
+
+In this next part we are analyzing residual, which is the difference between the observed value and the mean value, that the model predict for that specific observation.
+In the next four graphs are we analyzing for same countries above.
+The fact of the matter is that when the regression line is further from the region dot, then this indicated that the residual is highest.
+
+The formel for Residual can we find under:
+
+$$
+Residual = Observed value - Predicted value
+$$
 
 ```{r}
 #| label: fig-lm-Poland
@@ -724,7 +762,7 @@ lm_residuals_plot(PL2010)
 Graph: \*
 
 What we can see from this graph is a ascending linear regression.
-For example the region in Poland PL52 Polnocho-Zachodni has high GDP per capita, and at the same time high Gini.
+For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.
 
 ```{r}
 #| label: fig-lm-Netherlands
@@ -735,27 +773,34 @@ lm_residuals_plot(NL2010)
 Graph: \*
 
 What we see here from this graph is a regression analysis for Netherlands.
-We can see different type of spread data all over the graph.
+We can see different type of data spread all over the graph.
 NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph.
-
-A can be defined as the difference between the values, which we observe and analyze.
-These values are linked to the regression model.
-
-$$
-Residual = Observed value - Predicted value
-$$
+It is also the region which is furthest away from the regression line.
 
 ```{r}
 #| label: fig-lm-Spain
 #| fig-cap: Residuals Spain
 lm_residuals_plot(ES2010)
+
 ```
+
+Graph:\*
+
+This graph for Spain (ES) shows us a regression line.
+We can analyze that the slope/line is negative.
+What we can see here is how far away those regions are from the regression line.
+We can analyze that there are many region dots further from the mean value.
 
 ```{r}
 #| label: fig-lm-Slovenia
 #| fig-cap: Residuals Slovenia
 lm_residuals_plot(SI2010)
 ```
+
+Graph: \*
+
+This graph shows us that the region dots for Slovenia (SI) are going straight across the Regression line/slope.
+There are no residuals in this graph.
 
 ## Discuss the classical the assumption OLS in light of your data and plots:
 
@@ -775,7 +820,7 @@ y can be defined as the response (dependent) variable, m is the slope, x is the 
 
 What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
 
-Below we will look at how Spain, Netherland and Poland fit the assumptions of OSL........
+Below we will look at how Spain (ES), Netherlands (NL) and Poland (PL) fit the assumptions of OSL.
 
 ```{r}
 #| label: fig-par-plot
