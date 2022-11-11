@@ -1,0 +1,1136 @@
+---
+title: "MSB104 Assignments"
+editor: visual
+author: Namra Shahid & Marit Rygg Fredheim
+csl: apa-no-ampersand.csl
+format: 
+  html: 
+    code-fold: true
+abstract: 'This is an assignment in the subject MSB104 Econometrics. It will study regional inequity of eight different European countries.' 
+---
+
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+library(tidyverse)
+library(vtable)
+library(dineq)
+library(dplyr)
+library(magrittr)
+library(readr)
+library(rio)
+library(huxtable)
+```
+
+## 1 Introduction
+
+In this assignment are we going to study the regional inequality of our selected European countries.
+We are group two and will therefore examine these countries:
+
+-   Ireland (IE)
+
+-   Poland (PL)
+
+-   Spain (ES)
+
+-   Slovenia (SI)
+
+-   Netherlands (NL)
+
+-   Greece (EL)
+
+-   Norway (NO)
+
+-   Albania (AL)
+
+# 2 Assignment 1
+
+### 2.1 Data
+
+The main task in this assignment will be to study regional inequality from 2000-2020 for our selected European countries.
+We are in assignment 1 using two datasets from Eurostat.[^1]
+These are "nama_10r_3gdp.csv" which consist of countries sub-regional GDP, and "demo_r\_pjanaggr3.csv" which consist of population data.
+The main purpose of studying this dataset from Eurostat is to analyse regional inequality.
+To do that, we need to use GDP (Gross Domestic Product), on the market and population data by NUTS 3 regions.
+We will calculate GDP per capita and Ginie coefficients for eight subgroups of subregional countries (NUTS3).
+
+[^1]: https://ec.europa.eu/eurostat/web/regions/data/database
+
+We are calculating GDP per capita by:
+
+![](images/GDPperCapita.png){fig-align="center"}
+
+where *i* refers to NUTS3 regions.
+
+```{r}
+#Import data from Eurostat
+gdpfile <- import("nama_10r_3gdp.csv")
+popfile <- import("demo_r_pjanaggr3.csv")
+
+#Clean data 
+gdpfile %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
+popfile %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
+
+# Filter for the countries we are going to study and change variablenames
+gdpdata <- filter(gdpfile,unit == "MIO_EUR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('ES...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>%
+  mutate(gdp_n3 = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
+  select(gdp_n3, year, id_nuts3)
+
+# Filter for gdp per capita
+popdata <- filter(popfile,unit == "NR") %>% 
+  mutate(pop = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
+  select(pop, year, id_nuts3)
+
+#Generate main data frame
+tmp <- merge(popdata, gdpdata, by = c("year", "id_nuts3"))
+
+#Gen Nuts 2 id
+tmp %<>%
+  mutate(id_nuts2 = substr(id_nuts3,1,4))
+
+#Gen Nuts 1 id
+tmp %<>%
+  mutate(id_nuts0 = substr(id_nuts3,1,2))
+```
+
+### GDP per capita calculation
+
+Like mentioned in this assignment we will calculate GDP per capita, which is based on population by NUTS3.
+
+To calculate GDP per capita we need to multiply the GDP value with 1 million because it is in million euro and dividing it by the population value.
+
+```{r}
+# Calculate GDP per capita
+tmp %<>%
+  mutate(GDP_capita = (gdp_n3 * 1000000)/pop)
+
+tmp_gdpcapita <- tmp %>%
+  select(year, id_nuts3, pop, GDP_capita)
+```
+
+## 2.2 Descriptive statistics raw data
+
+### Cross country perspective:
+
+What we can describe from our data (GDP per capita), using metadata description is that GDP measures the value of total final production.
+Metadata can be defined as information that is necessary to be able to use and intercept statistics.
+The main function of metadata is to explain data by giving definitions, for example according to our data, region, year, GDP, population and GDP per capita.
+We now have information on GDP per capita in different regions from different countries that we have chosen.
+
+```{r}
+# Report the essential descriptive statistics 
+# for you data set (Mean, Min, Max,..:)
+tmp %>% 
+  filter(year == 2010) %>%
+  select(gdp_n3, pop, GDP_capita) %>% 
+  # . to stop RStudio complaining about no data
+  st()
+```
+
+Looking at [Table 1] and the table descriptive statistics table over, we can see substantial differences in region size as well as economic development.
+The largest region, Rest of Dronningen (NL113) is almost 1000 times bigger than the smallest region, which is Agglomeratie Leiden en Bollenstreek (NL337).
+We also see a big difference in gdp per capita.
+The least wealthiest region of our dataset is in Poland, Nowotarski (PL219) and has a gdp per capita of 5652, while the wealthiest region Rest og Groningen (NL113) has a gdp per capita of 55857.
+We also see a big difference in population.
+The smallest region has a population of 10 603, and the largest have a population of 6 373 546.
+
+From [Table 1] and [Table 2] we see that the wealthiest regions in our dataset are located in the Netherlands and in Norway, and that the least wealthiest regions are located in Poland.
+
+```{r}
+tmp %>%  distinct(id_nuts0, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts0, color = id_nuts0)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
+```
+
+***Graph: 1***
+
+When we look at graph 1, we see a common trend in forward growth in all of the countries.
+Norway´s GDP are on the top (the blue line on top).
+Norway have the highest GDP per capita.
+Albania on the other side have the lowest GDP per capita.
+Orange line is referring Albania´s GDP per capita.
+If we compare Norway´s GDP with Albania´s.
+There is huge difference there, because Norway is on the top and Albania on the other side at it´s lowest.
+
+If we specify the GDP per capita for Norway (blue line), we can see that it started pretty nice in around 2006, but then suddenly we can see it kind of like had decline in GDP per capita.
+The reason behind this is most probably because of the financial crisis, which affected the society in years 2008-2009.
+Suddenly if we see GDP per capita started raising from 2009 again, and had its small fall downs in around 2015, and it raised again.
+We see the same trend for the purple line and Poland.
+
+In the middle the lines are showing the other countries.
+They are mostly slightly rising.
+
+```{r}
+tmp_1 <- tmp %>% 
+  filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
+  slice_min(GDP_capita, n = 10) %>%  select(id_nuts3)
+
+tmp %>%   
+  filter(id_nuts3 %in% tmp_1 $ id_nuts3) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
+```
+
+***Graph 2:***
+
+Here we can see the GDP per capita for polish regions.
+If we take a look at the orange line, which refers to PL214, we see that it had its down period to start with.
+Not only (PL214) the orange line, but also all the other regions, does not start good.
+PL214 (the orange line) had it´s real rise after 2010.
+PL214 had its down time between years 2008-2009, most probably because of the financial crisis, which caused chaos in the whole world.
+Except from this we see that all of the regions have a stable rising curve.
+
+```{r}
+tmp_1 <- tmp %>% 
+  filter(year==2010) %>%  
+  select(GDP_capita, id_nuts3)  %>% 
+  slice_max(GDP_capita, n = 10) %>%  
+  select(id_nuts3)
+
+tmp %>%   
+  filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
+```
+
+***Graph 3:***
+
+This table shows regional GDP per capita for the 10 highest income regions.
+Nine of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway and the region Nordland (NO071).
+We can see here that region in Netherlands NL113 (the orange line) shows us that it´s on the top of all other regions in Netherlands and surprisingly Norway NO071 (the pink line).
+Its most probably, because the region in Norway are only based on one specific region.
+We can say that this region Nordland (NO071) has low GDP per capita, compared to some of the regions in the Netherlands, such as NL113.
+
+### Individual country cases
+
+With this GDP per capita for specific countries, we can easily filter our information/data afterwards in this assignment.
+This can for example be done by finding the wealthiest and least wealthiest regions in each country.
+
+### GDP per capita for Norway:
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "NO" , year == 2010) %>%
+  select(gdp_n3, pop, GDP_capita) %>%
+  st()
+```
+
+Since Norway is the country with the highest GDP per capita it is interesting to stydy Norway closer.
+When we look at the GDP per capita for Norway, we can see that there is no such big difference between the values under summary statistics, such as Min and Max, Mean, Std.
+Dev, Pctl.
+The values are exactly the same.
+The reason behind this is that N value is 1.
+When N is 1, than it makes sense why all these values are same.
+Our dataset only have numbers for one region on NUTS3 level in Norway, even though there should be 19 counties.
+We are therefore going take a closer look at other countries.
+
+### GDP per capita for Spain:
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "ES" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+***Table 3:***
+
+Looking at this table for the three wealthiest regions in Spain we see the GDP per capita for ES211 (the first region) and ES300 (the second region) and ES212 (the third region).
+There is no such big difference in them.
+The observation between these regions are somehow consistent.
+If we look at our next table 4, we can see the least wealthiest regions in Spain.
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "ES" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+***Table 4:***
+
+When we look at this table 4, we can see the least wealthiest regions in Spain.
+Comparing GDP per capita from table 4 with table 3 we can see that there is difference between values in both tables.
+The three wealthiest regions are twice as wealthy as the least wealthiest.
+
+### GDP per capita for Poland
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "PL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+***Table 5:***
+
+When we look at table 5 we see the wealthiest regions in Poland.
+There are a difference of over 10 000 gdp per capita from the most wealthiest to the third most wealthy region.
+Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "PL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+***Table 6:***
+
+We can here see the least wealthiest regions in Poland.
+We can see that there is big difference between the wealthiest regions from table 5 and table 6 (least wealthiest regions) in Poland.
+The wealthiest region in Poland are almost 5 times wealthier than the least wealthy region in Poland.
+This shows us that there are big differences in living conditions in Poland.
+
+### GDP per capita for Albania
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "SI" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+***Table 7:***
+
+When we look at table 7 we see the wealthiest regions in Albania.
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "SI" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+***Table 8:***
+
+Here we see the least wealthiest regions in Albania.
+In comparison to the wealthiest regions in Albania there are not that big gap.
+Compared to the other countries we have looked at (Poland and Spain), there are smaller differences between the richest and the poorest regions.
+Albania is generally not that rich compared to the other countries in graph 1.
+
+## 2.3 Regional inequity measures:
+
+When we talk about regional inequity measures, it is normal to talk about GINWj.
+This is the inequality indicator that we use in our analysis in the population weighted gini coefficient.
+It has a range from 0 (low/no inequaliy) to 1 (perfect inequality between regions).
+The indicator is calculated like this:
+
+![](images/GINI.png){fig-align="center"}
+
+where *i* refers to NUTS3 regions and *j* refers to NUTS2 regions.
+The indicators *i* and *j* specify region data for us.
+GINWj/i data shows us different sizes of regions etc.
+
+```{r}
+#gen weighted gini
+#for all
+gini.wtd(tmp$GDP_capita, w = tmp$pop)
+
+tmp  %<>% 
+  group_by(id_nuts2, year) %>% 
+  mutate(gini_n2 = gini.wtd(GDP_capita, w = pop)) %>%
+  ungroup() # to remove grouping
+```
+
+## 2.4 Descriptive statistics Gini
+
+### Cross country perspective:
+
+```{r}
+tmp %>% 
+  filter(year == 2010) %>%  
+  distinct(id_nuts2, year,.keep_all = TRUE) %>%  
+  select(gini_n2) %>%  
+  st()
+```
+
+The data over tell us descriptive statistics for inequality masseurs for the year 2010.
+In our dataset we have 44 different European NUTS2 regions.
+In averange we can see a very low level of inequality within all regions.
+Even the maximum inequality is vey low with 0,199.
+We can also see that mean is 0, which means that some regions have no inequality.
+We look more at this in the next graph.
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "NL")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
+
+***Graph 4:***
+
+Studying the level of inequality over time for regions in Netherlands we see that most regions follow a common trend.
+There are not a lot of changes over time.
+This is for example shown in the graph over NUTS2 regions in the Netherlands.
+We also see that one region has 0 for all observations, which means low/no inequality.
+
+```{r}
+tmp %>%
+  filter(id_nuts0 == "ES")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
+
+***Graph 5:***
+
+In Graph 4 here we can see descriptive data for Spain.
+If we take a look at the green dots on top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
+ES30 is the wealthiest of all others.
+If we take a look at last dots, which are pink dots flat on the 0 line on the x-axis.
+The reason behind this most probably because the region has no inequality as discusses earlier.
+In this graph over level of inequality over time for Spain, there are some exceptions compared to the graph for Nederlands.
+Taking a closer look at the light blue dotted line, we see that it is starting quite low, around 0,04, and increasing to almost 0,06 over 20 years.
+This region has a different curve than the rest of the regions in Spain.
+
+## 2.5 Outlier discussion
+
+When we talk about Outlier discussion part its normal to define the word outlier.
+The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
+
+```{r}
+ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
+  geom_point()
+```
+
+***Graph 6:***
+
+### Discuss briefly if there are noteworthy outliers:
+
+When we take a look at some kind of noteworthy outliers between these countries, we can take a look at the graph 5.
+We can point out here that Ireland (IE) have some weird appearance in this graph.
+We can see that somehow some outliers emerge for Ireland.
+It start with a point, than suddenly have a big gap before the Gini starts raising again.
+Than the gap continues and suddenly gini is back.
+There is also a big difference in regional inequity for the different regions in Ireland.
+
+If we compare Ireland´s (IE) gini with other countries, such as Netherland´s (NL), we can see that there is outliers here.
+We can say that Ireland (IE) has an abnormal appearance, in comparison to for example Netherland´s (NL).
+
+Albania (AL) on the other side has no outliers, because it does not have those gaps as Ireland (IE).
+All regions have approximately the same regional inequity.
+
+We can also see that five of the countries have regions with zero inequality.
+This is weird.
+A reason for this can be that regions with NA values get 0 instead of NA.
+It could therefore make sense to exclude these observations in later studies.
+
+As we have seen under individual country cases, we can see that Poland (PL) have very rich regions at the same time very poor regions as well.
+As we can see on graph 5, we can see that there is no clear outliers on graph for Poland (PL), because there is a long line with with small gaps.
+We can see that there are many wealthy and on the other side not wealthy regions in Poland.
+This is not an outlier but still worth mentioning.
+
+All the mentioned outliers except from the one with zero inequity are not do to a bias in our data, and we should therefore keep them.
+However we need to test later the sensitivity of our findings regarding the presence of these borderline observations.
+
+# 3 Assignment 2
+
+In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs, Gini and tables
+
+In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
+In the first part of this assignment we will use the same data that were presented in the last assignment.
+
+So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.
+To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
+GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
+
+Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption.
+One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
+When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
+On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.
+
+```{r}
+#Regenerate gdp per capita for nuts 2 
+gdp_pc_n2_1 <- tmp %>%
+  select(year, pop, gdp_n3, id_nuts2) %>% 
+  group_by(id_nuts2, year) %>% 
+  mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
+  ungroup() %>%
+  distinct(id_nuts2, year, gdp_n2, pop_n2) %>%
+  mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2)
+```
+
+What we are doing here is that, we are regenerating data for GDP per capita from the last assignment from nuts 2 level.
+
+```{r}
+tmp_n2 <- tmp %>%
+  select(year, pop, gdp_n3, id_nuts2, gini_n2) %>% 
+  group_by(id_nuts2, year) %>% 
+  mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
+  ungroup() %>%
+  distinct(id_nuts2, year, gdp_n2, pop_n2, gini_n2) %>%
+  mutate(gdp_capita_n2 = (gdp_n2 * 1000000)/pop_n2) %>%
+  filter(year == "2010" & (grepl('IE..', id_nuts2) | grepl('PL..', id_nuts2) | grepl('ES..', id_nuts2) | grepl('SI..', id_nuts2) | grepl('NL..', id_nuts2) | grepl('NO..', id_nuts2) | grepl('AL..', id_nuts2)))
+```
+
+**Log:**
+
+Further are we going to use log data in our codes.
+The question is why are we going to use log?
+A log in R wil transform our data in a way that will apply a logarithm to our data that will help reduce its skew.
+In other words it will reproduce or rescale our data more in a statistical way.
+
+```{r}
+data2010 <- tmp_n2 %>%
+  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
+
+# level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_pc_n2)) %>% 
+  # create column to easily filter by country
+  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
+  filter(year == 2010)
+
+data2010 %>%
+  st(.)
+```
+
+***Table 9***
+
+Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
+What value 0 expresses is that there is perfect equality, where all the values are the same.
+As we have mentioned earlier, the gini value is from 0 to 1 in the table.
+
+The reason behind the values 0, can also be because of that maybe one of the values are missing.
+Therefore this leads us to gini values 0.
+We can also see that, many values are the same.
+Now when we look at our summary statistics, we can see that some of our values are equal to 0.
+For example in this case we find that Min and Pctl.
+25 are equal to 0.
+Under gini_n2 we find these 0 values.
+As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
+
+On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
+Now the question is, whats the solution to those values of 0.
+One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
+
+Further down in Summary Statistics, we find N variables for countries: Spain (ES), Netherlands (NL), Norway (NO), Poland (PL) and Slovenia (SL).
+What we can see is that Norway (NO) only have 1 variable, that is because it is only one region that is related to Norway (NO).
+On the other side we see Spain (ES) have 19 variables.
+
+We can not find our other countries, which are: Albania (AL), Ireland (IE), Greece (EL).
+The reason behind this most probably, that we are missing some observation, because we have Nuts 3 regions values and it is maybe same as in the Nuts 2 regions.
+We should have generated our data in another way, to include the Nuts 3 regions that are equal to Nuts 2 regions.
+Because we don´t have values of the countries which can not see, which are Albania (AL), Ireland (IE), Greece (EL), are we not going to focus on these countries in this assignment.
+
+```{r}
+data2010 <- data2010 %>%
+  filter(gini_n2 > 0)
+IE2010 <- data2010 %>%
+  filter(id_nuts0 == "IE") 
+PL2010 <- data2010 %>%
+  filter(id_nuts0 == "PL") 
+ES2010 <- data2010 %>%
+  filter(id_nuts0 == "ES") 
+SI2010 <- data2010 %>%
+  filter(id_nuts0 == "SI") 
+NL2010 <- data2010 %>%
+  filter(id_nuts0 == "NL") 
+EL2010 <- data2010 %>%
+  filter(id_nuts0 == "EL")
+NO2010 <- data2010 %>%
+  filter(id_nuts0 == "NO") 
+AL2010 <- data2010 %>%
+  filter(id_nuts0 == "AL")
+
+lm_function <- function(lmdata) {
+  lm(gini_n2 ~ log_gdppc, data = lmdata)
+}
+
+# create function to calculate linear regression model
+lm_function_plot <- function(lmdata) {
+  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x = log_gdppc, y = gini_n2, fill = id_nuts2, color = id_nuts2, label = id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust = -0.3, vjust = 0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini") }
+
+# create function to calculate linear regression model
+lm_residuals_plot <- function(lmdata) {
+  lm_gdppc <- lm(gini_n2 ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+  lmdata$predicted <- predict(lm_gdppc)
+  lmdata$residuals <- residuals(lm_gdppc)
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x = log_gdppc, y = gini_n2, fill =  id_nuts2, color = id_nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend = log_gdppc,yend = predicted)) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color = "blue", size = 0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")}
+```
+
+### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
+
+What we are going to do here to describe the effect of regional development on regional inequality, and then we are going to analyze this by the help of using regression analysis.
+Now the question is, what is regression analysis.
+Regression analysis is a group of statistical processes and statistics, that help us or are useful to control the relationship between data set variables.
+
+What we are going to take in the first place is the selected countries and data we have got for the year 2010.
+After that are we going to use simple regression model to look at the result of regional development inequality.
+
+Simple Regression analysis can be expressed like this:
+
+$$
+B1 = intercept or constant 
+$$
+
+$$
+B2 =Slope coefficient
+$$
+
+$$
+ui = error term
+$$
+
+```{r}
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
+lm.1 = lm(gini_n2 ~ log_gdppc, data = PL2010)
+lm.2 = lm(gini_n2 ~ log_gdppc, data = ES2010)
+lm.3 = lm(gini_n2 ~ log_gdppc, data = SI2010)
+lm.4 = lm(gini_n2 ~ log_gdppc, data = NL2010)
+lm.5 = lm(gini_n2 ~ log_gdppc, data = data2010)
+
+
+#Gen Table
+  huxreg(
+  list("Poland" = lm.1, "Spain" = lm.2, "Slovenia" = lm.3, "Netherlands" = lm.4, "All four" = lm.5 ),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
+We have read Lessmann & Seidel (2017) we can find that development can be found by log GDP.
+
+The table/graph up shows us that we have an relationship between X and Y.
+X which is regional development in this case and Y which refers to regional inequality.
+The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
+
+One important thing here to come up with here is that when we look at the estimation effect of regional development on regional inequality above on table, we see data for only countries: Poland (PL), Spain (ES), Slovenia (SI) and Netherlands (NL).
+Other countries such as Greece (EL), Norway (NO), Ireland (IE) and Albania (AL) have no data.
+Therefore are we going to take initially countries with dataset, in this case: Poland (PL), Spain (ES), Norway (NO) and Albania (AL).
+
+From this table we can see different values.
+What wee see here for Poland (PL) is that there is 10 numbers for this country and the coefficient of determination R2 is 0.398.
+What we see here for Spain (ES) is that there is there is 11 numbers and the coefficient of determination R2 is 0.
+Value 0 can be due to.
+As mentioned the value 0 can be due to low fitness of the model.
+
+**Regression analysis:**
+
+Our next steps in this assignment is to take a look at what is regression analysis and what it tells us.
+Regression analysis is a process which is used to see the relationship between different data set variables.
+This analysis data method is used to see the relationship between independent and depended variables.
+We can see by looking at this method what Y value would be when X = 0.
+
+The formel we use for estimating the connection between regional development and regional inequality is:
+
+$$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
+
+### Discuss the goodness of fit of your estimated model:
+
+In this discussion part are we going to discuss our estimation in previous task.
+First of all we can see that there is data for only 4 countries.
+The countries are: Slovenia (SI), Spain (ES), Netherlands (NL) and Poland (PL).
+If we plus the values R2 for all 4 countries, we get a value over 1.
+Due to missing values in some of our countries are those countries with missing values not showing up.
+Therefore our focus here is countries which are showing up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL) and Spain (ES).
+
+We are here looking at R2, which is value for coefficient of determination.
+This R2 coefficient of determination can be defined as a regression problem metric, that help the performance or the result of the model in R to be better.
+
+If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high.
+It is the highest value, which is 1.000.
+What we can analyze here by looking at this value R2 1.000 for Slovenia (SI), is that the value that is analyzed is suitable or fitted for each other.
+On the other hand when we look at the R2 value for Spain (ES), we can see that it is 0.0.
+This value indicates that, this model is not suitable for our model.
+
+## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
+
+In this part are we going to analyze estimation for four countries.
+Countries which we are going to use as a estimation for our plots are: Spain (ES), Poland (PL), Slovenia (SI) and Netherlands (NL).
+
+Coefficients of resolution is important for our next steps in this assignment.
+So the first we are going to do is to analyze all four countries in one table.
+
+```{r}
+#| label: fig-lm-data2010
+#| fig-cap: Estimate for data2010
+lm_function_plot(data2010)
+```
+
+***Graph 7***
+
+The graph shows us that when prosperity increases, income and GDP per capita are less different.
+To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
+
+What we can see from this graph is a estimate.
+The parameters we are looking at here is: Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
+If we call these parameters with econometric language, we call them β1 and β2 values.
+We call these values prediction of the depended variable, fitted values.
+
+Now we are going to look at a simple regression model for our 4 countries.
+In this case: Spain (ES), Poland (PL), Netherlands (NL) and Slovenia (SI).
+We can see that the line on this graph is negative, this indicates that one of values on regression model formel, is negative.
+The line on y-axis is on around value 0.12 and on x-axis on ca.
+12.0.
+
+The dots or the different colors indicates the regions in those 4 countries mentioned above.
+
+```{r}
+#| label: fig-lm-Spain
+#| fig-cap: Estimate for Spain
+lm_function_plot(ES2010)
+```
+
+***Graph 8***
+
+Graph 8 shows us the estimation plotted for Spain (ES).
+We can see that it lies in the middle and is more flat a like horizontal line on the graph.
+We can see different regions from Spain spread all over the graph.
+The slope/line is on around 0.03 on y-axis and it is not touching or crossing the x-axis.
+We can analyze that the line on the graph is going a little towards the x-axis.
+There is no region that are crossing or touching the horizontal line.
+
+```{r}
+#| label: fig-lm-Netherlands
+#| fig-cap: Estimate for Netherlands
+lm_function_plot(NL2010)
+```
+
+***Graph 9***
+
+We find that the slope/line here for Netherlands (NL) is positive.
+It seems like NL34 Zeelandic Flanders is approximately touching the slope/line in the graph.
+All other regions are spread all over.
+
+```{r}
+#| label: fig-lm-Poland
+#| fig-cap: Estimate for Poland
+lm_function_plot(PL2010)
+```
+
+***Table 10***
+
+We find that the slope/line here for Poland (PL) is also positive as for Netherlands (NL) above.
+The slope/line is on 0.05 on y-axis.
+
+```{r}
+#| label: fig-lm-Slovenia
+#| fig-cap: Estimate for Slovenia
+lm_function_plot(SI2010)
+```
+
+***Graph 10***
+
+This graph for Slovenia (SI) is special compared to those 3 above, which we mentioned earlier.
+What we find here is that there is only two variables or values for only two regions in Slovenia (SI).
+These regions are touching the slope/line perfectly, which indicates that the regression model is a fitted model.
+This is obvious since when there are only two values, it is natural that they touch the slope/line on the graph.
+
+## Plot the residual against the predicted values of your model:
+
+In this next part we are analyzing residual, which is the difference between the observed value and the mean value, that the model predict for that specific observation.
+In the next four graphs are we analyzing for same countries above.
+The fact of the matter is that when the regression line is further from the region dot, then this indicated that the residual is highest.
+
+The formel for Residual can we find under:
+
+$$
+Residual = Observed value - Predicted value
+$$
+
+```{r}
+#| label: fig-lm-Poland-res
+#| fig-cap: Residuals Poland 
+lm_residuals_plot(PL2010)
+```
+
+***Graph 11***
+
+What we can see from this graph is a ascending linear regression.
+For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.
+
+```{r}
+#| label: fig-lm-Netherlands-res
+#| fig-cap: Residuals Netherlands
+lm_residuals_plot(NL2010)
+```
+
+***Graph 12***
+
+What we see here from this graph is a regression analysis for Netherlands.
+We can see different type of data spread all over the graph.
+NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph.
+It is also the region which is furthest away from the regression line.
+
+```{r}
+#| label: fig-lm-Spain-res
+#| fig-cap: Residuals Spain
+lm_residuals_plot(ES2010)
+
+```
+
+***Graph 13***
+
+This graph for Spain (ES) shows us a regression line.
+We can analyze that the slope/line is negative.
+What we can see here is how far away those regions are from the regression line.
+We can analyze that there are many region dots further from the mean value.
+
+```{r}
+#| label: fig-lm-Slovenia-res
+#| fig-cap: Residuals Slovenia
+lm_residuals_plot(SI2010)
+```
+
+***Graph 14***
+
+This graph shows us that the region dots for Slovenia (SI) are going straight across the Regression line/slope.
+There are no residuals in this graph.
+
+## Discuss the classical the assumption OLS in light of your data and plots:
+
+First of all a definition to this classical OLS assumption: Ordinary Least Squares (OLS) linear regression is a statistical technique for analyzing and designing linear relationship between a response and for one and even more variables.
+If the relationship between two variables are linear, then straight line can be fit to the specific data which we have worked with.
+
+In practice we can use OLS to estimate the regression coefficients using an estimator, which is called Ordinary Least Squares.
+We use this OLS estimation to close parameters and to minimize the residual sum of squares.
+
+The regression have this formula:
+
+$$
+Y= mx + c
+$$
+
+y can be defined as the response (dependent) variable, m is the slope, x is the predictor and c the intercept.
+
+What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
+
+Below we will look at how Netherlands (NL) fit the assumptions of OSL.
+
+```{r}
+#| label: fig-par-plot
+#| fig-cap: Diagnostic plots
+mylm = lm_function(NL2010)
+par(mfrow = c(1,1))
+plot(mylm)
+```
+
+-   ***Kun grafen oppe til venstre (residuals / fitted values) som er viktig for oss***
+
+***Graph 15***
+
+What we can analyze here is that in the first graph for Netherlands (NL), we can see the comparison between Residuals and fitted values.
+The fact of the matter is that we want the red line as flat as possible.
+When we analyze the first graph we can see that the red line is kind of like a mountain shaped.
+The fitted values goes from 0.00 to 0.12.
+The values relies between these numbers.
+
+```{r}
+#| label: fig-par-plot
+#| fig-cap: Diagnostic plots
+plot(lm.5)
+```
+
+We could have also discussed Breusch-Pagan Test here.
+This test is used to determine if heteroscedasticy is present in a present regression analysis.
+This test fits regression model, because it fits the residuals of a linear regression model.
+We will look more in depth on this in our next assignment 3.
+
+## Other determinants of inequity:
+
+In this next part we are going to use three new datasets form Eurostat.
+These three datasets are related to demographics, education and transport infrastructure.
+We have chosen these files: 'demo_r\_pjangroup.csv', 'edat_lfse_04.csv' and 'tran_r\_vehst.csv'.
+
+The file 'demo_r\_pjangroup.csv' shows us the population on 1 January by age group, sex and NUTS 2 region.
+Next the file 'edat_lfse_04.csv' shows the population by educational attainment level, sex and NUTS 2 regions (%).
+Finally the file 'tran_r\_vehst.csv' shows us stock and vehicles by category and NUTS2 regions.
+
+```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE}
+#Import new data from Eurostat
+demo <- read_csv('demo_r_pjangroup.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(demo1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, demo1)
+
+edu <- read_csv('edat_lfse_04.csv') %>%
+  filter(TIME_PERIOD == "2010" & age == "Y25-64" & sex == "T" & isced11 == "ED0-2" & grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES..', geo) | grepl('NO..', geo) | grepl('AL..', geo)) %>%
+  select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, edu1)
+
+infra <- read_csv('tran_r_vehst.csv') %>%
+  filter(TIME_PERIOD == "2010" & unit == "NR" & vehicle == "TOT_X_TM" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
+  select(unit, vehicle, geo, TIME_PERIOD, OBS_VALUE) %>%
+  mutate(infra1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
+  select(id_nuts2, year, infra1)
+```
+
+```{r}
+data2010 <- tmp_n2 %>%
+  left_join(edu, by = c("year", "id_nuts2")) %>%
+  left_join(infra, by = c("year", "id_nuts2")) %>%
+  left_join(demo, by = c("year", "id_nuts2")) %>%
+
+  # create id_nuts0 to filter by country
+  mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
+  filter(year == "2010") %>%
+  
+  group_by(id_nuts2, year)
+  mutate
+  ungroup()
+  distinct(year, id_nuts2)
+
+data2010 <- data2010 %>%
+  filter(gini_n2 > 0)
+
+PL2010 <- data2010 %>%
+  filter(id_nuts0 == "PL") 
+ES2010 <- data2010 %>%
+  filter(id_nuts0 == "ES") 
+SI2010 <- data2010 %>%
+  filter(id_nuts0 == "SI") 
+NL2010 <- data2010 %>%
+  filter(id_nuts0 == "NL") 
+```
+
+Now in this formel/code are we generating new data set.
+We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
+
+```{r}
+data2010 %>%
+  filter(year == 2010 & id_nuts0 == "ES") %>%
+ggplot(aes(x = edu1, y = gini_n2 , fill = id_nuts2, color = id_nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+```
+
+***Graph 16***
+
+**Multiple Regression model:**
+
+After focusing on simple regression model, are we now moving on to multiple regression model.
+Question is what is multiple regression model?
+It can be defined as a statistical technique that can be used to analyze the relationship or the connection between several independent and only one single depended variable.
+
+```{r}
+multi_linear_regression_model_1 <- function(mlrdata){
+lm.1 = lm(gini_n2 ~ edu1 , mlrdata) 
+lm.2 = lm(gini_n2 ~  infra1, mlrdata)
+lm.3 = lm(gini_n2 ~ edu1 + infra1, mlrdata)
+lm.4 = lm(gini_n2 ~  demo1, mlrdata)
+lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+```
+
+### Estimate a multiple linear regression model with your new variables for 2010 and give a small interpretation of your findings
+
+When we look at the Multiple regression model, we use these variables:
+
+$$
+Yi = B0 + B1X1i + B2X2i + ...+ BkXki + ui
+$$
+
+```{r}
+#| label: tbl-mlr-netherlands
+#| tbl-cap: Multi linear regression model NL
+multi_linear_regression_model_1(NL2010)
+
+```
+
+***Table 11***
+
+```{r}
+#| label: tbl-mlr-spain
+#| tbl-cap: Multi linear regression model ES
+multi_linear_regression_model_1(ES2010)
+```
+
+***Table 12***
+
+```{r}
+#| label: tbl-mlr-poland
+#| tbl-cap: Multi linear regression model PL
+multi_linear_regression_model_1(PL2010)
+```
+
+***Table 13***
+
+### Discuss the overall fit of your model:
+
+What has happend here is that we get many values that are 0.
+The reason behind this can be that we have many repeating regions (example: 16 ES11 regions).
+We came to a solution some days ago, but suddenly at the last minute the problem occurred.
+
+If we analyze or discuss our table above we find we can see that education, infra and life.exp has 0 as value.
+We see that Netherlands and Poland has same quantity of values.
+We are going to analyze Netherlands here, because this is country which we have looked at much in our assignment.
+What we are analyzing here: education, infrastructure, transport and demography.
+
+### Discuss the inference related to your findings
+
+"Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings."
+
+For this last part we ar only looking at one country.
+We have chosen Netherlands because it is the country with the highest GDP per capita and the most NUTS2 regions.
+
+We will now test and analyze is if the variables has an effect upon growth and inequality.
+
+When it comes to calculation of variables, we use hypothesis test.
+Hypothesis test can be defined as a statistical inference that uses data.
+
+We use:
+
+$$
+H_0: β = 0
+$$
+
+$$
+H_a: β ≠ 0
+$$
+
+#### Education
+
+```{r}
+#| label: tbl-inference-education
+#| tbl-cap: Education linear model
+lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
+```
+
+***Table 14***
+
+What we can find here is that education has its p-value on 0.79.
+The estimation value is on the intercept 0.05.
+A large p value, indicated a weak evidence against the null hypothesis.
+Therefore we can not reject it.
+
+#### Infrastructure
+
+```{r}
+#| label: tbl-inference-motorway
+#| tbl-cap: Motorway linear model
+lm(gini_n2 ~ infra1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
+```
+
+***Table 15***
+
+When wee look at the p value for the infrastructure, we find that the p value is 0.68.
+A large p-value indicates that it is a weak evidence against the null hypothesis, so you fail to reject it.
+In this case p-value on 0.68 is pretty high and there is weak evidence against the null hypothesis.
+
+#### Demographics
+
+```{r}
+#| label: tbl-inference-lifexp
+#| tbl-cap: Life expectancy age linear model
+lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
+#qt(0.95,100)
+```
+
+***Table 16***
+
+Here the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
+
+# 4 Assignment 3
+
+#### 
+
+```{r}
+
+lm.3 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.4 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.5 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.6 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+
+
+data %>% st()
+```
+
+```{r}
+est_plm_cross_2010 <- function(est_eq) bølge(
+  data_n2 %>% filter(year == 2010) %>% 
+  plm(est_eq, data = ,. index = c("id_nuts0"), model = "within") %>%
+  coeftst(vcovHC, type = "HC1", save = TRUE) %>%
+  return()
+  bølge )
+
+plm.1 <- "I(gini_n2*100) ~ log(gdp_pc_n2)" %>% est_plm_cross_2010()
+plm.2 <- "I(gini_n2*100) ~ log(gdp_pc_n2) + I(log(gdp_pc_n2)^2) + I(log(gdp_pc_n2)^3)" %>% est_plm_cross_2010()
+plm.3 <- "I(gini_n2*100) ~ log(gdp_pc_n2) + I(log(gdp_pc_n2)^2) + I(log(gdp_pc_n2)^3) + I(transported_goods/1000) + I(students_tertiary/100 + age_pop_med" %>% est_plm_cross_2010()
+
+#gen table
+  huxreg(
+    list("(1)" = plm.1, "(2)" = plm.2, "(3)" = plm.3, "(4)" = plm.4),
+    
+    
+    stars = c('*' = 0.1, '**' = 0.05, '***' = 0.0,1), 
+    note = "Note: {stars} T statistics in brackets.")
+      insert_row("Country FE", after = nrow(.) -1, fill = "YES", colspan = 1) %>%
+      insert_row("Year FE", after = nrow(.) -2, fill = "NO")
+```
+
+```{r}
+#Easier
+data %<>% mutate(DEU = ifelse(regiocodeN1 == "DEU",1,0))
+
+#Could also be:
+factor(regiocode)
+```
+
+#### Appendix
+
+#### Table 1 {data-link="Table 1"}
+
+```{r}
+tmp %>% 
+  filter(year == 2010) %>%
+  select(GDP_capita, id_nuts3, id_nuts0) %>%
+  slice_max(GDP_capita, n = 10)
+```
+
+#### Table 2 {data-link="Table 2"}
+
+```{r}
+tmp %>%
+  filter(year == 2010) %>%
+  select(GDP_capita, id_nuts3, id_nuts0) %>%
+  slice_min(GDP_capita, n = 10)
+```
+
+#### 
+
+#### References
+
+::: {#refs}
+:::
+
+#### Footnotes
