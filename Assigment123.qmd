@@ -822,6 +822,28 @@ y can be defined as the response (dependent) variable, m is the slope, x is the 
 
 What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
 
+Classical assumptions of OLS contains:
+
+**Linearity:** As long as the model which we are focusing on satisfies the OLS assumptions for linear regression, the estimates will be good.
+Here the population relationship is linear.
+
+**Sample Variation:** Can be defined as measure of dispersion of the observation around their sample mean.
+
+**Random Sampling:** is a part of the sampling technique.
+We have a random sample of our model.
+
+**Homoskedasticity:** Here we look at the error term, which has the same variation.
+
+The formula is like:
+
+$$
+Var(u|X)=o2
+$$
+
+When we look at the graph under, which is related to our question, we can see that the graph Residuals vs Fitted line on the left side is suitable for us.
+
+Skriver mer imorgen...
+
 Below we will look at how Netherlands (NL) fit the assumptions of OSL.
 
 ```{r}
@@ -1072,9 +1094,9 @@ library(rstatix)
 #### 
 
 ```{r}
-data("populationdata2")
+data("tran_r_vehst.csv")
 set.seed(1234)
-populationdata2 %>% sample_n_by(group, size = 1)
+tran_r_vehst.csv %>% sample_n(group, size = 1)
 ```
 
 ```{r}
@@ -1090,6 +1112,34 @@ lm.6 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
 
 
 data %>% st()
+```
+
+## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
+
+```{r}
+library(broom)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(sm)
+library(tidyr)
+```
+
+```{r}
+log(32, base = 2)
+```
+
+```{r}
+log2(32)
+```
+
+```{r}
+ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2_1)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw() +
+  xlab("Log-transformed SAT score") +
+  ylab("Six-year graduation rate")
 ```
 
 ```{r}
