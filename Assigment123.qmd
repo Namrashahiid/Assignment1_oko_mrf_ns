@@ -1064,12 +1064,18 @@ In this assignment are we going to focus on Alternative function forms.
 ### Test if the effect of development is significantly different subset of countries in your data set:
 
 ```{r}
-library(afex)
-df$id = 1:nrow(df)
-aov_ez(data=df, id="id", between="gdp_pc_n2", dv"values"
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
 ```
 
 #### 
+
+```{r}
+data("populationdata2")
+set.seed(1234)
+populationdata2 %>% sample_n_by(group, size = 1)
+```
 
 ```{r}
 
