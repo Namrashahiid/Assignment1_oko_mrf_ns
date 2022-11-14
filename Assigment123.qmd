@@ -431,8 +431,6 @@ However we need to test later the sensitivity of our findings regarding the pres
 
 # 3 Assignment 2
 
-In last assignment (Assignment 1) we focused on GDP per capita and different types of graphs, Gini and tables
-
 In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
 
@@ -440,10 +438,7 @@ So the first task in this assignment is to estimate the effect of regional devel
 To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
 GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
 
-Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption.
-One important thing to point out here is that the Gini coefficient has a value between 0 and 1.
-When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze.
-On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.
+[Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption. One important thing to point out here is that the Gini coefficient has a value between 0 and 1. When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze. On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.]{.underline}
 
 ```{r}
 #Regenerate gdp per capita for nuts 2 
@@ -473,8 +468,7 @@ tmp_n2 <- tmp %>%
 
 Further are we going to use log data in our codes.
 The question is why are we going to use log?
-A log in R wil transform our data in a way that will apply a logarithm to our data that will help reduce its skew.
-In other words it will reproduce or rescale our data more in a statistical way.
+[A log in R wil transform our data in a way that will apply a logarithm to our data that will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way. **(Meina han sa me va på rett veg, men skrive om slik at det gir meining)**]{.underline}
 
 ```{r}
 data2010 <- tmp_n2 %>%
@@ -875,15 +869,31 @@ This test is used to determine if heteroscedasticy is present in a present regre
 This test fits regression model, because it fits the residuals of a linear regression model.
 We will look more in depth on this in our next assignment 3.
 
-## Other determinants of inequity:
+## 3.2 Other determinants of inequity:
+
+### Data
 
 In this next part we are going to use three new datasets form Eurostat.
 These three datasets are related to demographics, education and transport infrastructure.
 We have chosen these files: 'demo_r\_pjangroup.csv', 'edat_lfse_04.csv' and 'tran_r\_vehst.csv'.
 
-The file 'demo_r\_pjangroup.csv' shows us the population on 1 January by age group, sex and NUTS 2 region.
+#### Transport infrastructure
+
+The file 'tran_r\_vehst.csv' shows us stock and vehicles by category and NUTS2 regions.
+
+Meir info.
+
+#### Education
+
 Next the file 'edat_lfse_04.csv' shows the population by educational attainment level, sex and NUTS 2 regions (%).
-Finally the file 'tran_r\_vehst.csv' shows us stock and vehicles by category and NUTS2 regions.
+
+Meir info.
+
+#### Demographics
+
+Finally the 'demo_r\_pjangroup.csv' shows us the population on 1 January by age group, sex and NUTS 2 region.
+
+Meir info.
 
 ```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE}
 #Import new data from Eurostat
@@ -917,9 +927,6 @@ data2010 <- tmp_n2 %>%
   filter(year == "2010") %>%
   
   group_by(id_nuts2, year)
-  mutate
-  ungroup()
-  distinct(year, id_nuts2)
 
 data2010 <- data2010 %>%
   filter(gini_n2 > 0)
@@ -933,19 +940,6 @@ SI2010 <- data2010 %>%
 NL2010 <- data2010 %>%
   filter(id_nuts0 == "NL") 
 ```
-
-Now in this formel/code are we generating new data set.
-We are here generating new dataflies, which is related to education and transportation (vehicles) this time.
-
-```{r}
-data2010 %>%
-  filter(year == 2010 & id_nuts0 == "ES") %>%
-ggplot(aes(x = edu1, y = gini_n2 , fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "Education", y = "Gini")
-```
-
-***Graph 16***
 
 **Multiple Regression model:**
 
@@ -1101,17 +1095,34 @@ tran_r_vehst.csv %>% sample_n(group, size = 1)
 
 ```{r}
 
-lm.3 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+lm.3 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.4 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+lm.4 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.5 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+lm.5 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.6 <-(gini_n2 * 100 ~ gdp_pc_n2, data = filter(data_n2, year == 2010)) %>%
+lm.6 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.7 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
   coeftest(vcov = hccm, save = TRUE)
 
 
 data %>% st()
+
+multi_linear_regression_model_1 <- function(mlrdata){
+lm.1 = lm(gini_n2 ~ edu1 , mlrdata) 
+lm.2 = lm(gini_n2 ~  infra1, mlrdata)
+lm.3 = lm(gini_n2 ~ edu1 + infra1, mlrdata)
+lm.4 = lm(gini_n2 ~  demo1, mlrdata)
+lm.5 = lm(gini_n2 ~ edu1 + demo1, mlrdata)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
 ```
 
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
