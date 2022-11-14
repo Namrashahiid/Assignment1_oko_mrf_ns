@@ -1058,6 +1058,11 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 
 # 4 Assignment 3
 
+In last assignment we focused on estimating the effect of regional development on regional inequality.
+In this assignment are we going to focus on Alternative function forms.
+
+### Test if the effect of development is significantly different subset of countries in your data set:
+
 #### 
 
 ```{r}
