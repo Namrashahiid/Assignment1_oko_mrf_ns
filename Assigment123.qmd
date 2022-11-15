@@ -438,7 +438,7 @@ So the first task in this assignment is to estimate the effect of regional devel
 To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
 GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
 
-[Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption. One important thing to point out here is that the Gini coefficient has a value between 0 and 1. When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze. On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.]{.underline}
+Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD.
 
 ```{r}
 #Regenerate gdp per capita for nuts 2 
@@ -468,7 +468,8 @@ tmp_n2 <- tmp %>%
 
 Further are we going to use log data in our codes.
 The question is why are we going to use log?
-[A log in R wil transform our data in a way that will apply a logarithm to our data that will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way. **(Meina han sa me va på rett veg, men skrive om slik at det gir meining)**]{.underline}
+A log in R wil transform our data in a way that will help reduce its skew.
+In other words it will reproduce or rescale our data more in a statistical way.
 
 ```{r}
 data2010 <- tmp_n2 %>%
@@ -620,7 +621,7 @@ Other countries such as Greece (EL), Norway (NO), Ireland (IE) and Albania (AL) 
 Therefore are we going to take initially countries with dataset, in this case: Poland (PL), Spain (ES), Norway (NO) and Albania (AL).
 
 From this table we can see different values.
-What wee see here for Poland (PL) is that there is 10 numbers for this country and the coefficient of determination R2 is 0.398.
+What wee see here for Poland (PL) is that there is 10 observations for this country and the coefficient of determination R2 is 0.398.
 What we see here for Spain (ES) is that there is there is 11 numbers and the coefficient of determination R2 is 0.
 Value 0 can be due to.
 As mentioned the value 0 can be due to low fitness of the model.
@@ -630,7 +631,6 @@ As mentioned the value 0 can be due to low fitness of the model.
 Our next steps in this assignment is to take a look at what is regression analysis and what it tells us.
 Regression analysis is a process which is used to see the relationship between different data set variables.
 This analysis data method is used to see the relationship between independent and depended variables.
-We can see by looking at this method what Y value would be when X = 0.
 
 The formel we use for estimating the connection between regional development and regional inequality is:
 
@@ -646,10 +646,17 @@ Due to missing values in some of our countries are those countries with missing 
 Therefore our focus here is countries which are showing up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL) and Spain (ES).
 
 We are here looking at R2, which is value for coefficient of determination.
-This R2 coefficient of determination can be defined as a regression problem metric, that help the performance or the result of the model in R to be better.
+
+This R2 model does not tell whether your chosen model is fit or not.
+R2 shows us how much variation of a dependent variable is explained by the independent variable in a regression model, because it is a statistical measure.
 
 If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high.
 It is the highest value, which is 1.000.
+The fact of the matter is that two values always fit one and other perfectly.
+
+There is two observations that always fit one another perfectly; that is called a statistical artefact.
+R2 has range of values form 0 to 1.
+
 What we can analyze here by looking at this value R2 1.000 for Slovenia (SI), is that the value that is analyzed is suitable or fitted for each other.
 On the other hand when we look at the R2 value for Spain (ES), we can see that it is 0.0.
 This value indicates that, this model is not suitable for our model.
@@ -673,10 +680,7 @@ lm_function_plot(data2010)
 The graph shows us that when prosperity increases, income and GDP per capita are less different.
 To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
 
-What we can see from this graph is a estimate.
-The parameters we are looking at here is: Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
-If we call these parameters with econometric language, we call them β1 and β2 values.
-We call these values prediction of the depended variable, fitted values.
+On this graph we can see Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
 
 Now we are going to look at a simple regression model for our 4 countries.
 In this case: Spain (ES), Poland (PL), Netherlands (NL) and Slovenia (SI).
@@ -827,6 +831,7 @@ Here the population relationship is linear.
 We have a random sample of our model.
 
 **Homoskedasticity:** Here we look at the error term, which has the same variation.
+Homoskedasticity can be defined as a robust for interference of our estimate.
 
 The formula is like:
 
@@ -836,7 +841,7 @@ $$
 
 When we look at the graph under, which is related to our question, we can see that the graph Residuals vs Fitted line on the left side is suitable for us.
 
-Skriver mer imorgen...
+**Normality:** The population error term is normally distributed with mean zero and variance.
 
 Below we will look at how Netherlands (NL) fit the assumptions of OSL.
 
@@ -848,7 +853,7 @@ par(mfrow = c(1,1))
 plot(mylm)
 ```
 
--   ***Kun grafen oppe til venstre (residuals / fitted values) som er viktig for oss***
+The graph, which is related to our assignment is the graph: Residuals vs Fitted values.
 
 ***Graph 15***
 
