@@ -18,6 +18,8 @@ library(magrittr)
 library(readr)
 library(rio)
 library(huxtable)
+library(lmtest)
+library(car)
 ```
 
 ## 1 Introduction
@@ -964,16 +966,21 @@ It can be defined as a statistical technique that can be used to analyze the rel
 
 ```{r}
 multi_linear_regression_model_1 <- function(mlrdata){
-lm.1 = lm(gini_n2*1000 ~ edu1 , mlrdata) 
-lm.2 = lm(gini_n2*100 ~  infra1, mlrdata)
-lm.3 = lm(gini_n2*100 ~ edu1 + infra1, mlrdata)
-lm.4 = lm(gini_n2*100 ~  demo1, mlrdata)
-lm.5 = lm(gini_n2*100 ~ edu1 + demo1, mlrdata)
+lm.1 = lm(gini_n2*100 ~ gdp_capita_n2, mlrdata)  %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.2 = lm(gini_n2*100 ~ gdp_capita_n2 +I(edu1/1000), mlrdata) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.3 = lm(gini_n2*100 ~ gdp_capita_n2 +I(infra1/1000), mlrdata) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.4 = lm(gini_n2*100 ~ gdp_capita_n2 + demo1, mlrdata) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.5 = lm(gini_n2*100 ~ gdp_capita_n2 +I(infra1/1000) + I(edu1/1000) + demo1, mlrdata) %>%
+  coeftest(vcov = hccm, save = TRUE)
 
 
 #Gen Table
   huxreg(
-  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
+  list("(1)" = lm.1, "(2)" = lm.2, "(3)" = lm.3,"(4)" = lm.4,"(5)" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
   stars = c("***" = 0.01, "**" = 0.05, "*" = 0.10),
@@ -993,7 +1000,7 @@ $$
 ```{r}
 #| label: tbl-mlr-netherlands
 #| tbl-cap: Multi linear regression model NL
-multi_linear_regression_model_1(NL2010)
+multi_linear_regression_model_1(data2010)
 
 ```
 
@@ -1092,18 +1099,97 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 
 # 4 Assignment 3
 
-In last assignment we focused on estimating the effect of regional development on regional inequality.
 In this assignment are we going to focus on Alternative function forms.
 
 ## Test if the effect of development is significantly different subset of countries in your data set:
+
+```{r}
+data2010NED <- data2010 %>%
+  filter(id_nuts2 != 'NL') 
+
+data2010$NED <- ifelse(data2010$id_nuts0 == "NL", 1,0)
+data2010$Oth <- ifelse(data2010$id_nuts0 == "NL", 0,1)
+
+data2010 <- data2010
+lm.10 = lm(gini_n2 ~ gdp_capita_n2, filter(data2010, NED == 1))
+lm.11 = lm(gini_n2 ~ gdp_capita_n2, filter(data2010, NED == 0))
+lm.12 = lm(gini_n2 ~ gdp_capita_n2 * NED , data2010)
+
+#Gen Table
+  huxreg(
+  list("Only Nederlands" = lm.10, "No Nederlands" = lm.11, "Interaction" = lm.12),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
+   stars = c("*" = 0.1, "**" = 0.05, "***" = 0.01),
+  note = "Note: {stars} T statistics in brackets.")
+```
 
 info.........
 
 ## Explore alternative functional forms (e.g. log, cubical estimate, ...) of yur previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
 
+```{r}
+data2010 <- data2010
+lm.13 = lm(gini_n2 ~ log(gdp_capita_n2), filter(data2010, NED == 1)) %>%
+coeftest(vcov = hccm, save = TRUE)
+lm.14 = lm(gini_n2 ~ log(I(gdp_capita_n2)^2), filter(data2010, NED == 1)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.15 = lm(gini_n2 ~ log(I(gdp_capita_n2)^3), filter(data2010, NED == 1)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.16 = lm(gini_n2 ~ gdp_capita_n2*NED, data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+#Gen Table
+  huxreg(
+  list("Only Nederlands (log)" = lm.13, "Only Nederlands (log) ^2" = lm.14, "Only Nederlands ^3" = lm.15, "Interaction" = lm.16),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
+   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
 info........
 
 ### Plot the corresponding scatter plots with the estimate line:
+
+```{r}
+ggplot(data = data2010, aes(x = gini_n2, y = gdp_capita_n2)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+   geom_smooth(method = "lm", se = TRUE) +
+  theme_bw() +
+  xlab("Gini") +
+  ylab("GDP per capita")
+```
+
+```{r}
+ggplot(multi_linear_regression_model_1(data2010), aes(x = gini_n2, y = gdp_capita_n2)) +
+geom_point(size = 2.5, alpha = 0.8, aes(color = NED, shape = NED)) +
+geom_hline(yintercept = 0) +
+geom_vline(xintercept = 0) +
+geom_line(stat = "smooth", color = "orange", method = lm, alpha = 0.2, size = 1) +
+geom_abline(
+  intercept = lm_gdppc$coefficients[1],
+  slope = lm_gdppc$coefficients[2],
+  color = red_pink, size = 1
+) +
+geom_abline(
+  intercept = lm_gdppc$coefficients[1],
+  slope = lm_gdppc$coefficients[2],
+  color = "darkslategrey", size = 1
+) +
+xlab("Gini") +
+ylab("gdp_per_capita") +
+theme_empty +
+theme(
+  axis.title = element_text(size = 18),
+  plot.margin = structure(c(0, 0, 0.1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+) +
+scale_color_manual("", values = c(red_pink, "darkslategrey"), labels = c("Fra", "Male")) +
+scale_shape_manual("", values = c(16, 1), labels = c("Female", "Male"))
+```
 
 Info:
 
