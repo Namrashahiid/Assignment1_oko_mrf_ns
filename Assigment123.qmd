@@ -886,19 +886,29 @@ We have chosen these files: 'demo_r\_pjangroup.csv', 'edat_lfse_04.csv' and 'tra
 
 The file 'tran_r\_vehst.csv' shows us stock and vehicles by category and NUTS2 regions.
 
-Meir info.
+What we can see on this table is dataset for participation rate in education and training.
+The age class this dataset is for is for people from age 25 to 64 years old.
+On the left side of the Table in Eurostat we can find countries, regions, province under time GEO.
+We can find data for years 2017-2021 on this dataset.
+The time frequency is shown: annual.
+The unit of measure is shown in Percentage.
 
 #### Education
 
 Next the file 'edat_lfse_04.csv' shows the population by educational attainment level, sex and NUTS 2 regions (%).
 
-Meir info.
+This dataset presents data on the heighest level of education successfully completed by the individuals of a given population.
+
+The data shown here is annually calculated of EU Labour Force Survey data.
+
+We are focusing on edat_lfse \_04 here, which shows us population by educational attainment level, sex and NUTS 2 regions (%).
 
 #### Demographics
 
 Finally the 'demo_r\_pjangroup.csv' shows us the population on 1 January by age group, sex and NUTS 2 region.
 
-Meir info.
+This dataset shows us population and social conditions.
+This data set contains information of usually resident population and represents the number of inhabitants of a given area on 1st January of the year.
 
 ```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE}
 #Import new data from Eurostat
@@ -1085,7 +1095,37 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 In last assignment we focused on estimating the effect of regional development on regional inequality.
 In this assignment are we going to focus on Alternative function forms.
 
-### Test if the effect of development is significantly different subset of countries in your data set:
+## Test if the effect of development is significantly different subset of countries in your data set:
+
+info.........
+
+## Explore alternative functional forms (e.g. log, cubical estimate, ...) of yur previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
+
+info........
+
+### Plot the corresponding scatter plots with the estimate line:
+
+Info:
+
+### Report the related estimates:
+
+info.....
+
+### Give a verbal interpretation of your estimate coefficients:
+
+info.....
+
+### Test for heteroskedasticity in the two new and the old model:
+
+info....
+
+## Discuss if we can interpret the estimates as causal:
+
+info...
+
+## Suggest potential remedies for eventual problems:
+
+info....
 
 ```{r}
 library(tidyverse)
