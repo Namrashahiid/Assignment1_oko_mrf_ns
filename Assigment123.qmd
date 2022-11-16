@@ -1092,6 +1092,8 @@ It is important here to point out that significance test is a given output of th
 What this test is that this provides the t-value, kind of freedom and corresponding p-value.
 
 ```{r}
+#| label: tbl-mlr-Netherland_statistics
+#| tbl-cap: Multi linear regression model for Netherlands
 data2010NED <- data2010 %>%
   filter(id_nuts2 != 'NL') 
 
@@ -1099,9 +1101,9 @@ data2010$NED <- ifelse(data2010$id_nuts0 == "NL", 1,0)
 data2010$Oth <- ifelse(data2010$id_nuts0 == "NL", 0,1)
 
 data2010 <- data2010
-lm.10 = lm(gini_n2 ~ gdp_capita_n2, filter(data2010, NED == 1))
-lm.11 = lm(gini_n2 ~ gdp_capita_n2, filter(data2010, NED == 0))
-lm.12 = lm(gini_n2 ~ gdp_capita_n2 * NED , data2010)
+lm.10 = lm(gini_n2*1000 ~ gdp_capita_n2, filter(data2010, NED == 1))
+lm.11 = lm(gini_n2*1000 ~ gdp_capita_n2, filter(data2010, NED == 0))
+lm.12 = lm(gini_n2*1000 ~ gdp_capita_n2 * NED , data2010)
 
 #Gen Table
   huxreg(
@@ -1113,9 +1115,30 @@ lm.12 = lm(gini_n2 ~ gdp_capita_n2 * NED , data2010)
   note = "Note: {stars} T statistics in brackets.")
 ```
 
-info.........
+In this task are we going to answer if the development is statistically different for different subsets of countries in our data.
+Here we have to do a hypothesis test.
+What would be sensible here to do is that we can perform a to-sided (tailed) hypothesis test:
 
-## Explore alternative functional forms (e.g. log, cubical estimate, ...) of yur previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
+$$
+H0: B1 = 0
+$$
+
+Now when we are going to to a statistical significance, we are given a p-value.
+Here in this case we have to represent a two-sided tailed test, because, in most of cases p-value is for two sided/tailed test.
+
+When we look at the bottom line, we can see where is says Note: \*\*\* p \< 0.01; \*\* p \< 0.05; \*p \< 0.1
+
+The first p-value p \< 0.01 tell us that the significance level is on 1% (0.01), the second one 5% (0.05) and the third one 10% (0.1).
+Now if we are using a two-tailed test with a significance level of for example 0.05, then a two-tailed test divide this 0.05 value in two.
+0.025 per side, in other words test half of the alpha to testing the statistical significance in one side/tail and half on the other.
+
+Now when we take initially the p-value for only Netherlands variable, we can see at 0.026 and compare it with the 0.05 significance level, than we can say at once, that we are rejecting the null hypothesis, because 0.026\<0.0.5
+
+Tror jeg har skjønt dette.
+Fortsetter skrivingen ila kvelden.
+etter at du har comittet
+
+## Explore alternative functional forms (e.g. log, cubical estimate, ...) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
 
 To find out answer to this question/ task we have to find out the what the definition to log-estimates and cubical estimates is.
 
