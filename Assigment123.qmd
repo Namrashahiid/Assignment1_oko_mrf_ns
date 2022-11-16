@@ -1219,6 +1219,8 @@ info.....
 
 Heteroskedasticity can be defined as, when all observations of the response (the dependent variable) come from distributions with the same variance.
 
+The reason why heteroskedasticity happens is, because when the standard deviations of a variable monitored over a specific time.
+
 info....
 
 ## Discuss if we can interpret the estimates as causal:
