@@ -1084,7 +1084,12 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 
 In this assignment are we going to focus on Alternative function forms.
 
-## Test if the effect of development is significantly different subset of countries in your data set:
+## Test if the effect of development is significantly different for different subset of countries in your data set:
+
+Here in this task are we going to check if the effect of the development is significantly different for different subset of countries in our dataset.
+
+It is important here to point out that significance test is a given output of the t-test in R.
+What this test is that this provides the t-value, kind of freedom and corresponding p-value.
 
 ```{r}
 data2010NED <- data2010 %>%
@@ -1112,6 +1117,10 @@ info.........
 
 ## Explore alternative functional forms (e.g. log, cubical estimate, ...) of yur previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
 
+To find out answer to this question/ task we have to find out the what the definition to log-estimates and cubical estimates is.
+
+Log, logarithm can be defined as the inverse function to exponentiation.
+
 ```{r}
 data2010 <- data2010
 lm.13 = lm(gini_n2 ~ log(gdp_capita_n2), filter(data2010, NED == 1)) %>%
@@ -1136,6 +1145,11 @@ lm.16 = lm(gini_n2 ~ gdp_capita_n2*NED, data2010) %>%
 info........
 
 ### Plot the corresponding scatter plots with the estimate line:
+
+Scatter plot in R, can be defined as a type of plot that is used to display the relationship between two numerical variables, and plots.
+The dots shown on the scatter plot table shows us the dot for each observation.
+The X-axis have one type of variables, and the Y-axis have other type of variables.
+The variables on both axis results plotting against one another.
 
 ```{r}
 ggplot(data = data2010, aes(x = gini_n2, y = gdp_capita_n2)) +
@@ -1185,6 +1199,10 @@ info.....
 info.....
 
 ### Test for heteroskedasticity in the two new and the old model:
+
+Heteroskedasticity can be defined as, when all observations of the response (the dependent variable) come from distributions with the same variance.
+
+The reason why heteroskedasticity happens is, because when the standard deviations of a variable monitored over a specific time.
 
 info....
 
