@@ -72,12 +72,12 @@ gdpfile %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
 popfile %<>% select(unit, geo, TIME_PERIOD, OBS_VALUE)
 
 # Filter for the countries we are going to study and change variablenames
-gdpdata <- filter(gdpfile,unit == "MIO_EUR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('ES...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>%
+gdpdata <- filter(gdpfile, unit == "MIO_EUR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('EL...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>%
   mutate(gdp_n3 = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
   select(gdp_n3, year, id_nuts3)
 
 # Filter for gdp per capita
-popdata <- filter(popfile,unit == "NR") %>% 
+popdata <- filter(popfile, unit == "NR" & (grepl('IE...', geo) | grepl('PL...', geo) | grepl('ES...', geo) | grepl('SI...', geo) | grepl('NL...', geo) | grepl('EL...', geo) | grepl('NO...', geo) | grepl('AL...', geo))) %>% 
   mutate(pop = OBS_VALUE, year = TIME_PERIOD, id_nuts3 = geo) %>%
   select(pop, year, id_nuts3)
 
@@ -360,7 +360,7 @@ tmp %>%
   filter(id_nuts0 == "NL")  %>% 
   distinct(id_nuts2, year,.keep_all = TRUE) %>% 
   ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
+  geom_line(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
 
@@ -376,7 +376,7 @@ tmp %>%
   filter(id_nuts0 == "ES")  %>% 
   distinct(id_nuts2, year,.keep_all = TRUE) %>% 
   ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_point(lwd = .8) +
+  geom_line(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
 
@@ -443,27 +443,13 @@ GDP per capita is a indicator of economic performance and is very normal to use 
 Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD.
 
 ```{r}
-#Regenerate gdp per capita for nuts 2 
-gdp_pc_n2_1 <- tmp %>%
-  select(year, pop, gdp_n3, id_nuts2) %>% 
-  group_by(id_nuts2, year) %>% 
-  mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
-  ungroup() %>%
-  distinct(id_nuts2, year, gdp_n2, pop_n2) %>%
-  mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2)
-```
-
-What we are doing here is that, we are regenerating data for GDP per capita from the last assignment from nuts 2 level.
-
-```{r}
 tmp_n2 <- tmp %>%
   select(year, pop, gdp_n3, id_nuts2, gini_n2) %>% 
   group_by(id_nuts2, year) %>% 
   mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
   ungroup() %>%
   distinct(id_nuts2, year, gdp_n2, pop_n2, gini_n2) %>%
-  mutate(gdp_capita_n2 = (gdp_n2 * 1000000)/pop_n2) %>%
-  filter(year == "2010" & (grepl('IE..', id_nuts2) | grepl('PL..', id_nuts2) | grepl('ES..', id_nuts2) | grepl('SI..', id_nuts2) | grepl('NL..', id_nuts2) | grepl('NO..', id_nuts2) | grepl('AL..', id_nuts2)))
+  mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2) 
 ```
 
 **Log:**
@@ -475,7 +461,6 @@ In other words it will reproduce or rescale our data more in a statistical way.
 
 ```{r}
 data2010 <- tmp_n2 %>%
-  left_join(gdp_pc_n2_1, by = c("year", "id_nuts2")) %>%
 
 # level of economic development = log(gdp per capita)
   mutate(log_gdppc = log(gdp_pc_n2)) %>% 
@@ -486,6 +471,8 @@ data2010 <- tmp_n2 %>%
 data2010 %>%
   st(.)
 ```
+
+(AL og IE har ingen observasjonar i året 2010)
 
 ***Table 9***
 
@@ -510,9 +497,8 @@ Further down in Summary Statistics, we find N variables for countries: Spain (ES
 What we can see is that Norway (NO) only have 1 variable, that is because it is only one region that is related to Norway (NO).
 On the other side we see Spain (ES) have 19 variables.
 
-We can not find our other countries, which are: Albania (AL), Ireland (IE), Greece (EL).
-The reason behind this most probably, that we are missing some observation, because we have Nuts 3 regions values and it is maybe same as in the Nuts 2 regions.
-We should have generated our data in another way, to include the Nuts 3 regions that are equal to Nuts 2 regions.
+We can not find our other countries, which are: Albania (AL), Ireland (IE).
+The reason behind this is because our dataset have no observations for AL an IE in the year 2010.
 Because we don´t have values of the countries which can not see, which are Albania (AL), Ireland (IE), Greece (EL), are we not going to focus on these countries in this assignment.
 
 ```{r}
@@ -596,16 +582,19 @@ $$
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
+#lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
 lm.1 = lm(gini_n2 ~ log_gdppc, data = PL2010)
 lm.2 = lm(gini_n2 ~ log_gdppc, data = ES2010)
 lm.3 = lm(gini_n2 ~ log_gdppc, data = SI2010)
 lm.4 = lm(gini_n2 ~ log_gdppc, data = NL2010)
-lm.5 = lm(gini_n2 ~ log_gdppc, data = data2010)
-
+lm.5 = lm(gini_n2 ~ log_gdppc, data = EL2010)
+#lm.6 = lm(gini_n2 ~ log_gdppc, data = NO2010)
+#lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
+lm.6 = lm(gini_n2 ~ log_gdppc, data = data2010)
 
 #Gen Table
   huxreg(
-  list("Poland" = lm.1, "Spain" = lm.2, "Slovenia" = lm.3, "Netherlands" = lm.4, "All four" = lm.5 ),
+  list("Poland" = lm.1, "Spain" = lm.2, "Slovenia" = lm.3, "Netherlands" = lm.4, "Greece" = lm.5, "All countries" = lm.6 ),
   statistics = c(N = "nobs", R2 = "r.squared"),
   coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
@@ -692,32 +681,9 @@ The line on y-axis is on around value 0.12 and on x-axis on ca.
 
 The dots or the different colors indicates the regions in those 4 countries mentioned above.
 
-```{r}
-#| label: fig-lm-Spain
-#| fig-cap: Estimate for Spain
-lm_function_plot(ES2010)
-```
+[Fjerna figur.. Graph 8 shows us the estimation plotted for Spain (ES). We can see that it lies in the middle and is more flat a like horizontal line on the graph. We can see different regions from Spain spread all over the graph. The slope/line is on around 0.03 on y-axis and it is not touching or crossing the x-axis. We can analyze that the line on the graph is going a little towards the x-axis. There is no region that are crossing or touching the horizontal line.]{.underline}
 
-***Graph 8***
-
-Graph 8 shows us the estimation plotted for Spain (ES).
-We can see that it lies in the middle and is more flat a like horizontal line on the graph.
-We can see different regions from Spain spread all over the graph.
-The slope/line is on around 0.03 on y-axis and it is not touching or crossing the x-axis.
-We can analyze that the line on the graph is going a little towards the x-axis.
-There is no region that are crossing or touching the horizontal line.
-
-```{r}
-#| label: fig-lm-Netherlands
-#| fig-cap: Estimate for Netherlands
-lm_function_plot(NL2010)
-```
-
-***Graph 9***
-
-We find that the slope/line here for Netherlands (NL) is positive.
-It seems like NL34 Zeelandic Flanders is approximately touching the slope/line in the graph.
-All other regions are spread all over.
+[Fjerna figur ... We find that the slope/line here for Netherlands (NL) is positive. It seems like NL34 Zeelandic Flanders is approximately touching the slope/line in the graph. All other regions are spread all over.]{.underline}
 
 ```{r}
 #| label: fig-lm-Poland
@@ -729,19 +695,6 @@ lm_function_plot(PL2010)
 
 We find that the slope/line here for Poland (PL) is also positive as for Netherlands (NL) above.
 The slope/line is on 0.05 on y-axis.
-
-```{r}
-#| label: fig-lm-Slovenia
-#| fig-cap: Estimate for Slovenia
-lm_function_plot(SI2010)
-```
-
-***Graph 10***
-
-This graph for Slovenia (SI) is special compared to those 3 above, which we mentioned earlier.
-What we find here is that there is only two variables or values for only two regions in Slovenia (SI).
-These regions are touching the slope/line perfectly, which indicates that the regression model is a fitted model.
-This is obvious since when there are only two values, it is natural that they touch the slope/line on the graph.
 
 ## Plot the residual against the predicted values of your model:
 
@@ -758,51 +711,16 @@ $$
 ```{r}
 #| label: fig-lm-Poland-res
 #| fig-cap: Residuals Poland 
-lm_residuals_plot(PL2010)
+lm_residuals_plot(data2010)
 ```
 
 ***Graph 11***
 
-What we can see from this graph is a ascending linear regression.
-For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.
+[Endra figur ... What we can see from this graph is a ascending linear regression. For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.]{.underline}
 
-```{r}
-#| label: fig-lm-Netherlands-res
-#| fig-cap: Residuals Netherlands
-lm_residuals_plot(NL2010)
-```
+[Fjerna figur ... What we see here from this graph is a regression analysis for Netherlands. We can see different type of data spread all over the graph. NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph. It is also the region which is furthest away from the regression line.]{.underline}
 
-***Graph 12***
-
-What we see here from this graph is a regression analysis for Netherlands.
-We can see different type of data spread all over the graph.
-NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph.
-It is also the region which is furthest away from the regression line.
-
-```{r}
-#| label: fig-lm-Spain-res
-#| fig-cap: Residuals Spain
-lm_residuals_plot(ES2010)
-
-```
-
-***Graph 13***
-
-This graph for Spain (ES) shows us a regression line.
-We can analyze that the slope/line is negative.
-What we can see here is how far away those regions are from the regression line.
-We can analyze that there are many region dots further from the mean value.
-
-```{r}
-#| label: fig-lm-Slovenia-res
-#| fig-cap: Residuals Slovenia
-lm_residuals_plot(SI2010)
-```
-
-***Graph 14***
-
-This graph shows us that the region dots for Slovenia (SI) are going straight across the Regression line/slope.
-There are no residuals in this graph.
+[Fjerna figur ... This graph for Spain (ES) shows us a regression line. We can analyze that the slope/line is negative. What we can see here is how far away those regions are from the regression line. We can analyze that there are many region dots further from the mean value.]{.underline}
 
 ## Discuss the classical the assumption OLS in light of your data and plots:
 
@@ -845,31 +763,17 @@ When we look at the graph under, which is related to our question, we can see th
 
 **Normality:** The population error term is normally distributed with mean zero and variance.
 
-Below we will look at how Netherlands (NL) fit the assumptions of OSL.
-
-```{r}
-#| label: fig-par-plot
-#| fig-cap: Diagnostic plots
-mylm = lm_function(NL2010)
-par(mfrow = c(1,1))
-plot(mylm)
-```
+Below we will look at how our data (NL, ES, EL, ...) fit the assumptions of OSL.
 
 The graph, which is related to our assignment is the graph: Residuals vs Fitted values.
 
-***Graph 15***
-
-What we can analyze here is that in the first graph for Netherlands (NL), we can see the comparison between Residuals and fitted values.
-The fact of the matter is that we want the red line as flat as possible.
-When we analyze the first graph we can see that the red line is kind of like a mountain shaped.
-The fitted values goes from 0.00 to 0.12.
-The values relies between these numbers.
-
 ```{r}
 #| label: fig-par-plot
 #| fig-cap: Diagnostic plots
-plot(lm.5)
+plot(lm.6)
 ```
+
+[Endra figur ... What we can analyze here is that in the first graph for Netherlands (NL), we can see the comparison between Residuals and fitted values. The fact of the matter is that we want the red line as flat as possible. When we analyze the first graph we can see that the red line is kind of like a mountain shaped. The fitted values goes from 0.00 to 0.12. The values relies between these numbers.]{.underline}
 
 We could have also discussed Breusch-Pagan Test here.
 This test is used to determine if heteroscedasticy is present in a present regression analysis.
