@@ -921,7 +921,8 @@ demo <- read_csv('demo_r_pjangroup.csv') %>%
   select(id_nuts2, year, demo1)
 
 edu <- read_csv('edat_lfse_04.csv') %>%
-  filter(TIME_PERIOD == "2010" & age == "Y25-64" & sex == "T" & isced11 == "ED0-2" & grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES..', geo) | grepl('NO..', geo) | grepl('AL..', geo)) %>%
+filter(TIME_PERIOD == 2010 & age == "Y25-64" & sex == "TRUE" & isced11 == "ED0-2" & unit == "PC") %>%
+  filter( grepl('IE..', geo) | grepl('PL..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('ES..', geo) | grepl('NO..', geo) | grepl('AL..', geo)) %>%
   select(unit, geo, age, sex, TIME_PERIOD, OBS_VALUE) %>%
   mutate(edu1 = OBS_VALUE, year = TIME_PERIOD, id_nuts2 = geo) %>%
   select(id_nuts2, year, edu1)
@@ -966,23 +967,23 @@ It can be defined as a statistical technique that can be used to analyze the rel
 
 ```{r}
 multi_linear_regression_model_1 <- function(mlrdata){
-lm.1 = lm(gini_n2*100 ~ gdp_capita_n2, mlrdata)  %>%
+lm.1 = lm(gini_n2*1000 ~ gdp_capita_n2, mlrdata)  %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.2 = lm(gini_n2*100 ~ gdp_capita_n2 +I(edu1/1000), mlrdata) %>%
+lm.2 = lm(gini_n2*1000 ~ gdp_capita_n2 +I(edu1/100), mlrdata) %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.3 = lm(gini_n2*100 ~ gdp_capita_n2 +I(infra1/1000), mlrdata) %>%
+lm.3 = lm(gini_n2*1000 ~ gdp_capita_n2 +I(infra1/1000), mlrdata) %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.4 = lm(gini_n2*100 ~ gdp_capita_n2 + demo1, mlrdata) %>%
+lm.4 = lm(gini_n2*1000 ~ gdp_capita_n2 + I(demo1/1000), mlrdata) %>%
   coeftest(vcov = hccm, save = TRUE)
-lm.5 = lm(gini_n2*100 ~ gdp_capita_n2 +I(infra1/1000) + I(edu1/1000) + demo1, mlrdata) %>%
+lm.5 = lm(gini_n2*1000 ~ gdp_capita_n2 +I(infra1/1000) + I(edu1/100) + I(demo1/1000), mlrdata) %>%
   coeftest(vcov = hccm, save = TRUE)
-
 
 #Gen Table
   huxreg(
   list("(1)" = lm.1, "(2)" = lm.2, "(3)" = lm.3,"(4)" = lm.4,"(5)" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
+  #coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
+  #coefs = c(Const. = "(Intercept)", GdpPerCapita = "gdp_capita_n2", Education = "I(edu1/1000)", Infrastructure = "I(infra1/1000)", Demographics = "I(demo1/1000)"),
   stars = c("***" = 0.01, "**" = 0.05, "*" = 0.10),
   note = "Note: {stars} T statistics in brackets."
   )
@@ -998,29 +999,11 @@ Yi = B0 + B1X1i + B2X2i + ...+ BkXki + ui
 $$
 
 ```{r}
-#| label: tbl-mlr-netherlands
-#| tbl-cap: Multi linear regression model NL
+#| label: tbl-mlr-data2010
+#| tbl-cap: Multi linear regression model data2010
 multi_linear_regression_model_1(data2010)
 
 ```
-
-***Table 11***
-
-```{r}
-#| label: tbl-mlr-spain
-#| tbl-cap: Multi linear regression model ES
-multi_linear_regression_model_1(ES2010)
-```
-
-***Table 12***
-
-```{r}
-#| label: tbl-mlr-poland
-#| tbl-cap: Multi linear regression model PL
-multi_linear_regression_model_1(PL2010)
-```
-
-***Table 13***
 
 ### Discuss the overall fit of your model:
 
