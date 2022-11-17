@@ -1014,28 +1014,10 @@ lm.12 = lm(gini_n2*1000 ~ gdp_pc_n2 * GRC , data2010)
   note = "Note: {stars} T statistics in brackets.")
 ```
 
-```{r}
-data2010 <- data2010
-lm.13 = lm(gini_n2 ~ log(gdp_pc_n2) , data2010) %>%
-coeftest(vcov = hccm, save = TRUE)
-lm.14 = lm(gini_n2 ~ log(I(gdp_pc_n2)^2), data2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.15 = lm(gini_n2 ~ log(I(gdp_pc_n2)^3), data2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-#Gen Table
-  huxreg(
-  list("All countries (log)" = lm.13, "All countries (log) ^2" = lm.14, "All countries ^3" = lm.15, "Interaction" = lm.16),
-  statistics = c("N" = "nobs", 
-      R2 = "r.squared", "F statistic" = "statistic",
-      "P value" = "p.value"),
-   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
-  note = "Note: {stars} T statistics in brackets."
-  )
-```
-
 Here in this task are we going to check if the effect of the development is significantly different for different subset of countries in our dataset.
+
+The country we re looking here is Greece.
+Why we have chosen Greece as country, it is because the country have many variables, that we can use for our test.
 
 It is important here to point out that significance test is a given output of the t-test in R.
 What this test is that this provides the t-value, kind of freedom and corresponding p-value.
@@ -1057,19 +1039,62 @@ The first p-value p \< 0.01 tell us that the significance level is on 1% (0.01),
 Now if we are using a two-tailed test with a significance level of for example 0.05, then a two-tailed test divide this 0.05 value in two.
 0.025 per side, in other words test half of the alpha to testing the statistical significance in one side/tail and half on the other.
 
-Now when we take initially the p-value for only Netherlands variable, we can see at 0.026 and compare it with the 0.05 significance level, than we can say at once, that we are rejecting the null hypothesis, because 0.026\<0.05
+If we look at *No Greece* model, we can see that the p-value is: 0.059.
+If we now take initially the significance level 0.05 (5%).
+We can here conclude by saying, that we are not able to reject the null hypothesis, because the p-value is higher than the significance level:
 
-Tror jeg har skjønt dette.
-Fortsetter skrivingen ila kvelden.
-etter at du har comittet
+$$
+0.059>0.05
+$$
 
-## Explore alternative functional forms (e.g. log, cubical estimate, ...) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
+Now we are going to look at the Only Greece modeø.
+The p-value for Only Greece is 0.007.
+If we compare 0.007 with a significance level of 0.05 (5%), we than immediately know that we have to reject the null hypothesis, because the p-value is smaller that the significance value/level.
+Rejecting the null hypothesis because:
 
-To find out answer to this question/ task we have to find out the what the definition to log-estimates and cubical estimates is.
+$$
+0.007<0.05
+$$
 
+When we take a look at the interaction model, this interaction model tells us or in other words allow us to find the effect between No Greece model and Only Greece model.
+
+If we look at intercept p-value on 0.063 and on the other use 0.05 (5%) significance level, we can conclude by saying that we can not reject the null hypothesis here because the p-value is larger than the significance level on 0.05.
+
+$$
+0.063>0.05
+$$
+
+## Explore alternative functional forms (e.g. log, cubial estimate, ...) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
+
+To find out the answer to this question/task we have to find out what the definition to log estimates and cubical estimates is.
 Log, logarithm can be defined as the inverse function to exponentiation.
 
-info........
+```{r}
+data2010 <- data2010
+lm.13 = lm(gini_n2 ~ log(gdp_pc_n2) , data2010) %>%
+coeftest(vcov = hccm, save = TRUE)
+lm.14 = lm(gini_n2 ~ log(I(gdp_pc_n2)^2), data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.15 = lm(gini_n2 ~ log(I(gdp_pc_n2)^3), data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+#Gen Table
+  huxreg(
+  list("All countries (log)" = lm.13, "All countries (log) ^2" = lm.14, "All countries ^3" = lm.15, "Interaction" = lm.16),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
+   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
+Here in this task are we are we going to look at all of countries.
+Now the question is what does Log\^2 tell us.
+Log\^2 is a mathematical function that calculates the binary logarithm.
+
+If we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log and log\^2 in all countries.
 
 ### Plot the corresponding scatter plots with the estimate line:
 
