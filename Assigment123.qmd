@@ -1096,6 +1096,18 @@ Log\^2 is a mathematical function that calculates the binary logarithm.
 
 If we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log and log\^2 in all countries.
 
+Now looking at the p-value for interaction, which is: 0.016.
+If we take 0.05 (5%) as a significance level, we can see that the p-value is smaller than the confidence level 0.05.
+Here we can conclude by saying that we have to reject the null hypothesis.
+
+$$
+0.016<0.05
+$$
+
+We can see that totally there is 45 observation (N) for all countries.
+
+Fortsetter ikveld\<333333
+
 ### Plot the corresponding scatter plots with the estimate line:
 
 Scatter plot in R, can be defined as a type of plot that is used to display the relationship between two numerical variables, and plots.
