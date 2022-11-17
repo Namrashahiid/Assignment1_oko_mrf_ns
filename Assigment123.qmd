@@ -1129,6 +1129,7 @@ As we can see this scatter plot is representing two dimensional data.
 As we can see on the x-axis we find Gini value and on the other side on the y-axis we can find the information for GDP per capita.
 The fact of the matter is that placement of the values on x-axis and y-axis represent if the correlation between x-axis and y-axis is positive or negative.
 This all depends on as mentioned the placement/position of the values on the plot.
+The ending point on the x-axis is 0.20 and on the y-axis is 4000.
 
 Here the relationship between gini and GDP per capita is shown in this scatter plot.
 Now when we have more then two varaiables, we want to here find the correlation between the one variable and the all others.
@@ -1138,6 +1139,15 @@ We find here gini on GDP per capita.
 We can see on the plot that there is two lines.
 One is linear negative regression line and other is mathematically said quadratic function, which goes somehow up and down.
 We find a fitted line in this scatter plot that this shows us data along with the fitted line.
+
+As we can see there is a positive relationship between gini and GDP per capita, but there is not a moderately strong relationship.
+We can see that the fitted linear regression line is negative.
+The quadratic line shows us that the line fits the on 0.025 gini and 2500 GDP per capita.
+This can be defined as correlation relationship at this point.
+
+We have some values that are unusual or easily said they are extreme, because they do not fit the line or they are far away from the line.
+Here in this case we are talking about the value (dot), which is on the top on the right side gini on 0.18 and approximately on 4300 on GDP per capita.
+The value is a bit far away from the values.
 
 ### Give a verbal interpretation of your estimate coefficients:
 
