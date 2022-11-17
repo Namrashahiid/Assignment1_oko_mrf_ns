@@ -1104,8 +1104,6 @@ $$
 
 We can see that totally there is 45 observation (N) for all countries.
 
-Fortsetter ikveld\<333333
-
 ### Plot the corresponding scatter plots with the estimate line:
 
 Scatter plot in R, can be defined as a type of plot that is used to display the relationship between two numerical variables, and plots.
@@ -1125,15 +1123,23 @@ ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2)) +
   ylab("GDP per capita")
 ```
 
-Info:
-
 ### Report the related estimates:
 
-info.....
+As we can see this scatter plot is representing two dimensional data.
+As we can see on the x-axis we find Gini value and on the other side on the y-axis we can find the information for GDP per capita.
+The fact of the matter is that placement of the values on x-axis and y-axis represent if the correlation between x-axis and y-axis is positive or negative.
+This all depends on as mentioned the placement/position of the values on the plot.
+
+Here the relationship between gini and GDP per capita is shown in this scatter plot.
+Now when we have more then two varaiables, we want to here find the correlation between the one variable and the all others.
+
+When we look at our scatter plot for the gini and GDP per capita, we can immediately see that it is a negative trend.
+We find here gini on GDP per capita.
+We can see on the plot that there is two lines.
+One is linear negative regression line and other is mathematically said quadratic function, which goes somehow up and down.
+We find a fitted line in this scatter plot that this shows us data along with the fitted line.
 
 ### Give a verbal interpretation of your estimate coefficients:
-
-info.....
 
 ### Test for heteroskedasticity in the two new and the old model:
 
