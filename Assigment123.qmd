@@ -118,6 +118,8 @@ The main function of metadata is to explain data by giving definitions, for exam
 We now have information on GDP per capita in different regions from different countries that we have chosen.
 
 ```{r}
+#| label: tbl-summary_gdp
+#| tbl-cap: Summary
 # Report the essential descriptive statistics 
 # for you data set (Mean, Min, Max,..:)
 tmp %>% 
@@ -137,13 +139,13 @@ The smallest region has a population of 10 603, and the largest have a populatio
 From [Table 1] and [Table 2] we see that the wealthiest regions in our dataset are located in the Netherlands and in Norway, and that the least wealthiest regions are located in Poland.
 
 ```{r}
+#| label: fig-gdp_pc_nuts0
+#| fig-cap: Gdp per capita for NUTS0 
 tmp %>%  distinct(id_nuts0, year,.keep_all = TRUE) %>% 
   ggplot(aes(x = year, y = GDP_capita, fill = id_nuts0, color = id_nuts0)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
-
-***Graph: 1***
 
 When we look at graph 1, we see a common trend in forward growth in all of the countries.
 Norway´s GDP are on the top (the blue line on top).
@@ -166,14 +168,14 @@ tmp_1 <- tmp %>%
   filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
   slice_min(GDP_capita, n = 10) %>%  select(id_nuts3)
 
+#| label: fig-gdp_pc_pl
+#| fig-cap: Gdp per capita for Poland
 tmp %>%   
   filter(id_nuts3 %in% tmp_1 $ id_nuts3) %>% 
   ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
-
-***Graph 2:***
 
 Here we can see the GDP per capita for polish regions.
 If we take a look at the orange line, which refers to PL214, we see that it had its down period to start with.
@@ -189,14 +191,14 @@ tmp_1 <- tmp %>%
   slice_max(GDP_capita, n = 10) %>%  
   select(id_nuts3)
 
+#| label: fig-gdp_pc_nl
+#| fig-cap: Gdp per capita for Netherlands
 tmp %>%   
   filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
   ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
-
-***Graph 3:***
 
 This table shows regional GDP per capita for the 10 highest income regions.
 Nine of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway and the region Nordland (NO071).
@@ -212,6 +214,8 @@ This can for example be done by finding the wealthiest and least wealthiest regi
 ### GDP per capita for Norway:
 
 ```{r}
+#| label: tbl-summary_Norway
+#| tbl-cap: Summary Norway
 tmp %>%
   filter(id_nuts0 == "NO" , year == 2010) %>%
   select(gdp_n3, pop, GDP_capita) %>%
@@ -230,13 +234,13 @@ We are therefore going take a closer look at other countries.
 ### GDP per capita for Spain:
 
 ```{r}
+#| label: tbl-wealthiest_ES
+#| tbl-cap: 3 wealthiest regions in ES
 tmp %>%
   filter(id_nuts0 == "ES" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_max(GDP_capita, n = 3)
 ```
-
-***Table 3:***
 
 Looking at this table for the three wealthiest regions in Spain we see the GDP per capita for ES211 (the first region) and ES300 (the second region) and ES212 (the third region).
 There is no such big difference in them.
@@ -244,13 +248,13 @@ The observation between these regions are somehow consistent.
 If we look at our next table 4, we can see the least wealthiest regions in Spain.
 
 ```{r}
+#| label: tbl-least_wealthiest_ES
+#| tbl-cap: 3 least wealthiest regions in ES
 tmp %>%
   filter(id_nuts0 == "ES" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_min(GDP_capita, n = 3)
 ```
-
-***Table 4:***
 
 When we look at this table 4, we can see the least wealthiest regions in Spain.
 Comparing GDP per capita from table 4 with table 3 we can see that there is difference between values in both tables.
@@ -259,58 +263,58 @@ The three wealthiest regions are twice as wealthy as the least wealthiest.
 ### GDP per capita for Poland
 
 ```{r}
+#| label: tbl-wealthiest_PL
+#| tbl-cap: 3 wealthiest regions in PL
 tmp %>%
   filter(id_nuts0 == "PL" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_max(GDP_capita, n = 3)
 ```
-
-***Table 5:***
 
 When we look at table 5 we see the wealthiest regions in Poland.
 There are a difference of over 10 000 gdp per capita from the most wealthiest to the third most wealthy region.
 Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
 
 ```{r}
+#| label: tbl-least_wealthiest_PL
+#| tbl-cap: 3 least wealthiest regions in PL
 tmp %>%
   filter(id_nuts0 == "PL" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-***Table 6:***
-
 We can here see the least wealthiest regions in Poland.
 We can see that there is big difference between the wealthiest regions from table 5 and table 6 (least wealthiest regions) in Poland.
 The wealthiest region in Poland are almost 5 times wealthier than the least wealthy region in Poland.
 This shows us that there are big differences in living conditions in Poland.
 
-### GDP per capita for Albania
+### GDP per capita for Slovenia
 
 ```{r}
+#| label: tbl-wealthiest_SI
+#| tbl-cap: 3 wealthiest regions in SI
 tmp %>%
   filter(id_nuts0 == "SI" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_max(GDP_capita, n = 3)
 ```
 
-***Table 7:***
-
-When we look at table 7 we see the wealthiest regions in Albania.
+When we look at table 7 we see the wealthiest regions in Slovenia.
 
 ```{r}
+#| label: tbl-least_wealthiest_SI
+#| tbl-cap: 3 least wealthiest regions in SI
 tmp %>%
   filter(id_nuts0 == "SI" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-***Table 8:***
-
-Here we see the least wealthiest regions in Albania.
-In comparison to the wealthiest regions in Albania there are not that big gap.
+Here we see the least wealthiest regions in Slovenia.
+In comparison to the wealthiest regions in Slovenia there are not that big gap.
 Compared to the other countries we have looked at (Poland and Spain), there are smaller differences between the richest and the poorest regions.
-Albania is generally not that rich compared to the other countries in graph 1.
+Slovenia is generally not that rich compared to the other countries in graph 1.
 
 ## 2.3 Regional inequity measures:
 
@@ -356,6 +360,8 @@ We can also see that mean is 0, which means that some regions have no inequality
 We look more at this in the next graph.
 
 ```{r}
+#| label: fig-gini_netherlands
+#| fig-cap: Gini Netherlands
 tmp %>%
   filter(id_nuts0 == "NL")  %>% 
   distinct(id_nuts2, year,.keep_all = TRUE) %>% 
@@ -364,14 +370,14 @@ tmp %>%
    labs(x = "Year", y = "Gini")
 ```
 
-***Graph 4:***
-
 Studying the level of inequality over time for regions in Netherlands we see that most regions follow a common trend.
 There are not a lot of changes over time.
 This is for example shown in the graph over NUTS2 regions in the Netherlands.
 We also see that one region has 0 for all observations, which means low/no inequality.
 
 ```{r}
+#| label: fig-gini_spain
+#| fig-cap: Gini Spain
 tmp %>%
   filter(id_nuts0 == "ES")  %>% 
   distinct(id_nuts2, year,.keep_all = TRUE) %>% 
@@ -379,8 +385,6 @@ tmp %>%
   geom_line(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
-
-***Graph 5:***
 
 In Graph 4 here we can see descriptive data for Spain.
 If we take a look at the green dots on top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
@@ -397,11 +401,11 @@ When we talk about Outlier discussion part its normal to define the word outlier
 The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
 
 ```{r}
+#| label: fig-outlier
+#| fig-cap: Outliers
 ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
   geom_point()
 ```
-
-***Graph 6:***
 
 ### Discuss briefly if there are noteworthy outliers:
 
@@ -473,8 +477,6 @@ data2010 %>%
 ```
 
 (AL og IE har ingen observasjonar i året 2010)
-
-***Table 9***
 
 Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
 What value 0 expresses is that there is perfect equality, where all the values are the same.
@@ -666,8 +668,6 @@ So the first we are going to do is to analyze all four countries in one table.
 lm_function_plot(data2010)
 ```
 
-***Graph 7***
-
 The graph shows us that when prosperity increases, income and GDP per capita are less different.
 To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
 
@@ -691,8 +691,6 @@ The dots or the different colors indicates the regions in those 4 countries ment
 lm_function_plot(PL2010)
 ```
 
-***Table 10***
-
 We find that the slope/line here for Poland (PL) is also positive as for Netherlands (NL) above.
 The slope/line is on 0.05 on y-axis.
 
@@ -709,12 +707,20 @@ Residual = Observed value - Predicted value
 $$
 
 ```{r}
-#| label: fig-lm-Poland-res
-#| fig-cap: Residuals Poland 
-lm_residuals_plot(data2010)
+#Plot the residuals against the predicted values of your model
+#reg1 <- lm(price ~ lotsize + sqrft + bdrms, data = hprice1) 4
+#plot5
+#reg %>% 6
+  #ggplot(aes(x = fitted(reg), y = resid(reg))) +7
+  #geom_point(color = "darkslategray", size = 3) +8
+  #theme_simple + xlab("predicted values") + ylab("residuals")
 ```
 
-***Graph 11***
+```{r}
+#| label: fig-lm-data2010-res
+#| fig-cap: Residuals all countries 
+lm_residuals_plot(data2010)
+```
 
 [Endra figur ... What we can see from this graph is a ascending linear regression. For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.]{.underline}
 
@@ -945,12 +951,10 @@ $$
 #### Education
 
 ```{r}
-#| label: tbl-inference-education
+#| label: tbl-inference-edu
 #| tbl-cap: Education linear model
 lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 ```
-
-***Table 14***
 
 What we can find here is that education has its p-value on 0.79.
 The estimation value is on the intercept 0.05.
@@ -960,12 +964,10 @@ Therefore we can not reject it.
 #### Infrastructure
 
 ```{r}
-#| label: tbl-inference-motorway
-#| tbl-cap: Motorway linear model
+#| label: tbl-inference-infra
+#| tbl-cap: Infrastructure linear model
 lm(gini_n2 ~ infra1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 ```
-
-***Table 15***
 
 When wee look at the p value for the infrastructure, we find that the p value is 0.68.
 A large p-value indicates that it is a weak evidence against the null hypothesis, so you fail to reject it.
@@ -974,13 +976,11 @@ In this case p-value on 0.68 is pretty high and there is weak evidence against t
 #### Demographics
 
 ```{r}
-#| label: tbl-inference-lifexp
-#| tbl-cap: Life expectancy age linear model
+#| label: tbl-inference-demo
+#| tbl-cap: Demographics linear model
 lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
 #qt(0.95,100)
 ```
-
-***Table 16***
 
 Here the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
 
@@ -991,8 +991,8 @@ In this assignment are we going to focus on Alternative function forms.
 ## Test if the effect of development is significantly different for different subset of countries in your data set:
 
 ```{r}
-#| label: tbl-mlr-Netherland_statistics
-#| tbl-cap: Multi linear regression model for Netherlands
+#| label: tbl-mlr-only_greece
+#| tbl-cap: Multi linear regression model .......
 data2010NED <- data2010 %>%
   filter(id_nuts2 != 'EL') 
 
@@ -1015,16 +1015,12 @@ lm.12 = lm(gini_n2*1000 ~ gdp_pc_n2 * GRC , data2010)
 ```
 
 Here in this task are we going to check if the effect of the development is significantly different for different subset of countries in our dataset.
-
-The country we re looking here is Greece.
-Why we have chosen Greece as country, it is because the country have many variables, that we can use for our test.
-
+The country we are looking at is Greece.
+We have chosen the country Greece, because it is the country that have the most observations of our selected countries.
 It is important here to point out that significance test is a given output of the t-test in R.
 What this test is that this provides the t-value, kind of freedom and corresponding p-value.
-
-In this task are we going to answer if the development is statistically different for different subsets of countries in our data.
-Here we have to do a hypothesis test.
-What would be sensible here to do is that we can perform a to-sided (tailed) hypothesis test:
+We have to do a hypothesis test.
+What would be sensible to do here is to perform a to-sided (tailed) hypothesis test:
 
 $$
 H0: B1 = 0
@@ -1070,6 +1066,8 @@ To find out the answer to this question/task we have to find out what the defini
 Log, logarithm can be defined as the inverse function to exponentiation.
 
 ```{r}
+#| label: tbl-mlr-all_counties
+#| tbl-cap: Multi linear regression model .......
 data2010 <- data2010
 lm.13 = lm(gini_n2 ~ log(gdp_pc_n2) , data2010) %>%
 coeftest(vcov = hccm, save = TRUE)
@@ -1085,7 +1083,7 @@ lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
   statistics = c("N" = "nobs", 
       R2 = "r.squared", "F statistic" = "statistic",
       "P value" = "p.value"),
-   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+   stars = c("*" = 0.1, "**" = 0.05, "***" = 0.01),
   note = "Note: {stars} T statistics in brackets."
   )
 ```
@@ -1116,6 +1114,8 @@ The X-axis have one type of variables, and the Y-axis have other type of variabl
 The variables on both axis results plotting against one another.
 
 ```{r}
+#| label: fig-mlr-scatterplot_fittedline
+#| fig-cap: Corresponding scatter plot with the fitted line  
 ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2)) +
   geom_point() +
   geom_smooth(se = FALSE) +
@@ -1123,35 +1123,6 @@ ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2)) +
   theme_bw() +
   xlab("Gini") +
   ylab("GDP per capita")
-```
-
-```{r}
-lm_function <- function(lmdata) {
-ggplot(multi_linear_regression_model_1(data2010), aes(x = gini_n2, y = gdp_pc_n2)) +
-geom_point(size = 2.5, alpha = 0.8, aes(color = NED, shape = NED)) +
-geom_hline(yintercept = 0) +
-geom_vline(xintercept = 0) +
-geom_line(stat = "smooth", color = "orange", method = lm, alpha = 0.2, size = 1) +
-geom_abline(
-  intercept = lm_gdppc$coefficients[1],
-  slope = lm_gdppc$coefficients[2],
-  color = red_pink, size = 1
-) +
-geom_abline(
-  intercept = lm_gdppc$coefficients[1],
-  slope = lm_gdppc$coefficients[2],
-  color = "darkslategrey", size = 1
-) +
-xlab("Gini") +
-ylab("gdp_per_capita") +
-theme_empty +
-theme(
-  axis.title = element_text(size = 18),
-  plot.margin = structure(c(0, 0, 0.1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
-) +
-scale_color_manual("", values = c(red_pink, "darkslategrey"), labels = c("Fra", "Male")) +
-scale_shape_manual("", values = c(16, 1), labels = c("Female", "Male"))
-}
 ```
 
 Info:
@@ -1196,88 +1167,6 @@ info...
 
 info....
 
-#### 
-
-## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
-
-```{r}
-log(32, base = 2)
-```
-
-```{r}
-log2(32)
-```
-
-```{r}
-ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2_1)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme_bw() +
-  xlab("Log-transformed SAT score") +
-  ylab("Six-year graduation rate")
-```
-
-```{r}
-est_plm_cross_2010 <- function(est_eq) bølge(
-  data_n2 %>% filter(year == 2010) %>% 
-  plm(est_eq, data = ,. index = c("id_nuts0"), model = "within") %>%
-  coeftst(vcovHC, type = "HC1", save = TRUE) %>%
-  return()
-  bølge )
-
-plm.1 <- "I(gini_n2*100) ~ log(gdp_pc_n2)" %>% est_plm_cross_2010()
-plm.2 <- "I(gini_n2*100) ~ log(gdp_pc_n2) + I(log(gdp_pc_n2)^2) + I(log(gdp_pc_n2)^3)" %>% est_plm_cross_2010()
-plm.3 <- "I(gini_n2*100) ~ log(gdp_pc_n2) + I(log(gdp_pc_n2)^2) + I(log(gdp_pc_n2)^3) + I(transported_goods/1000) + I(students_tertiary/100 + age_pop_med" %>% est_plm_cross_2010()
-
-#gen table
-  huxreg(
-    list("(1)" = plm.1, "(2)" = plm.2, "(3)" = plm.3, "(4)" = plm.4),
-    
-    
-    stars = c('*' = 0.1, '**' = 0.05, '***' = 0.0,1), 
-    note = "Note: {stars} T statistics in brackets.")
-      insert_row("Country FE", after = nrow(.) -1, fill = "YES", colspan = 1) %>%
-      insert_row("Year FE", after = nrow(.) -2, fill = "NO")
-```
-
-```{r}
-#Easier
-data %<>% mutate(DEU = ifelse(regiocodeN1 == "DEU",1,0))
-
-#Could also be:
-factor(regiocode)
-```
-
-```{r}
-#| label: tbl-log-gdppc
-#| tbl-cap: Estimate effect of regional development on regional inequality
-
-
-lm.13 = lm(gini_n2 ~ log_gdppc, data = PL2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.14 = lm(gini_n2 ~ log_gdppc, data = ES2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.15 = lm(gini_n2 ~ log_gdppc, data = SI2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.16 = lm(gini_n2 ~ log_gdppc, data = NL2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.17 = lm(gini_n2 ~ log_gdppc, data = EL2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.18 = lm(gini_n2 ~ log_gdppc, data = data2010) %>% 
-  coeftest(vcov = hccm, save = TRUE)
-
-
-#Gen Table
-  huxreg(
-  list("Poland" = lm.13, "Spain" = lm.14, "Slovenia" = lm.15, "Netherlands" = lm.16, "Greece" = lm.17, "All countries" = lm.18 ),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  ) 
-```
-
-# Assignment 4
-
 #### Appendix
 
 #### Table 1 {data-link="Table 1"}
@@ -1306,29 +1195,3 @@ tmp %>%
 :::
 
 #### Footnotes
-
-```{r}
-{r}
-
-lm.3 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.4 <- (gini_n2 * 100 ~ gdp_pc_n2+I(edu1/100), data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.5 <- (gini_n2 * 100 ~ gdp_pc_n2+I(infra1/1000), data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.6 <- (gini_n2 * 100 ~ gdp_pc_n2+demo1, data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.7 <- (gini_n2 * 100 ~ gdp_pc_n2+I(infra1/1000)+I(edu1/100)+demo1, data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-
-#Gen Table
-
-  huxreg(
-  list("(1)" = lm.3, "(2)" = lm.4, "(3)" = lm.5,"(4)" = lm.6,"(5)" = lm.7),
-  statistics = c(N = "nobs", R2 = "r.squared")
-  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
-  stars = c("*" = 0.1, "**" = 0.05, "***" = 0.10),
-  note = "Note: {stars} T statistics in brackets."
-  )
-}
-```
