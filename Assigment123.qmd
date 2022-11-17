@@ -990,34 +990,55 @@ In this assignment are we going to focus on Alternative function forms.
 
 ## Test if the effect of development is significantly different for different subset of countries in your data set:
 
-Here in this task are we going to check if the effect of the development is significantly different for different subset of countries in our dataset.
-
-It is important here to point out that significance test is a given output of the t-test in R.
-What this test is that this provides the t-value, kind of freedom and corresponding p-value.
-
 ```{r}
 #| label: tbl-mlr-Netherland_statistics
 #| tbl-cap: Multi linear regression model for Netherlands
 data2010NED <- data2010 %>%
-  filter(id_nuts2 != 'NL') 
+  filter(id_nuts2 != 'EL') 
 
-data2010$NED <- ifelse(data2010$id_nuts0 == "NL", 1,0)
-data2010$Oth <- ifelse(data2010$id_nuts0 == "NL", 0,1)
+data2010$GRC <- ifelse(data2010$id_nuts0 == "EL", 1,0)
+data2010$Oth <- ifelse(data2010$id_nuts0 == "EL", 0,1)
 
 data2010 <- data2010
-lm.10 = lm(gini_n2*1000 ~ gdp_pc_n2, filter(data2010, NED == 1))
-lm.11 = lm(gini_n2*1000 ~ gdp_pc_n2, filter(data2010, NED == 0))
-lm.12 = lm(gini_n2*1000 ~ gdp_pc_n2 * NED , data2010)
+lm.10 = lm(gini_n2*1000 ~ gdp_pc_n2, filter(data2010, GRC == 1))
+lm.11 = lm(gini_n2*1000 ~ gdp_pc_n2, filter(data2010, GRC == 0))
+lm.12 = lm(gini_n2*1000 ~ gdp_pc_n2 * GRC , data2010)
 
 #Gen Table
   huxreg(
-  list("Only Nederlands" = lm.10, "No Nederlands" = lm.11, "Interaction" = lm.12),
+  list("Only Greece" = lm.10, "No Greece" = lm.11, "Interaction" = lm.12),
   statistics = c("N" = "nobs", 
       R2 = "r.squared", "F statistic" = "statistic",
       "P value" = "p.value"),
    stars = c("*" = 0.1, "**" = 0.05, "***" = 0.01),
   note = "Note: {stars} T statistics in brackets.")
 ```
+
+```{r}
+data2010 <- data2010
+lm.13 = lm(gini_n2 ~ log(gdp_pc_n2) , data2010) %>%
+coeftest(vcov = hccm, save = TRUE)
+lm.14 = lm(gini_n2 ~ log(I(gdp_pc_n2)^2), data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.15 = lm(gini_n2 ~ log(I(gdp_pc_n2)^3), data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+#Gen Table
+  huxreg(
+  list("All countries (log)" = lm.13, "All countries (log) ^2" = lm.14, "All countries ^3" = lm.15, "Interaction" = lm.16),
+  statistics = c("N" = "nobs", 
+      R2 = "r.squared", "F statistic" = "statistic",
+      "P value" = "p.value"),
+   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
+Here in this task are we going to check if the effect of the development is significantly different for different subset of countries in our dataset.
+
+It is important here to point out that significance test is a given output of the t-test in R.
+What this test is that this provides the t-value, kind of freedom and corresponding p-value.
 
 In this task are we going to answer if the development is statistically different for different subsets of countries in our data.
 Here we have to do a hypothesis test.
@@ -1048,27 +1069,6 @@ To find out answer to this question/ task we have to find out the what the defin
 
 Log, logarithm can be defined as the inverse function to exponentiation.
 
-```{r}
-data2010 <- data2010
-lm.13 = lm(gini_n2 ~ log(gdp_pc_n2), filter(data2010, NED == 1)) %>%
-coeftest(vcov = hccm, save = TRUE)
-lm.14 = lm(gini_n2 ~ log(I(gdp_pc_n2)^2), filter(data2010, NED == 1)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.15 = lm(gini_n2 ~ log(I(gdp_pc_n2)^3), filter(data2010, NED == 1)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.16 = lm(gini_n2 ~ gdp_pc_n2*NED, data2010) %>%
-  coeftest(vcov = hccm, save = TRUE)
-#Gen Table
-  huxreg(
-  list("Only Nederlands (log)" = lm.13, "Only Nederlands (log) ^2" = lm.14, "Only Nederlands ^3" = lm.15, "Interaction" = lm.16),
-  statistics = c("N" = "nobs", 
-      R2 = "r.squared", "F statistic" = "statistic",
-      "P value" = "p.value"),
-   stars = c("*" = 0.1, "**" = 0.05, "***" =0.01),
-  note = "Note: {stars} T statistics in brackets."
-  )
-```
-
 info........
 
 ### Plot the corresponding scatter plots with the estimate line:
@@ -1089,6 +1089,7 @@ ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2)) +
 ```
 
 ```{r}
+lm_function <- function(lmdata) {
 ggplot(multi_linear_regression_model_1(data2010), aes(x = gini_n2, y = gdp_pc_n2)) +
 geom_point(size = 2.5, alpha = 0.8, aes(color = NED, shape = NED)) +
 geom_hline(yintercept = 0) +
@@ -1113,6 +1114,7 @@ theme(
 ) +
 scale_color_manual("", values = c(red_pink, "darkslategrey"), labels = c("Fra", "Male")) +
 scale_shape_manual("", values = c(16, 1), labels = c("Female", "Male"))
+}
 ```
 
 Info:
@@ -1131,6 +1133,22 @@ Heteroskedasticity can be defined as, when all observations of the response (the
 
 The reason why heteroskedasticity happens is, because when the standard deviations of a variable monitored over a specific time.
 
+```{r}
+#Estimate  lineær
+reg.1 <- lm(gini_n2 ~ gdp_pc_n2, data = data2010) 
+# Breusch-Pagan test F-Test (LM estimator)3
+p.1 <- bptest(reg.1)$p.value
+p.1
+```
+
+```{r}
+#Estimate log
+reg.2 <- lm(log(gini_n2) ~ log(gdp_pc_n2) + log(gdp_pc_n2^2) + log(gdp_pc_n2^2), data = data2010)
+#Breusch-Pagan test F-Test (LM estimator)3
+p.2 <- bptest(reg.2)$p.value
+p.2
+```
+
 info....
 
 ## Discuss if we can interpret the estimates as causal:
@@ -1141,55 +1159,9 @@ info...
 
 info....
 
-```{r}
-library(tidyverse)
-library(ggpubr)
-library(rstatix)
-```
-
 #### 
 
-```{r}
-data("tran_r_vehst.csv")
-set.seed(1234)
-tran_r_vehst.csv %>% sample_n(group, size = 1)
-```
-
-```{r}
-
-lm.3 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.4 <- (gini_n2 * 100 ~ gdp_pc_n2+I(edu1/100), data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.5 <- (gini_n2 * 100 ~ gdp_pc_n2+I(infra1/1000), data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.6 <- (gini_n2 * 100 ~ gdp_pc_n2+demo1, data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-lm.7 <- (gini_n2 * 100 ~ gdp_pc_n2+I(infra1/1000)+I(edu1/100)+demo1, data = filter(data2010, year == 2010)) %>%
-  coeftest(vcov = hccm, save = TRUE)
-
-#Gen Table
-
-  huxreg(
-  list("(1)" = lm.3, "(2)" = lm.4, "(3)" = lm.5,"(4)" = lm.6,"(5)" = lm.7),
-  statistics = c(N = "nobs", R2 = "r.squared")
-  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
-  stars = c("*" = 0.1, "**" = 0.05, "***" = 0.10),
-  note = "Note: {stars} T statistics in brackets."
-  )
-}
-```
-
 ## Explore alternative functional forms (e.g.log, cubical estimates) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
-
-```{r}
-library(broom)
-library(dplyr)
-library(ggplot2)
-library(readr)
-library(sm)
-library(tidyr)
-```
 
 ```{r}
 log(32, base = 2)
@@ -1239,6 +1211,36 @@ data %<>% mutate(DEU = ifelse(regiocodeN1 == "DEU",1,0))
 factor(regiocode)
 ```
 
+```{r}
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
+
+
+lm.13 = lm(gini_n2 ~ log_gdppc, data = PL2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.14 = lm(gini_n2 ~ log_gdppc, data = ES2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.15 = lm(gini_n2 ~ log_gdppc, data = SI2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.16 = lm(gini_n2 ~ log_gdppc, data = NL2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.17 = lm(gini_n2 ~ log_gdppc, data = EL2010) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.18 = lm(gini_n2 ~ log_gdppc, data = data2010) %>% 
+  coeftest(vcov = hccm, save = TRUE)
+
+
+#Gen Table
+  huxreg(
+  list("Poland" = lm.13, "Spain" = lm.14, "Slovenia" = lm.15, "Netherlands" = lm.16, "Greece" = lm.17, "All countries" = lm.18 ),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  ) 
+```
+
+# Assignment 4
+
 #### Appendix
 
 #### Table 1 {data-link="Table 1"}
@@ -1267,3 +1269,29 @@ tmp %>%
 :::
 
 #### Footnotes
+
+```{r}
+{r}
+
+lm.3 <- (gini_n2 * 100 ~ gdp_pc_n2, data = filter(data2010, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.4 <- (gini_n2 * 100 ~ gdp_pc_n2+I(edu1/100), data = filter(data2010, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.5 <- (gini_n2 * 100 ~ gdp_pc_n2+I(infra1/1000), data = filter(data2010, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.6 <- (gini_n2 * 100 ~ gdp_pc_n2+demo1, data = filter(data2010, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+lm.7 <- (gini_n2 * 100 ~ gdp_pc_n2+I(infra1/1000)+I(edu1/100)+demo1, data = filter(data2010, year == 2010)) %>%
+  coeftest(vcov = hccm, save = TRUE)
+
+#Gen Table
+
+  huxreg(
+  list("(1)" = lm.3, "(2)" = lm.4, "(3)" = lm.5,"(4)" = lm.6,"(5)" = lm.7),
+  statistics = c(N = "nobs", R2 = "r.squared")
+  coefs = c(education = "edu1", transportInfrastructure = "infra1", demographics = "demo1", const. = "(Intercept)"),
+  stars = c("*" = 0.1, "**" = 0.05, "***" = 0.10),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+```
