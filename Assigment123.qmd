@@ -1263,9 +1263,11 @@ Eventual problems that can occur, can be for example that a country have to low 
 Then a solution can be that EU comes and helps the country with economical and financial support.
 First it is important to come up here with that the EU´s economic and fiscal rules promote economic stability and growth.
 This could be one of the eventual problems that can occur.
-What we can say out from @fig-gdp_pc_nuts0, is that Albania has a low GDP per capita, in comparison to other countries.
+In our case this could potentially be Albania.
+We see from @fig-gdp_pc_nuts0, that Albania has the lowest GDP per capita, in comparison to the other countries.
+EU gives potential countries financial support for development.
 This can be the reason why EU, wants to help and make sure that the country is doing well financially.
-For Albania it can be a eventual problem to get help from EU.
+For Albania it can be a eventual solution to get help from EU.
 
 #### Appendix
 
