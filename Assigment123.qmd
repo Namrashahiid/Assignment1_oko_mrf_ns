@@ -987,12 +987,13 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 # 4 Assignment 3
 
 In this assignment are we going to focus on Alternative function forms.
+First we are going to Test if the effect of development is significantly different for different subset of countries in your data set.
 
-## Test if the effect of development is significantly different for different subset of countries in your data set:
+## 4.1 Effect of development for different subset:
 
 ```{r}
 #| label: tbl-mlr-only_greece
-#| tbl-cap: Multi linear regression model .......
+#| tbl-cap: Multi linear regression model of development
 data2010NED <- data2010 %>%
   filter(id_nuts2 != 'EL') 
 
@@ -1014,7 +1015,7 @@ lm.12 = lm(gini_n2*1000 ~ gdp_pc_n2 * GRC , data2010)
   note = "Note: {stars} T statistics in brackets.")
 ```
 
-Here in this task are we going to check if the effect of the development is significantly different for different subset of countries in our dataset.
+Here in this task are we going to check if the effect of the development.
 The country we are looking at is Greece.
 We have chosen the country Greece, because it is the country that have the most observations of our selected countries.
 It is important here to point out that significance test is a given output of the t-test in R.
@@ -1029,11 +1030,11 @@ $$
 Now when we are going to do a statistical significance, we are given a p-value.
 Here in this case we have to represent a two-sided tailed test, because, in most of cases p-value is for two sided/tailed test.
 
-When we look at the bottom line, we can see where it says Note: \*\*\* p \< 0.01; \*\* p \< 0.05; \*p \< 0.1
+When we look at the bottom line on the @tbl-mlr-only_greece , we can see where it says Note: \*\*\* p \< 0.01; \*\* p \< 0.05; \*p \< 0.1
 
 The first p-value p \< 0.01 tell us that the significance level is on 1% (0.01), the second one 5% (0.05) and the third one 10% (0.1).
-Now if we are using a two-tailed test with a significance level of for example 0.05, then a two-tailed test divide this 0.05 value in two.
-0.025 per side, in other words test half of the alpha to testing the statistical significance in one side/tail and half on the other.
+Now if we are using a two-tailed test with a significance level of for example 0.05 (5%), then a two-tailed test divide this 0.05 value in two.
+0.025 per side, in other words test half of the alpha to testing the statistical significance in one side/tail and half on the other side.
 
 If we look at *No Greece* model, we can see that the p-value is: 0.059.
 If we now take initially the significance level 0.05 (5%).
@@ -1043,7 +1044,7 @@ $$
 0.059>0.05
 $$
 
-Now we are going to look at the Only Greece modeø.
+Now we are going to look at the Only Greece model.
 The p-value for Only Greece is 0.007.
 If we compare 0.007 with a significance level of 0.05 (5%), we than immediately know that we have to reject the null hypothesis, because the p-value is smaller that the significance value/level.
 Rejecting the null hypothesis because:
@@ -1060,9 +1061,12 @@ $$
 0.063>0.05
 $$
 
+What we can conclude here by saying is that out test is according to the interaction p-value on 0-063 not statistically significant, therefore we are forced to not reject the null hypothesis.
+
 ## Explore alternative functional forms (e.g. log, cubial estimate, ...) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
 
-To find out the answer to this question/task we have to find out what the definition to log estimates and cubical estimates is.
+Our next task is now to explore alternative functional forms of our previous estimates on the relationship between regional development yi on regional inequality GINIWj.
+To find out the answer to this task we have to find out what the definition to log estimates and cubical estimates are.
 Log, logarithm can be defined as the inverse function to exponentiation.
 
 ```{r}
@@ -1079,7 +1083,7 @@ lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
   coeftest(vcov = hccm, save = TRUE)
 #Gen Table
   huxreg(
-  list("All countries (log)" = lm.13, "All countries (log) ^2" = lm.14, "All countries ^3" = lm.15, "Interaction" = lm.16),
+  list("All countries (log)" = lm.13, "All countries (log) ^2" = lm.14, "All countries (log) ^3" = lm.15, "Interaction" = lm.16),
   statistics = c("N" = "nobs", 
       R2 = "r.squared", "F statistic" = "statistic",
       "P value" = "p.value"),
@@ -1088,11 +1092,11 @@ lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
   )
 ```
 
-Here in this task are we are we going to look at all of countries.
+Here in this task are we are we going to look at all of our countries.
 Now the question is what does Log\^2 tell us.
 Log\^2 is a mathematical function that calculates the binary logarithm.
 
-If we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log and log\^2 in all countries.
+If we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log, log\^2 and log\^3 in all countries.
 
 Now looking at the p-value for interaction, which is: 0.016.
 If we take 0.05 (5%) as a significance level, we can see that the p-value is smaller than the confidence level 0.05.
@@ -1108,12 +1112,18 @@ The R-spuared (R2) tell us how well the model which we are working on is fitting
 R2 measures the relationship between the predicted variable and response variable.
 Here in this task are we looking at the relationship between regional development yi and regional inequality GINIWj.
 
-When we look at the R2 value, we can here conclude by saying that, this R2 value 0.016 is small, and the R2 is relatively not strong, in other words weak.
+When we look at the R2 value on the interaction, we can here conclude by saying that, this R2 value 0.221 is small, and the R2 is relatively not strong, in other words weak.
 
-Now looking at F-statistics.
+Now looking at F-statistics under interaction.
 This value is a indicator on if there is a relationship between our variables or not.
 So this F-statistics value is larger than 1.
 In our case the value is 3.868 under interaction, which is larger than 1.
+We can conclude here by saying that there is a relationship between our variables for all of our countries, because this 3.868 is higher than 1.
+
+The Log regression analysis, on 1st 2nd and 3rd degree as we can see is the same according to the intercept value.
+
+The conclusion here is going to be that the given data on this table fits more than the previous one, because the R2 value under interaction on previous table was 0.161 and on this table the R2 value under interaction is 0.221, which is higher than the previous one.
+We can conclude here by saying that the regression analysis for our all countries is somehow better than the previous analysis.
 
 ### Plot the corresponding scatter plots with the estimate line:
 
@@ -1182,6 +1192,16 @@ p.1 <- bptest(reg.1)$p.value
 p.1
 ```
 
+Here we have got a p-value after we have used Breusch-Pagan.
+The p-value is: 0.6586212.
+Our p-value is pretty high on as mentioned 0.6586212.
+We can conclude here by saying that, we are not able to reject the H0 hypothesis.
+Hence we are not facing Heteroskedasticity.
+
+$$
+0.6586212> 0.05
+$$
+
 ```{r}
 #Estimate log
 reg.2 <- lm(log(gini_n2) ~ log(gdp_pc_n2) + log(gdp_pc_n2^2) + log(gdp_pc_n2^2), data = data2010)
@@ -1190,7 +1210,13 @@ p.2 <- bptest(reg.2)$p.value
 p.2
 ```
 
-info....
+Our p-value is pretty high on as mentioned 0.8285633.
+We can conclude here by saying that, we are not able to reject the H0 hypothesis.
+Hence we are not facing Heteroskedasticity.
+
+$$
+0.8285633>0.05
+$$
 
 ## Discuss if we can interpret the estimates as causal:
 
