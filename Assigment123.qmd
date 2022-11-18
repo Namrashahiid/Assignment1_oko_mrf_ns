@@ -987,9 +987,9 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 # 4 Assignment 3
 
 In this assignment are we going to focus on Alternative function forms.
-First we are going to Test if the effect of development is significantly different for different subset of countries in your data set.
+First we are going to test if the effect of development is significantly different for different subset of countries in your data set.
 
-## 4.1 Effect of development for different subset:
+## 4.1 Effect of development for different subset
 
 ```{r}
 #| label: tbl-mlr-only_greece
@@ -1024,7 +1024,7 @@ We have to do a hypothesis test.
 What would be sensible to do here is to perform a to-sided (tailed) hypothesis test:
 
 $$
-H0: B1 = 0
+H_0: {\beta}_1 = 0
 $$
 
 Now when we are going to do a statistical significance, we are given a p-value.
@@ -1063,9 +1063,9 @@ $$
 
 What we can conclude here by saying is that out test is according to the interaction p-value on 0-063 not statistically significant, therefore we are forced to not reject the null hypothesis.
 
-## Explore alternative functional forms (e.g. log, cubial estimate, ...) of your previous estimates on the relationship between regional development yi on regional inequality GINIWj. Give an argument for two forms that might fit the data better:
+## 4.2 Alternative functional forms of our previous estimates on the relationship between $y_i$ and $GINIW_j$
 
-Our next task is now to explore alternative functional forms of our previous estimates on the relationship between regional development yi on regional inequality GINIWj.
+Our next task is now to explore alternative functional forms of our previous estimates on the relationship between regional development $y_i$ on regional inequality $GINIW_j$.
 To find out the answer to this task we have to find out what the definition to log estimates and cubical estimates are.
 Log, logarithm can be defined as the inverse function to exponentiation.
 
@@ -1093,10 +1093,10 @@ lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
 ```
 
 Here in this task are we are we going to look at all of our countries.
-Now the question is what does Log\^2 tell us.
-Log\^2 is a mathematical function that calculates the binary logarithm.
+Now the question is what does $log^2$ tell us.
+$Log^2$ is a mathematical function that calculates the binary logarithm.
 
-If we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log, log\^2 and log\^3 in all countries.
+In @tbl-mlr-all_counties, if we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log, $log^2$ and $log^3$ in all countries.
 
 Now looking at the p-value for interaction, which is: 0.016.
 If we take 0.05 (5%) as a significance level, we can see that the p-value is smaller than the confidence level 0.05.
@@ -1108,11 +1108,11 @@ $$
 
 We can see that totally there is 45 observation (N) for all countries.
 
-The R-spuared (R2) tell us how well the model which we are working on is fitting our data.
-R2 measures the relationship between the predicted variable and response variable.
-Here in this task are we looking at the relationship between regional development yi and regional inequality GINIWj.
+The R-spuared ($R^2$) tell us how well the model which we are working on is fitting our data.
+$R^2$ measures the relationship between the predicted variable and response variable.
+Here in this task are we looking at the relationship between regional development $y_i$ and regional inequality $GINIW_j$.
 
-When we look at the R2 value on the interaction, we can here conclude by saying that, this R2 value 0.221 is small, and the R2 is relatively not strong, in other words weak.
+When we look at the $R^2$ value on the interaction, we can here conclude by saying that, this $R^2$ value 0.221 is small, and the $R^2$ is relatively not strong, in other words weak.
 
 Now looking at F-statistics under interaction.
 This value is a indicator on if there is a relationship between our variables or not.
@@ -1120,12 +1120,12 @@ So this F-statistics value is larger than 1.
 In our case the value is 3.868 under interaction, which is larger than 1.
 We can conclude here by saying that there is a relationship between our variables for all of our countries, because this 3.868 is higher than 1.
 
-The Log regression analysis, on 1st 2nd and 3rd degree as we can see is the same according to the intercept value.
+The Log regression analysis, on 1st, 2nd and 3rd degree as we can see is the same according to the intercept value.
 
-The conclusion here is going to be that the given data on this table fits more than the previous one, because the R2 value under interaction on previous table was 0.161 and on this table the R2 value under interaction is 0.221, which is higher than the previous one.
+The conclusion here is going to be that the given data on this table fits more than the previous one, because the $R^2$ value under interaction on previous table was 0.161 and on this table the $R^2$ value under interaction is 0.221, which is higher than the previous one.
 We can conclude here by saying that the regression analysis for our all countries is somehow better than the previous analysis.
 
-### Plot the corresponding scatter plots with the estimate line:
+### Corresponding scatter plots with the estimate line
 
 Scatter plot in R, can be defined as a type of plot that is used to display the relationship between two numerical variables, and plots.
 The dots shown on the scatter plot table shows us the dot for each observation.
@@ -1142,9 +1142,9 @@ data2010 %>%
   labs(x = "GDP per capita (log)", y = "GINI") + theme_bw()
 ```
 
-### Report the related estimates:
+### Report of the related estimates
 
-As we can see this scatter plot is representing two dimensional data.
+As we can see from @fig-mlr-scatterplot_fittedline this scatter plot is representing two dimensional data.
 As we can see on the x-axis we find GDP per capita (log) value and on the other side on the y-axis we can find the information for Gini.
 The fact of the matter is that placement of the values on x-axis and y-axis represent if the correlation between x-axis and y-axis is positive or negative.
 This all depends on as mentioned the placement/position of the values on the plot.
@@ -1153,7 +1153,7 @@ The ending point on the x-axis is 10.8 and on the y-axis is 0.20.
 Here the relationship between gini and GDP per capita (log) is shown in this scatter plot.
 Now when we have more then two varaiables, we want to here find the correlation between the one variable and the all others.
 
-When we look at our scatter plot for the gini and GDP per capita (log), we can immediately see that it is a negative trend, on the green line which represents polynomial regression\^2.
+When we look at our scatter plot for the gini and GDP per capita (log), we can immediately see that it is a negative trend, on the green line which represents polynomial regression og 2nd degree.
 We can see on the plot that there is two lines.
 One is polynominal regression of 2nd degree line and the grey line polynomial regression line for 3rd degree, the grey line goes somehow up and down.
 We find that the green line and the grey line are fitted lines, which crosses each other.
@@ -1166,11 +1166,11 @@ This observations is a bit far away from the fitted observation.
 These observations that are far away from the fitted line, tell us that it does not fit the overall relationship between x-axis and y-axis (gini and GDP per capita (log)).
 In other words this is a outlier.
 
-In comparison with line in..., we can see that these lines fit our data better.
+In comparison with line in @fig-lm-data2010, we can see that these lines fit our data better.
 
-### Give a verbal interpretation of your estimate coefficients:
+### Verbal interpretation of our estimate coefficients
 
-We can here see that the green line starts negatively, and suddenly start getting positive after 10.3 according to the x-axis.
+We can see from @fig-mlr-scatterplot_fittedline that the green line starts negatively, and suddenly start getting positive after 10.3 according to the x-axis.
 We can here say that there is a inverse relationship between the variables.
 The green and the grey line crosses each other.
 
@@ -1181,11 +1181,36 @@ On polynomial curve, effect depends on where you are placed.
 If we compare linear regression with polynomial regression, then we can say that the effect is varying when it comes polynomial regression.
 In linear regression the effect is logically the same all the way.
 
-### Test for heteroskedasticity in the two new and the old model:
+### Test for heteroskedasticity
 
-Heteroskedasticity can be defined as, when all observations of the response (the dependent variable) come from distributions with the same variance.
+Heteroskedasticity is when the variance of the error term, given the explanatory variables, is not constant.
+It does not cause bias of inconsistency in the OLS estimates of the ${\beta}_{j}$, weras something like omitting an important variable would have this effect.
+The interpretation of our godness-of-fit measures, $R^2$, is also unaffected by the presence of heteroscedasticity.
+Heteroscedasticity occurs when the standard deviation of a variable monitored over time is not constant.
 
-The reason why heteroskedasticity happens is, because when the standard deviations of a variable monitored over a specific time.
+To test for heteroskedasticity we will use the Breusch-Pagan test.
+We will start by reformulate $H_0$:
+
+$$
+\begin{aligned}
+H_{0}:& \operatorname{Var}\left(u \mid x_{1}, x_{2}, \ldots, x_{k}\right)=\operatorname{Var}(u \mid \mathbf{x})=\sigma^{2} \\
+&\operatorname{Var}(u \mid \mathbf{x})=E\left(u^{2} \mid \mathbf{x}\right)-[E(u \mid \mathbf{x})]^{2}=E\left(u^{2} \mid \mathbf{x}\right) \\
+&\Rightarrow E\left(u^{2} \mid x_{1}, \ldots, x_{k}\right)=E\left(u^{2}\right)=\sigma^{2} \\
+&\text{The mean of } u^2 \text{must not vary with } x_{1}, \ldots, x_{k}
+\end{aligned}
+$$
+
+Therefore, to test for heteroskedasticity we can simply estimate
+
+$$
+\begin{aligned}& \widehat{u}^{2}=\delta_{0}+\delta_{1} x_{1}+\cdots+\delta_{k} x_{k}+\text { error } \\& H_{0}: \delta_{1}=\delta_{2}=\ldots=\delta_{k}=0 \end{aligned}
+$$
+
+If this regression has explanatory power (e.g. to high F), we are faced with heteroskedasticity.
+
+$$
+F=\frac{R^2_{\widehat{u}^{2}/k}}{1-R^2_{\widehat{u}^{2}}/(n-k-1)}
+$$
 
 ```{r}
 #Estimate  lineær
@@ -1196,10 +1221,9 @@ p.1
 ```
 
 Here we have got a p-value after we have used Breusch-Pagan.
-The p-value is: 0.6586212.
-Our p-value is pretty high on as mentioned 0.6586212.
-We can conclude here by saying that, we are not able to reject the H0 hypothesis.
-Hence we are not facing Heteroskedasticity.
+The p-value is 0,6703906 which is pretty high.
+We can conclude here by saying that, we fail to reject the $H_0$ (homoskedasticity) hypothesis.
+Hence we are not facing heteroskedasticity.
 
 $$
 0.6586212> 0.05
@@ -1213,19 +1237,19 @@ p.2 <- bptest(reg.2)$p.value
 p.2
 ```
 
-Our p-value is pretty high on as mentioned 0.8285633.
-We can conclude here by saying that, we are not able to reject the H0 hypothesis.
-Hence we are not facing Heteroskedasticity.
+Our p-value is high with 0.8285633.
+We can conclude, also here, by saying that we are not able to reject the $H_0$ (homoskedasticity).
+Hence we are not facing heteroskedasticity.
 
 $$
 0.8285633>0.05
 $$
 
-## Discuss if we can interpret the estimates as causal:
+## 4.3 Discuss if we can interpret the estimates as causal
 
 info...
 
-## Suggest potential remedies for eventual problems:
+## 4.4 Potential remedies for eventual problems
 
 info....
 
