@@ -1145,36 +1145,41 @@ data2010 %>%
 ### Report the related estimates:
 
 As we can see this scatter plot is representing two dimensional data.
-As we can see on the x-axis we find Gini value and on the other side on the y-axis we can find the information for GDP per capita.
+As we can see on the x-axis we find GDP per capita (log) value and on the other side on the y-axis we can find the information for Gini.
 The fact of the matter is that placement of the values on x-axis and y-axis represent if the correlation between x-axis and y-axis is positive or negative.
 This all depends on as mentioned the placement/position of the values on the plot.
-The ending point on the x-axis is 0.20 and on the y-axis is 4000.
+The ending point on the x-axis is 10.8 and on the y-axis is 0.20.
 
-Here the relationship between gini and GDP per capita is shown in this scatter plot.
+Here the relationship between gini and GDP per capita (log) is shown in this scatter plot.
 Now when we have more then two varaiables, we want to here find the correlation between the one variable and the all others.
 
-When we look at our scatter plot for the gini and GDP per capita, we can immediately see that it is a negative trend.
-We find here gini on GDP per capita.
+When we look at our scatter plot for the gini and GDP per capita (log), we can immediately see that it is a negative trend, on the green line which represents polynomial regression\^2.
 We can see on the plot that there is two lines.
-One is linear negative regression line and other is mathematically said quadratic function, which goes somehow up and down.
-We find a fitted line in this scatter plot that this shows us data along with the fitted line.
-
-As we can see there is a positive relationship between gini and GDP per capita, but there is not a moderately strong relationship.
-We can see that the fitted linear regression line is negative.
-The quadratic line shows us that the line fits the on 0.025 gini and 2500 GDP per capita.
-This can be defined as correlation relationship at this point.
+One is polynominal regression of 2nd degree line and the grey line polynomial regression line for 3rd degree, the grey line goes somehow up and down.
+We find that the green line and the grey line are fitted lines, which crosses each other.
+When these lines crosses each other, than this hardly indicates that there is a correlation between the polynomial regression at 2nd and 3rd degree.
+As we can see there is a positive relationship between gini and GDP per capita (log) .
 
 We have some values that are unusual or easily said they are extreme, because they do not fit the line or they are far away from the line.
-Here in this case we are talking about the value (dot), which is on the top on the right side gini on 0.18 and approximately on 4300 on GDP per capita.
-The value is a bit far away from the values.
-These values that are far away from the fitted line, tell us that it does not fit the overall relationship between x-axis and y-axis (gini and GDP per capita).
+Here in this case we are talking about the value (dot), which is on the top on the right side GDP per capita (log) 10.7 and approximately on 0.18 on gini.
+This observations is a bit far away from the fitted observation.
+These observations that are far away from the fitted line, tell us that it does not fit the overall relationship between x-axis and y-axis (gini and GDP per capita (log)).
+In other words this is a outlier.
+
+In comparison with line in..., we can see that these lines fit our data better.
 
 ### Give a verbal interpretation of your estimate coefficients:
 
-We can see that there is a negative sign of relationship between gini and GDP per capita, because we can see that the regression coefficients explains an inverse relationship between the variables.
-The linear regression line/slope is negative.
-This means that one increase in the depended variable, then the dependent variable decreases.
-From our scatter plot we can visualize that there is somehow a relationship between gini and GDP per capita.
+We can here see that the green line starts negatively, and suddenly start getting positive after 10.3 according to the x-axis.
+We can here say that there is a inverse relationship between the variables.
+The green and the grey line crosses each other.
+
+If we look at the grey line and go one step forward from 8.8 to 9.2 on the GDP per capita (log), than gini goes from 0.8 to approximately 0.12.
+
+On the other side if we look at the green line, if we go forward on the x-axis (GDP per capita (log)) and go from approximately from 8.8 to 9.2 than the grey line decreases from ca 0.14 to 0.9 according to the y-axis (gini).
+On polynomial curve, effect depends on where you are placed.
+If we compare linear regression with polynomial regression, then we can say that the effect is varying when it comes polynomial regression.
+In linear regression the effect is logically the same all the way.
 
 ### Test for heteroskedasticity in the two new and the old model:
 
