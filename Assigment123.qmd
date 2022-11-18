@@ -1134,14 +1134,12 @@ The variables on both axis results plotting against one another.
 
 ```{r}
 #| label: fig-mlr-scatterplot_fittedline
-#| fig-cap: Corresponding scatter plot with the fitted line  
-ggplot(data = data2010, aes(x = gini_n2, y = gdp_pc_n2)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-   geom_smooth(method = "lm", se = TRUE) +
-  theme_bw() +
-  xlab("Gini") +
-  ylab("GDP per capita")
+#| fig-cap: Corresponding scatter plot with the fitted line 
+data2010 %>%
+  ggplot(aes(x = log(gdp_pc_n2), y = gini_n2)) + geom_point(color = "orange") + 
+  stat_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, color = "green") + 
+  stat_smooth(method = "lm", formula = y ~ poly(x, 3), se = FALSE, color = "darkgrey") +
+  labs(x = "GDP per capita (log)", y = "GINI") + theme_bw()
 ```
 
 ### Report the related estimates:
