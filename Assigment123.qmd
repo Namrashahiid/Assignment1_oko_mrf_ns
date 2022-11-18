@@ -1104,6 +1104,17 @@ $$
 
 We can see that totally there is 45 observation (N) for all countries.
 
+The R-spuared (R2) tell us how well the model which we are working on is fitting our data.
+R2 measures the relationship between the predicted variable and response variable.
+Here in this task are we looking at the relationship between regional development yi and regional inequality GINIWj.
+
+When we look at the R2 value, we can here conclude by saying that, this R2 value 0.016 is small, and the R2 is relatively not strong, in other words weak.
+
+Now looking at F-statistics.
+This value is a indicator on if there is a relationship between our variables or not.
+So this F-statistics value is larger than 1.
+In our case the value is 3.868 under interaction, which is larger than 1.
+
 ### Plot the corresponding scatter plots with the estimate line:
 
 Scatter plot in R, can be defined as a type of plot that is used to display the relationship between two numerical variables, and plots.
@@ -1148,8 +1159,14 @@ This can be defined as correlation relationship at this point.
 We have some values that are unusual or easily said they are extreme, because they do not fit the line or they are far away from the line.
 Here in this case we are talking about the value (dot), which is on the top on the right side gini on 0.18 and approximately on 4300 on GDP per capita.
 The value is a bit far away from the values.
+These values that are far away from the fitted line, tell us that it does not fit the overall relationship between x-axis and y-axis (gini and GDP per capita).
 
 ### Give a verbal interpretation of your estimate coefficients:
+
+We can see that there is a negative sign of relationship between gini and GDP per capita, because we can see that the regression coefficients explains an inverse relationship between the variables.
+The linear regression line/slope is negative.
+This means that one increase in the depended variable, then the dependent variable decreases.
+From our scatter plot we can visualize that there is somehow a relationship between gini and GDP per capita.
 
 ### Test for heteroskedasticity in the two new and the old model:
 
