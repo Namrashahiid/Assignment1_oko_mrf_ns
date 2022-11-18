@@ -1247,11 +1247,25 @@ $$
 
 ## 4.3 Discuss if we can interpret the estimates as causal
 
-info...
+First of all the thing is that causal interpretation rests on regression analysis.
+Regression coefficients or a correlation can really be attributed to the causal effect on for example X on Y, or the opposite.
+Causal inference can be defined as a special case, where the goal is to predict if we could chose different options.
+
+What we have seen so far is a interpreting regression predictevly.
+We have had many values that we have used for our inputs.
+The tables from our previous tasks have allowed us to see different values of several inputs.
+In our case we have seen that, most of the times we have not for example rejected the null hypothesis, which indicates that we accept the model and the values in our previous tasks.
+So most probably we would have used the same method all the way to solve our previous tasks.
 
 ## 4.4 Potential remedies for eventual problems
 
-info....
+Eventual problems that can occur, can be for example that a country have to low GDP per capita.
+Then a solution can be that EU comes and helps the country with economical and financial support.
+First it is important to come up here with that the EU´s economic and fiscal rules promote economic stability and growth.
+This could be one of the eventual problems that can occur.
+What we can say out from @fig-gdp_pc_nuts0, is that Albania has a low GDP per capita, in comparison to other countries.
+This can be the reason why EU, wants to help and make sure that the country is doing well financially.
+For Albania it can be a eventual problem to get help from EU.
 
 #### Appendix
 
