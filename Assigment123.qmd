@@ -45,6 +45,25 @@ We are group two and will therefore examine these countries:
 
 # 2 Assignment 1
 
+*`Things to improve:`*
+
+*`Econometric discussion:`*
+
+-   *`When talking about data sources regarding monetary variables a statement about the prices
+    values is based upon is essential. GDP in constant prices vs. GDP in current prices?`*
+
+*`Presentation of results:`*
+
+-   *`I am confused about the figures in the section “Cross country perspective” the present random regions (not the poorest, not the richest) and their GDP development. Why this selection?`*
+-   *`“Looking at Table 1 and the table descriptive statistics table over” I think you aimed to mention Table 2 here as well?`*
+-   *`“This table shows regional GDP per capita for the 10 highest income regions.” I believe you aim was to talk about a figure right?`*
+-   *`In Graphs 4 and 5 following the developments is hard due to the very similar colours hear I believe a line might be better. For example, NL32 looks like it jumps in 2014 from 0.06 to 0.22 which would be a huge change. Is that rue?`*
+
+*`Programming:`*
+
+-   *`distinct(id_nuts0, year,.keep_all = TRUE)`*
+    -   *`this code only gives the first distinct value for the group country year not the max or min for this you would need to sort the data first by GDP pc for example.`*
+
 ### 2.1 Data
 
 The main task in this assignment will be to study regional inequality from 2000-2020 for our selected European countries.
@@ -58,7 +77,7 @@ We will calculate GDP per capita and Ginie coefficients for eight subgroups of s
 
 We are calculating GDP per capita by:
 
-![](images/GDPperCapita.png){fig-align="center"}
+$$ y_i = GDP_i / population_i $$
 
 where *i* refers to NUTS3 regions.
 
@@ -323,6 +342,8 @@ This is the inequality indicator that we use in our analysis in the population w
 It has a range from 0 (low/no inequaliy) to 1 (perfect inequality between regions).
 The indicator is calculated like this:
 
+$$ GINW_j =  $$
+
 ![](images/GINI.png){fig-align="center"}
 
 where *i* refers to NUTS3 regions and *j* refers to NUTS2 regions.
@@ -436,6 +457,32 @@ All the mentioned outliers except from the one with zero inequity are not do to 
 However we need to test later the sensitivity of our findings regarding the presence of these borderline observations.
 
 # 3 Assignment 2
+
+*`Things to improve`*
+
+*`Econometric discussion:`*
+
+-   *`“Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption. One important thing to point out here is that the Gini coefficient has a value between 0 and 1. When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze. On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.” I do not understand what you aim to say with this.`*
+-   *`“A log in R wil transform our data in a way that will apply a logarithm to our data that
+    will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way.” I do not understand what you aim to say with this.`*
+-   *`“From this table we can see different values. What wee see here for Poland (PL) is that there is 10 numbers” You properly talk about observations hear?`*
+-   *`“We can see by looking at this method what Y value would be when X = 0.” I do not understand what you aim to say with this. Do you mean the constant?`*
+-   *`“If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high. It is the highest value, which is 1.000.” Tow observations always fit one another perfectly; that is a statistical artefact you are looking at.`*
+-   *`“This R2 coefficient of determination can be defined as a regression problem metric, that help the performance or the result of the model in R to be better.” Please read up on what R2 is supposed / able to tell us.`*
+-   *`“What we can see from this graph is a estimate. The parameters we are looking at here is: Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis. If we call these parameters with econometric language, we call them β1 and β2 values. We call these values prediction of the depended variable, fitted values.” I do not understand what you aim to say with this.`*
+-   *`Classical the assumption OLS you only comment on two of the 6 assumptions. What’s with the rest?`*
+-   *`If you add new determinants, it would be essential to give an argument about why you believe they are important e.g. Hypothesis.`*
+-   *`Further, you need to define what the new variables are masseur in more detail.`*
+-   *`Plot 16 seems strange. How can you have within one year for an individual NUTS2 region several observations with different values for Education?`*
+-   *`When talking about “Inference” you only consider simple regression models with the t-test you conduct as you never have more than one explanatory variable in your model.`*
+-   *`“In this case p-value on 0.68 is pretty high and there is weak evidence against the null hypothesis.” In economics, week is between 0.05 and 0.1 above is plain insignificant.`*
+
+*`Presentation of results:`*
+
+-   *`I suggest scaling your variables e.g. education attainment per 1000 for example, to avoid beta=0.00000002`*
+-   *`When plotting tables with Hux reg I suggest changing the significance levels to the econ standards of 0.01, 0.05, 0.1 -> (Note: *** p < 0.01; ** p < 0.05; * p < 0.10 T statistics in brackets.)`*
+-   *`The t-tests you present are redundant as the information is already part of the estimation
+    tables you present.`*
 
 In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
@@ -986,6 +1033,17 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 
 # 4 Assignment 3
 
+*`Things to improve:`*
+
+*`Econometric discussion:`*
+
+-   *`“If we look at No Greece model, we can see that the p-value is: 0.059. If we now take initially the significance level 0.05 (5%). We can here conclude by saying, that we are not able to reject the null hypothesis, because the p-value is higher than the significance level:” The p-value you are interpreting here is the one related to the Ftest. Please think about what the model F test is supposed to tell us. As you stated before you have to look at the p-values of the individual estimates e.g. The stars and you can say for example that the effect of GDP on Gini is -0.002 so negative and significant at a 10% level (just one star)`*
+-   *`You did not interpret the coefficients or the difference between them or the interpretation of the interaction effect model.`*
+-   *`“(intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log, and in all countries.” This is wrong and just the value that the gini takes if all other variables would be zero.`*
+-   *`“… value under interaction is 0.221, which is higher than the previous one…” That is in general true the new models outperform the others when looking at all data. However, the highest R2 (0.495) you have observed when only estimating using Greece data`*
+-   *`“We can see from Figure 12 that the green line starts negatively, and suddenly start getting positive after 10.3 according to the x-axis.” It would be good to use the variables hear with their names. E.g. if GDP is low and increases the polynomial estimates of degree 3 suggest that inequality (gini increases) at a GDP of ruffly exp(9.1) the effect turns around inequality starts to decrease….`*
+-   *`You have actually not answered the question, do you believe that the correlations you found can be interpreted as causal?`*
+
 In this assignment are we going to focus on Alternative function forms.
 First we are going to test if the effect of development is significantly different for different subset of countries in your data set.
 
@@ -1073,7 +1131,7 @@ Log, logarithm can be defined as the inverse function to exponentiation.
 
 ```{r}
 #| label: tbl-mlr-all_counties
-#| tbl-cap: Multi linear regression model .......
+#| tbl-cap: Multi linear regression model of development (log)
 data2010 <- data2010
 lm.13 = lm(gini_n2 ~ log(gdp_pc_n2) , data2010) %>%
 coeftest(vcov = hccm, save = TRUE)
@@ -1122,8 +1180,14 @@ We can conclude here by saying that there is a relationship between our variable
 
 The Log regression analysis, on 1st, 2nd and 3rd degree as we can see is the same according to the intercept value.
 
+If we take a look at the fit of our model for one specific country (Greece) we can compare it with @tbl-mlr-only_greece .
+We see in the fist table that the interaction value for gdp_pc_n2:GRC is 0,009.
+In @tbl-mlr-all_counties we see that the interaction value for log(gdp_pc_n2):GRC is higher, with 0,179.
+Therefore can we conclude with that log can be an alternative functional form that fits our model better.
+
 The conclusion here is going to be that the given data on this table fits more than the previous one, because the $R^2$ value under interaction on previous table was 0.161 and on this table the $R^2$ value under interaction is 0.221, which is higher than the previous one.
 We can conclude here by saying that the regression analysis for our all countries is somehow better than the previous analysis.
+Log, $log^2$ and $log^3$ is a better functional form for our estimates on the relationship between $y_i$ and $GINIW_j$.
 
 ### Corresponding scatter plots with the estimate line
 
@@ -1131,6 +1195,7 @@ Scatter plot in R, can be defined as a type of plot that is used to display the 
 The dots shown on the scatter plot table shows us the dot for each observation.
 The X-axis have one type of variables, and the Y-axis have other type of variables.
 The variables on both axis results plotting against one another.
+We will present a scatter plot for the relationship between Gini and GDP per capita (log) with $2^nd$ and $3^rd$ degree polynomial regressions.
 
 ```{r}
 #| label: fig-mlr-scatterplot_fittedline
@@ -1268,6 +1333,30 @@ We see from @fig-gdp_pc_nuts0, that Albania has the lowest GDP per capita, in co
 EU gives potential countries financial support for development.
 This can be the reason why EU, wants to help and make sure that the country is doing well financially.
 For Albania it can be a eventual solution to get help from EU.
+
+# 5 Assignment 4
+
+*`New estimates`*
+
+-   *`Penal Estimates`*
+
+    -   *`Use your entire data set to estimate the effect of regional development yj on regional inequality GINIWj in a penal setup. Present estimates that contain the following fixed effects separately and jointly:`*
+
+        -   *`country fixed effects,`*
+
+        -   *`year fixed effects`*
+
+        -   *`NUTS 2 fixed effects`*
+
+*`(Please ignore for this assignment the alternative determinants from assignment 2)`*
+
+-   *`Clean up`*
+
+    -   *`Use the feedback you obtained for Assignment one to three to improve and shorten your previous assignments.`*
+
+    -   *`Write a consistent document that discusses the hypothesis that we can observe a significant and positive effect of development on regional inequality for your set of countries.`*
+
+    -   *`Your final submission must have less than 10.000 words, three tables and five figures. Appendix and references not included.`*
 
 #### Appendix
 
