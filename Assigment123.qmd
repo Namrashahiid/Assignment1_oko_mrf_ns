@@ -1038,11 +1038,11 @@ Now if we are using a two-tailed test with a significance level of for example 0
 
 If we look at *No Greece* model, we can see that the p-value is: 0.059.
 If we now take initially the significance level 0.05 (5%).
-We can here conclude by saying, that we are not able to reject the null hypothesis, because the p-value is higher than the significance level:
-
-$$
-0.059>0.05
-$$
+The p-value we are interpreting here is related to F-test.
+Now the question is, what does the F-test tell us?
+F-test tell us how to compare two variances.
+F-test is used whether the variances of two two populations (A and B) are equal.
+Here in this case if we look at the model over and basically takes the effect of GDP on Gini -0.002, it is so negative and significant at a 10% level (with only one star).
 
 Now we are going to look at the Only Greece model.
 The p-value for Only Greece is 0.007.
@@ -1062,6 +1062,8 @@ $$
 $$
 
 What we can conclude here by saying is that out test is according to the interaction p-value on 0-063 not statistically significant, therefore we are forced to not reject the null hypothesis.
+
+If we compare the p-values for no Greece and only Greece, we can see that there is not so much difference between the p-values, which are 0.059 for no Greece and 0.063 for only Greece.
 
 ## 4.2 Alternative functional forms of our previous estimates on the relationship between $y_i$ and $GINIW_j$
 
@@ -1095,8 +1097,6 @@ lm.16 = lm(gini_n2 ~ log(gdp_pc_n2)*GRC, data2010) %>%
 Here in this task are we are we going to look at all of our countries.
 Now the question is what does $log^2$ tell us.
 $Log^2$ is a mathematical function that calculates the binary logarithm.
-
-In @tbl-mlr-all_counties, if we look at the interaction (intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log, $log^2$ and $log^3$ in all countries.
 
 Now looking at the p-value for interaction, which is: 0.016.
 If we take 0.05 (5%) as a significance level, we can see that the p-value is smaller than the confidence level 0.05.
