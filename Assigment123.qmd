@@ -1185,6 +1185,7 @@ Therefore can we conclude with that log can be an alternative functional form th
 The conclusion here is going to be that the given data on this table fits more than the previous one, because the $R^2$ value under interaction on previous table was 0.161 and on this table the $R^2$ value under interaction is 0.221, which is higher than the previous one.
 We can conclude here by saying that the regression analysis for our all countries is somehow better than the previous analysis.
 Log, $log^2$ and $log^3$ is a better functional form for our estimates on the relationship between $y_i$ and $GINIW_j$.
+However, the highest R2, which is 0.495 have we observed, when we have only estimated for the Greece data.
 
 ### Corresponding scatter plots with the estimate line
 
@@ -1232,9 +1233,7 @@ In comparison with line in @fig-lm-data2010, we can see that these lines fit our
 
 ### Verbal interpretation of our estimate coefficients
 
-We can see from @fig-mlr-scatterplot_fittedline that the green line starts negatively, and suddenly start getting positive after 10.3 according to the x-axis.
-We can here say that there is a inverse relationship between the variables.
-The green and the grey line crosses each other.
+We can see from @fig-mlr-scatterplot_fittedline that if the GDP is low and increases the quadratic estimates of degree 3 suggest that inequality gini increases at a GDP of approximately exponential (9.1) the effect turns around the inequality starts to decrease.
 
 If we look at the grey line and go one step forward from 8.8 to 9.2 on the GDP per capita (log), than gini goes from 0.8 to approximately 0.12.
 
