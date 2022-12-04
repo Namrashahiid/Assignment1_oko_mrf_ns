@@ -1242,6 +1242,11 @@ On polynomial curve, effect depends on where you are placed.
 If we compare linear regression with polynomial regression, then we can say that the effect is varying when it comes polynomial regression.
 In linear regression the effect is logically the same all the way.
 
+Correlation between variables play an important role in a descriptive analysis.
+If we look at if there is any correlation between the variables the value is 0.221.
+An interpretation which is between 0-0.30 is considered as negligible or in other words weak correlation.
+So we can say that this 0.221 value is a weak correlation between the interpted values we have found.
+
 ### Test for heteroskedasticity
 
 Heteroskedasticity is when the variance of the error term, given the explanatory variables, is not constant.
