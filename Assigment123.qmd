@@ -49,8 +49,7 @@ We are group two and will therefore examine these countries:
 
 *`Econometric discussion:`*
 
--   *`When talking about data sources regarding monetary variables a statement about the prices
-    values is based upon is essential. GDP in constant prices vs. GDP in current prices?`*
+-   *`When talking about data sources regarding monetary variables a statement about the prices     values is based upon is essential. GDP in constant prices vs. GDP in current prices?`*
 
 *`Presentation of results:`*
 
@@ -463,8 +462,7 @@ However we need to test later the sensitivity of our findings regarding the pres
 *`Econometric discussion:`*
 
 -   *`“Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption. One important thing to point out here is that the Gini coefficient has a value between 0 and 1. When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze. On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.” I do not understand what you aim to say with this.`*
--   *`“A log in R wil transform our data in a way that will apply a logarithm to our data that
-    will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way.” I do not understand what you aim to say with this.`*
+-   *`“A log in R wil transform our data in a way that will apply a logarithm to our data that     will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way.” I do not understand what you aim to say with this.`*
 -   *`“From this table we can see different values. What wee see here for Poland (PL) is that there is 10 numbers” You properly talk about observations hear?`*
 -   *`“We can see by looking at this method what Y value would be when X = 0.” I do not understand what you aim to say with this. Do you mean the constant?`*
 -   *`“If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high. It is the highest value, which is 1.000.” Tow observations always fit one another perfectly; that is a statistical artefact you are looking at.`*
@@ -481,8 +479,7 @@ However we need to test later the sensitivity of our findings regarding the pres
 
 -   *`I suggest scaling your variables e.g. education attainment per 1000 for example, to avoid beta=0.00000002`*
 -   *`When plotting tables with Hux reg I suggest changing the significance levels to the econ standards of 0.01, 0.05, 0.1 -> (Note: *** p < 0.01; ** p < 0.05; * p < 0.10 T statistics in brackets.)`*
--   *`The t-tests you present are redundant as the information is already part of the estimation
-    tables you present.`*
+-   *`The t-tests you present are redundant as the information is already part of the estimation     tables you present.`*
 
 In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
