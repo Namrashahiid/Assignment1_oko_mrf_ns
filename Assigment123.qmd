@@ -1433,7 +1433,7 @@ penaldata %>%
   plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
       data = ., 
       index = c("id_nuts0", "year"), 
-      model="within", effect ="twoways") %>% 
+      model= "within", effect = "twoways") %>% 
   coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 ```
 
