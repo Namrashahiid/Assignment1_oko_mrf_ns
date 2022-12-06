@@ -23,6 +23,7 @@ library(car)
 library(modelr)
 library(gridBase)
 library(gridExtra)
+library(plm)
 ```
 
 ## Introduction
@@ -1376,6 +1377,65 @@ For Albania it can be a eventual solution to get help from EU.
         -   *`NUTS 2 fixed effects`*
 
 *`(Please ignore for this assignment the alternative determinants from assignment 2)`*
+
+```{r}
+penaldata <- tmp %>%
+  mutate(id_nuts2 = substr(id_nuts3,1,4))%>%
+  group_by(id_nuts2, year) %>%
+  mutate(Gini = gini.wtd(GDP_capita, w = pop),
+         gdp_n3 = sum(gdp_n3, na.rm=T),
+         pop_n3 = sum(pop, na.rm=T)) %>%
+  mutate(gdp_n2 = sum(gdp_n3),pop_n2 = sum(pop_n3))%>%
+  ungroup() %>%
+  #Keeping only 1 obs per NUTS 2
+    distinct(year, id_nuts2, gini_n2, gdp_n2, pop_n2) %>%
+  mutate(GDP_capita = gdp_n2/pop_n2*1000000)%>%
+  mutate(GDP_capita = log(gdp_n2/pop_n2*1000000))%>%
+  mutate(gini_n3 = gini_n2*100000) %>% 
+  mutate(id_nuts0 = substr(id_nuts2,1,2))
+```
+
+```{r}
+penaldata %>%
+  plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
+      data = ., 
+      index = c("id_nuts0"), 
+      model="within", effect ="twoways") %>% 
+  coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+
+penaldata %>%
+  plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
+      data = ., 
+      index = c("id_nuts2"), model= "within", 
+      effect = "twoways") %>% 
+  coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+
+penaldata %>%
+  plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
+      data = ., 
+      index = c("year"), 
+      model = "within", 
+      effect = "twoways") %>% 
+  coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+
+
+penaldata %>%
+  plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
+      data = ., 
+      index = c("id_nuts0", "id_nuts2", "year"), 
+      model="within", 
+      effect ="twoways") %>% 
+  coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+```
+
+```{r}
+penaldata %>%
+  plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
+      data = ., 
+      index = c("id_nuts0", "year"), 
+      model="within", effect ="twoways") %>% 
+  coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
+```
 
 -   *`Clean up`*
 
