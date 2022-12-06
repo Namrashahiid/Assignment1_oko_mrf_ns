@@ -20,9 +20,12 @@ library(rio)
 library(huxtable)
 library(lmtest)
 library(car)
+library(modelr)
+library(gridBase)
+library(gridExtra)
 ```
 
-## 1 Introduction
+## Introduction
 
 In this assignment are we going to study the regional inequality of our selected European countries.
 We are group two and will therefore examine these countries:
@@ -43,13 +46,13 @@ We are group two and will therefore examine these countries:
 
 -   Albania (AL)
 
-# 2 Assignment 1
+# 1 Assignment 1
 
 *`Things to improve:`*
 
 *`Econometric discussion:`*
 
--   *`When talking about data sources regarding monetary variables a statement about the prices     values is based upon is essential. GDP in constant prices vs. GDP in current prices?`*
+-   *`When talking about data sources regarding monetary variables a statement about the prices values is based upon is essential. GDP in constant prices vs. GDP in current prices?`*
 
 *`Presentation of results:`*
 
@@ -63,7 +66,7 @@ We are group two and will therefore examine these countries:
 -   *`distinct(id_nuts0, year,.keep_all = TRUE)`*
     -   *`this code only gives the first distinct value for the group country year not the max or min for this you would need to sort the data first by GDP pc for example.`*
 
-### 2.1 Data
+### 1.1 Data
 
 The main task in this assignment will be to study regional inequality from 2000-2020 for our selected European countries.
 We are in assignment 1 using two datasets from Eurostat.[^1]
@@ -80,7 +83,7 @@ $$ y_i = GDP_i / population_i $$
 
 where *i* refers to NUTS3 regions.
 
-```{r}
+```{r, echo = FALSE}
 #Import data from Eurostat
 gdpfile <- import("nama_10r_3gdp.csv")
 popfile <- import("demo_r_pjanaggr3.csv")
@@ -117,7 +120,7 @@ Like mentioned in this assignment we will calculate GDP per capita, which is bas
 
 To calculate GDP per capita we need to multiply the GDP value with 1 million because it is in million euro and dividing it by the population value.
 
-```{r}
+```{r, echo = FALSE}
 # Calculate GDP per capita
 tmp %<>%
   mutate(GDP_capita = (gdp_n3 * 1000000)/pop)
@@ -126,18 +129,18 @@ tmp_gdpcapita <- tmp %>%
   select(year, id_nuts3, pop, GDP_capita)
 ```
 
-## 2.2 Descriptive statistics raw data
+## 1.2 Descriptive statistics raw data
 
-### Cross country perspective:
+### Cross country perspective
 
 What we can describe from our data (GDP per capita), using metadata description is that GDP measures the value of total final production.
 Metadata can be defined as information that is necessary to be able to use and intercept statistics.
 The main function of metadata is to explain data by giving definitions, for example according to our data, region, year, GDP, population and GDP per capita.
 We now have information on GDP per capita in different regions from different countries that we have chosen.
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-summary_gdp
-#| tbl-cap: Summary
+#| tbl-cap: Descriptive statistics
 # Report the essential descriptive statistics 
 # for you data set (Mean, Min, Max,..:)
 tmp %>% 
@@ -147,14 +150,14 @@ tmp %>%
   st()
 ```
 
-Looking at [Table 1] and the table descriptive statistics table over, we can see substantial differences in region size as well as economic development.
+Looking at @wealthiest, @tab-least_wealthiest and @tbl-summary_gdp over, we can see substantial differences in region size as well as economic development.
 The largest region, Rest of Dronningen (NL113) is almost 1000 times bigger than the smallest region, which is Agglomeratie Leiden en Bollenstreek (NL337).
 We also see a big difference in gdp per capita.
 The least wealthiest region of our dataset is in Poland, Nowotarski (PL219) and has a gdp per capita of 5652, while the wealthiest region Rest og Groningen (NL113) has a gdp per capita of 55857.
 We also see a big difference in population.
 The smallest region has a population of 10 603, and the largest have a population of 6 373 546.
 
-From [Table 1] and [Table 2] we see that the wealthiest regions in our dataset are located in the Netherlands and in Norway, and that the least wealthiest regions are located in Poland.
+From @tab-wealthiest and @tab-least_wealthiest we see that the wealthiest regions in our dataset are located in the Netherlands and in Norway, and that the least wealthiest regions are located in Poland.
 
 ```{r}
 #| label: fig-gdp_pc_nuts0
@@ -229,9 +232,9 @@ We can say that this region Nordland (NO071) has low GDP per capita, compared to
 With this GDP per capita for specific countries, we can easily filter our information/data afterwards in this assignment.
 This can for example be done by finding the wealthiest and least wealthiest regions in each country.
 
-### GDP per capita for Norway:
+#### GDP per capita for Norway:
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-summary_Norway
 #| tbl-cap: Summary Norway
 tmp %>%
@@ -249,9 +252,9 @@ When N is 1, than it makes sense why all these values are same.
 Our dataset only have numbers for one region on NUTS3 level in Norway, even though there should be 19 counties.
 We are therefore going take a closer look at other countries.
 
-### GDP per capita for Spain:
+#### GDP per capita for Spain:
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-wealthiest_ES
 #| tbl-cap: 3 wealthiest regions in ES
 tmp %>%
@@ -265,7 +268,7 @@ There is no such big difference in them.
 The observation between these regions are somehow consistent.
 If we look at our next table 4, we can see the least wealthiest regions in Spain.
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-least_wealthiest_ES
 #| tbl-cap: 3 least wealthiest regions in ES
 tmp %>%
@@ -278,9 +281,9 @@ When we look at this table 4, we can see the least wealthiest regions in Spain.
 Comparing GDP per capita from table 4 with table 3 we can see that there is difference between values in both tables.
 The three wealthiest regions are twice as wealthy as the least wealthiest.
 
-### GDP per capita for Poland
+#### GDP per capita for Poland
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-wealthiest_PL
 #| tbl-cap: 3 wealthiest regions in PL
 tmp %>%
@@ -293,7 +296,7 @@ When we look at table 5 we see the wealthiest regions in Poland.
 There are a difference of over 10 000 gdp per capita from the most wealthiest to the third most wealthy region.
 Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-least_wealthiest_PL
 #| tbl-cap: 3 least wealthiest regions in PL
 tmp %>%
@@ -307,9 +310,9 @@ We can see that there is big difference between the wealthiest regions from tabl
 The wealthiest region in Poland are almost 5 times wealthier than the least wealthy region in Poland.
 This shows us that there are big differences in living conditions in Poland.
 
-### GDP per capita for Slovenia
+#### GDP per capita for Slovenia
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-wealthiest_SI
 #| tbl-cap: 3 wealthiest regions in SI
 tmp %>%
@@ -320,7 +323,7 @@ tmp %>%
 
 When we look at table 7 we see the wealthiest regions in Slovenia.
 
-```{r}
+```{r, echo = FALSE}
 #| label: tbl-least_wealthiest_SI
 #| tbl-cap: 3 least wealthiest regions in SI
 tmp %>%
@@ -334,16 +337,14 @@ In comparison to the wealthiest regions in Slovenia there are not that big gap.
 Compared to the other countries we have looked at (Poland and Spain), there are smaller differences between the richest and the poorest regions.
 Slovenia is generally not that rich compared to the other countries in graph 1.
 
-## 2.3 Regional inequity measures:
+## 1.3 Regional inequity measures
 
 When we talk about regional inequity measures, it is normal to talk about GINWj.
 This is the inequality indicator that we use in our analysis in the population weighted gini coefficient.
 It has a range from 0 (low/no inequaliy) to 1 (perfect inequality between regions).
 The indicator is calculated like this:
 
-$$ GINW_j =  $$
-
-![](images/GINI.png){fig-align="center"}
+$$ GINW_j=\frac{1}{2 \bar{y_j}} \sum_{i}^{n_j}\sum_{l}^{n_j}\frac{p_i}{P_j} \frac{p_l}{P_j} |y_i-y_l| $$
 
 where *i* refers to NUTS3 regions and *j* refers to NUTS2 regions.
 The indicators *i* and *j* specify region data for us.
@@ -360,9 +361,9 @@ tmp  %<>%
   ungroup() # to remove grouping
 ```
 
-## 2.4 Descriptive statistics Gini
+## 1.4 Descriptive statistics Gini
 
-### Cross country perspective:
+### Cross country perspective
 
 ```{r}
 tmp %>% 
@@ -415,12 +416,16 @@ In this graph over level of inequality over time for Spain, there are some excep
 Taking a closer look at the light blue dotted line, we see that it is starting quite low, around 0,04, and increasing to almost 0,06 over 20 years.
 This region has a different curve than the rest of the regions in Spain.
 
+### Individual country cases
+
+[Skal me ha det? Såg han hadde det på html eksempelet på canvas.]{.underline}
+
 ## 2.5 Outlier discussion
 
 When we talk about Outlier discussion part its normal to define the word outlier.
 The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
 
-```{r}
+```{r, echo = FALSE}
 #| label: fig-outlier
 #| fig-cap: Outliers
 ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
@@ -455,7 +460,7 @@ This is not an outlier but still worth mentioning.
 All the mentioned outliers except from the one with zero inequity are not do to a bias in our data, and we should therefore keep them.
 However we need to test later the sensitivity of our findings regarding the presence of these borderline observations.
 
-# 3 Assignment 2
+# 2 Assignment 2
 
 *`Things to improve`*
 
@@ -480,6 +485,10 @@ However we need to test later the sensitivity of our findings regarding the pres
 -   *`I suggest scaling your variables e.g. education attainment per 1000 for example, to avoid beta=0.00000002`*
 -   *`When plotting tables with Hux reg I suggest changing the significance levels to the econ standards of 0.01, 0.05, 0.1 -> (Note: *** p < 0.01; ** p < 0.05; * p < 0.10 T statistics in brackets.)`*
 -   *`The t-tests you present are redundant as the information is already part of the estimation     tables you present.`*
+
+## 2.1 Regional development and regional inequality
+
+### The sample
 
 In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
@@ -602,7 +611,7 @@ lm_residuals_plot <- function(lmdata) {
     labs(x = "log(GDP per capita)", y = "Gini")}
 ```
 
-### Estimate the effect of regional development yj on regional inequality GINIWj for the year 2010:
+### Estimates cross-section 2010
 
 What we are going to do here to describe the effect of regional development on regional inequality, and then we are going to analyze this by the help of using regression analysis.
 Now the question is, what is regression analysis.
@@ -698,7 +707,7 @@ What we can analyze here by looking at this value R2 1.000 for Slovenia (SI), is
 On the other hand when we look at the R2 value for Spain (ES), we can see that it is 0.0.
 This value indicates that, this model is not suitable for our model.
 
-## Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:
+**Plot the relastionship between regional developement yi and regional inequality GINIWj, and the fitted line corresponding to your estimate:**
 
 In this part are we going to analyze estimation for four countries.
 Countries which we are going to use as a estimation for our plots are: Spain (ES), Poland (PL), Slovenia (SI) and Netherlands (NL).
@@ -738,7 +747,7 @@ lm_function_plot(PL2010)
 We find that the slope/line here for Poland (PL) is also positive as for Netherlands (NL) above.
 The slope/line is on 0.05 on y-axis.
 
-## Plot the residual against the predicted values of your model:
+**Plot the residual against the predicted values of your model:**
 
 In this next part we are analyzing residual, which is the difference between the observed value and the mean value, that the model predict for that specific observation.
 In the next four graphs are we analyzing for same countries above.
@@ -758,6 +767,17 @@ $$
   #ggplot(aes(x = fitted(reg), y = resid(reg))) +7
   #geom_point(color = "darkslategray", size = 3) +8
   #theme_simple + xlab("predicted values") + ylab("residuals")
+#| label: fig-lm-res_pred
+#| fig-cap: Residuals against predicted 
+#Plot the residuals against the predicted values of your model
+reg1 <- data2010 %>%
+  add_predictions(model = lm.6)
+reg1 <- reg1 %>%
+  add_residuals(lm.6)
+reg1 %>%
+  ggplot(mapping = aes(x = pred, y = resid)) + 
+  geom_point(color = "darkgreen", size = 3) +
+  xlab("predicted values") + ylab("residuals")
 ```
 
 ```{r}
@@ -772,7 +792,7 @@ lm_residuals_plot(data2010)
 
 [Fjerna figur ... This graph for Spain (ES) shows us a regression line. We can analyze that the slope/line is negative. What we can see here is how far away those regions are from the regression line. We can analyze that there are many region dots further from the mean value.]{.underline}
 
-## Discuss the classical the assumption OLS in light of your data and plots:
+### Classical assumptions of OSL
 
 First of all a definition to this classical OLS assumption: Ordinary Least Squares (OLS) linear regression is a statistical technique for analyzing and designing linear relationship between a response and for one and even more variables.
 If the relationship between two variables are linear, then straight line can be fit to the specific data which we have worked with.
@@ -830,9 +850,9 @@ This test is used to determine if heteroscedasticy is present in a present regre
 This test fits regression model, because it fits the residuals of a linear regression model.
 We will look more in depth on this in our next assignment 3.
 
-## 3.2 Other determinants of inequity:
+## 2.2 Further determinants of regional inequality
 
-### Data
+## Data
 
 In this next part we are going to use three new datasets form Eurostat.
 These three datasets are related to demographics, education and transport infrastructure.
@@ -913,7 +933,7 @@ NL2010 <- data2010 %>%
   filter(id_nuts0 == "NL") 
 ```
 
-**Multiple Regression model:**
+## **Estimate MLR**
 
 After focusing on simple regression model, are we now moving on to multiple regression model.
 Question is what is multiple regression model?
@@ -1028,7 +1048,7 @@ lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
 
 Here the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
 
-# 4 Assignment 3
+# 3 Assignment 3
 
 *`Things to improve:`*
 
@@ -1044,7 +1064,7 @@ Here the p-value is 0.8794, which again is not possible to reject, because there
 In this assignment are we going to focus on Alternative function forms.
 First we are going to test if the effect of development is significantly different for different subset of countries in your data set.
 
-## 4.1 Effect of development for different subset
+## 3.1 Effect of development for different subset
 
 ```{r}
 #| label: tbl-mlr-only_greece
@@ -1120,7 +1140,7 @@ What we can conclude here by saying is that out test is according to the interac
 
 If we compare the p-values for no Greece and only Greece, we can see that there is not so much difference between the p-values, which are 0.059 for no Greece and 0.063 for only Greece.
 
-## 4.2 Alternative functional forms of our previous estimates on the relationship between $y_i$ and $GINIW_j$
+## 3.2 Alternative functional forms of our previous estimates on the relationship between $y_i$ and $GINIW_j$
 
 Our next task is now to explore alternative functional forms of our previous estimates on the relationship between regional development $y_i$ on regional inequality $GINIW_j$.
 To find out the answer to this task we have to find out what the definition to log estimates and cubical estimates are.
@@ -1311,7 +1331,7 @@ $$
 0.8285633>0.05
 $$
 
-## 4.3 Discuss if we can interpret the estimates as causal
+## 3.3 Discuss if we can interpret the estimates as causal
 
 First of all the thing is that causal interpretation rests on regression analysis.
 Regression coefficients or a correlation can really be attributed to the causal effect on for example X on Y, or the opposite.
@@ -1323,7 +1343,9 @@ The tables from our previous tasks have allowed us to see different values of se
 In our case we have seen that, most of the times we have not for example rejected the null hypothesis, which indicates that we accept the model and the values in our previous tasks.
 So most probably we would have used the same method all the way to solve our previous tasks.
 
-## 4.4 Potential remedies for eventual problems
+[And therefore ... no we can not interpret the estimates as causal.]{.underline}
+
+## 3.4 Potential remedies for eventual problems
 
 Eventual problems that can occur, can be for example that a country have to low GDP per capita.
 Then a solution can be that EU comes and helps the country with economical and financial support.
@@ -1335,7 +1357,11 @@ EU gives potential countries financial support for development.
 This can be the reason why EU, wants to help and make sure that the country is doing well financially.
 For Albania it can be a eventual solution to get help from EU.
 
-# 5 Assignment 4
+# 4 Assignment 4
+
+## 4.1 Penal estimates
+
+### Data
 
 *`New estimates`*
 
@@ -1361,25 +1387,31 @@ For Albania it can be a eventual solution to get help from EU.
 
 #### Appendix
 
-#### Table 1 {data-link="Table 1"}
-
 ```{r}
-tmp %>% 
+#| label: tab-wealthiest
+#| fig-cap: Wealthies regions
+tmp %>%
   filter(year == 2010) %>%
-  select(GDP_capita, id_nuts3, id_nuts0) %>%
+  select(GDP_capita, id_nuts2, id_nuts0) %>%
   slice_max(GDP_capita, n = 10)
 ```
 
-#### Table 2 {data-link="Table 2"}
-
 ```{r}
+#| label: tab-least_wealthiest
+#| fig-cap: Least wealthies regions
 tmp %>%
   filter(year == 2010) %>%
-  select(GDP_capita, id_nuts3, id_nuts0) %>%
+  select(GDP_capita, id_nuts2, id_nuts0) %>%
   slice_min(GDP_capita, n = 10)
 ```
 
-#### 
+```{r}
+#table(tbl-summary_gdp)
+```
+
+```{r}
+#table(tab-least_wealthiest)
+```
 
 #### References
 
