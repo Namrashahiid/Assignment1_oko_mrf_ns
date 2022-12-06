@@ -1496,8 +1496,26 @@ But here in this case our statistic significance value is lower than the statist
 That's why our result here is not statistical significance. 
  
 
+**Pr (\>\|t\|)**
+
+The Pr (\>\|t\|) represents the p-value related with the value in the t value column.
+Lets suppose if the p-value is less than a certain significance level (5%= 0.05), then the variable is statistically significance relationship.
+
+Here in our case for the Nuts0 data the Pr t value for Nuts0 on country level is on 0.01558.
+Our 0.05 (5%).
+We can then say that the p-value is less then the significance level on 0.05.
+This indicates that the variable is statistically significant.
 \
-m
+
+For the Year data the Pr t value for Year on country level is on 0.05278.
+Our 0.05 (5%).
+We can then say that the p-value here is higher then the significance level on 0.05.
+This indicates that the variable is not statistically significant.
+
+Now for the Nuts2 data the Pr t value for Nuts2 on country level is on 0.03635.
+Our 0.05 (5%).
+We can then say that the p-value here is less then the significance level on 0.05.
+This indicates that the variable is statistically significant.
 
 ```{r}
 penaldata %>%
