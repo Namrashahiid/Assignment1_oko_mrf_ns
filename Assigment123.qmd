@@ -57,7 +57,7 @@ We are group two and will therefore examine these countries:
 *`Presentation of results:`*
 
 -   *`I am confused about the figures in the section “Cross country perspective” the present random regions (not the poorest, not the richest) and their GDP development. Why this selection?`*
--   *`“Looking at Table 1 and the table descriptive statistics table over” I think you aimed to mention Table 2 here as well?`*
+-   [*`“Looking at Table 1 and the table descriptive statistics table over” I think you aimed to mention Table 2 here as well?`*]{.underline}
 -   *`“This table shows regional GDP per capita for the 10 highest income regions.” I believe you aim was to talk about a figure right?`*
 -   *`In Graphs 4 and 5 following the developments is hard due to the very similar colours hear I believe a line might be better. For example, NL32 looks like it jumps in 2014 from 0.06 to 0.22 which would be a huge change. Is that rue?`*
 
