@@ -3,9 +3,9 @@ title: "MSB104 Assignments"
 editor: visual
 author: Namra Shahid & Marit Rygg Fredheim
 csl: apa-no-ampersand.csl
-format: 
-  html: 
-    code-fold: true
+format: pdf
+  #html: 
+    #code-fold: true
 abstract: 'This is an assignment in the subject MSB104 Econometrics. It will study regional inequity of eight different European countries.' 
 ---
 
@@ -491,16 +491,13 @@ However we need to test later the sensitivity of our findings regarding the pres
 
 ### The sample
 
-In this assignment we are going to have our main focus on the same countries we have focused on in the first assignment.
+In this assignment we are going to have our main focus on the NUTS2 level regions of the same countries we have focused on in the first assignment.
 In the first part of this assignment we will use the same data that were presented in the last assignment.
 
 So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.
-To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
-GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
+[To study Growth and inequity, it is essential for us to look at and focus on GDP per capita. GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective. Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD. (sjekk for eventuell gjentakting frå ass 1)]{.underline}
 
-Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD.
-
-```{r}
+```{r, echo = FALSE}
 tmp_n2 <- tmp %>%
   select(year, pop, gdp_n3, id_nuts2, gini_n2, id_nuts0) %>% 
   group_by(id_nuts2, year) %>% 
@@ -525,7 +522,9 @@ The question is why are we going to use log?
 A log in R wil transform our data in a way that will help reduce its skew.
 In other words it will reproduce or rescale our data more in a statistical way.
 
-```{r}
+```{r, echo = FALSE}
+#| label: tbl-stastics_log_gdppc
+#| tbl-cap: Summary Statistics
 data2010 <- tmp_n2 %>%
 
 # level of economic development = log(gdp per capita)
@@ -538,32 +537,24 @@ data2010 %>%
   st(.)
 ```
 
-(AL og IE har ingen observasjonar i året 2010)
-
-Now when we look at the Summary Statistics we can see that some values/variables (gini values) are equal to 0.
+Now when we look at the @tbl-stastics_log_gdppc we can see that some values/variables (gini values) are equal to 0.
 What value 0 expresses is that there is perfect equality, where all the values are the same.
 As we have mentioned earlier, the gini value is from 0 to 1 in the table.
-
 The reason behind the values 0, can also be because of that maybe one of the values are missing.
 Therefore this leads us to gini values 0.
 We can also see that, many values are the same.
-Now when we look at our summary statistics, we can see that some of our values are equal to 0.
-For example in this case we find that Min and Pctl.
-25 are equal to 0.
-Under gini_n2 we find these 0 values.
-As we mentioned earlier, the values are always between 0 and 1, and when the value is equal to 0 or close enough to 0, then this designate that the model/variable which we are working on is not that useful to analyze.
 
 On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
 Now the question is, whats the solution to those values of 0.
 One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
 
-Further down in Summary Statistics, we find N variables for countries: Spain (ES), Netherlands (NL), Norway (NO), Poland (PL) and Slovenia (SL).
+Further down in @tbl-stastics_log_gdppc, we find N variables for countries: Spain (ES), Netherlands (NL), Norway (NO), Poland (PL), Slovenia (SL) and Greece (EL).
 What we can see is that Norway (NO) only have 1 variable, that is because it is only one region that is related to Norway (NO).
 On the other side we see Spain (ES) have 19 variables.
 
-We can not find our other countries, which are: Albania (AL), Ireland (IE).
-The reason behind this is because our dataset have no observations for AL an IE in the year 2010.
-Because we don´t have values of the countries which can not see, which are Albania (AL), Ireland (IE), Greece (EL), are we not going to focus on these countries in this assignment.
+In @tbl-stastics_log_gdppc we see that we are missing two of our countries, which are: Albania (AL) and Ireland (IE).
+The reason behind this is because our dataset have no observations for ALbania an Ireland in the year 2010.
+Because we don´t have values of these countries we are not going to focus on these countries in this part.
 
 ```{r}
 data2010 <- data2010 %>%
@@ -646,14 +637,11 @@ $$
 ```{r}
 #| label: tbl-log-gdppc
 #| tbl-cap: Estimate effect of regional development on regional inequality
-#lm.1 = lm(gini_n2 ~ log_gdppc, data = IE2010)
 lm.1 = lm(gini_n2 ~ log_gdppc, data = PL2010)
 lm.2 = lm(gini_n2 ~ log_gdppc, data = ES2010)
 lm.3 = lm(gini_n2 ~ log_gdppc, data = SI2010)
 lm.4 = lm(gini_n2 ~ log_gdppc, data = NL2010)
 lm.5 = lm(gini_n2 ~ log_gdppc, data = EL2010)
-#lm.6 = lm(gini_n2 ~ log_gdppc, data = NO2010)
-#lm.8 = lm(gini_n2 ~ log_gdppc, data = AL2010)
 lm.6 = lm(gini_n2 ~ log_gdppc, data = data2010)
 
 #Gen Table
@@ -665,20 +653,16 @@ lm.6 = lm(gini_n2 ~ log_gdppc, data = data2010)
   )
 ```
 
-We have read Lessmann & Seidel (2017) we can find that development can be found by log GDP.
+From the reading of Lessmann & Seidel (2017), we know that development can be found by log GDP.
 
-The table/graph up shows us that we have an relationship between X and Y.
+@tbl-log-gdppc shows us the relationship between X and Y.
 X which is regional development in this case and Y which refers to regional inequality.
-The formula which we have worked with above can clearly show us the relationship/ connection between these different variables.
+The table shows how much an increase in X impact Y.
+Spain is the only country that has a negative impact.
+The formula which we have worked with above can clearly show us the relationship/connection between these different variables.
 
-One important thing here to come up with here is that when we look at the estimation effect of regional development on regional inequality above on table, we see data for only countries: Poland (PL), Spain (ES), Slovenia (SI) and Netherlands (NL).
-Other countries such as Greece (EL), Norway (NO), Ireland (IE) and Albania (AL) have no data.
-Therefore are we going to take initially countries with dataset, in this case: Poland (PL), Spain (ES), Norway (NO) and Albania (AL).
-
-From this table we can see different values.
-What wee see here for Poland (PL) is that there is 10 observations for this country and the coefficient of determination R2 is 0.398.
-What we see here for Spain (ES) is that there is there is 11 numbers and the coefficient of determination R2 is 0.
-Value 0 can be due to.
+From @tbl-stastics_log_gdppc we see for Poland (PL) that there is 10 observations and the coefficient of determination R2 is 0.398.
+What we see here for Spain (ES) is that there is there is 11 obersvations and the coefficient of determination R2 is 0.
 As mentioned the value 0 can be due to low fitness of the model.
 
 **Regression analysis:**
@@ -694,11 +678,11 @@ $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
 ### Discuss the goodness of fit of your estimated model:
 
 In this discussion part are we going to discuss our estimation in previous task.
-First of all we can see that there is data for only 4 countries.
-The countries are: Slovenia (SI), Spain (ES), Netherlands (NL) and Poland (PL).
+First of all we can see that there is data for only 5 countries.
+The countries are: Slovenia (SI), Spain (ES), Netherlands (NL), Poland (PL) and Greece (EL).
 If we plus the values R2 for all 4 countries, we get a value over 1.
 Due to missing values in some of our countries are those countries with missing values not showing up.
-Therefore our focus here is countries which are showing up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL) and Spain (ES).
+Therefore our focus here is countries which are showing up, in this case: Slovenia (SI), Poland (PL), Netherlands (NL), Spain (ES) and Greece (EL).
 
 We are here looking at R2, which is value for coefficient of determination.
 
@@ -725,8 +709,8 @@ Coefficients of resolution is important for our next steps in this assignment.
 So the first we are going to do is to analyze all four countries in one table.
 
 ```{r}
-#| label: fig-mlr-scatterplot_fittedline
-#| fig-cap: Corresponding scatter plot with the fitted line  
+#| label: fig-mlr-scatterplot_fitted
+#| fig-cap:  line
 ggplot(data = data2010, aes(x = gdp_pc_n2, y = gini_n2)) +
   geom_point() +
    geom_smooth(method = "lm", se = FALSE) +
