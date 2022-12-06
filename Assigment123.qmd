@@ -1376,7 +1376,15 @@ For Albania it can be a eventual solution to get help from EU.
 
         -   *`NUTS 2 fixed effects`*
 
-*`(Please ignore for this assignment the alternative determinants from assignment 2)`*
+*`(Please ignore for this assignment the alternative determinants from assignment`*
+
+We are starting this assignment by using our entire dataset.
+To do that, we are using the penal data formel.
+First of all installing the plm package.
+After installing the package we are generating a code to come up with penal
+estimates.
+
+What our aim here to do is that we use our entire datast to estimate the effect of regional developmennt yi on regional inequality GINIWj in a penal setup.
 
 ```{r}
 penaldata <- tmp %>%
