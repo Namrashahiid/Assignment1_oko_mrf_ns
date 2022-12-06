@@ -468,7 +468,7 @@ However we need to test later the sensitivity of our findings regarding the pres
 *`Econometric discussion:`*
 
 -   *`“Important fact to come up here is that when we have higher value of GDP per capita, then it is most probably because of the higher incomes and consumption. One important thing to point out here is that the Gini coefficient has a value between 0 and 1. When the value is equal to 0 or close enough to 0, then this shows us that the model is not that suitable or fit to analyze. On the other side, when the value is equal to 1 or close enough to 1, then this indicates that the model is most probably suitable or fit to analyze.” I do not understand what you aim to say with this.`*
--   *`“A log in R wil transform our data in a way that will apply a logarithm to our data that     will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way.” I do not understand what you aim to say with this.`*
+-   *`“A log in R wil transform our data in a way that will apply a logarithm to our data that will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way.” I do not understand what you aim to say with this.`*
 -   *`“From this table we can see different values. What wee see here for Poland (PL) is that there is 10 numbers” You properly talk about observations hear?`*
 -   *`“We can see by looking at this method what Y value would be when X = 0.” I do not understand what you aim to say with this. Do you mean the constant?`*
 -   *`“If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high. It is the highest value, which is 1.000.” Tow observations always fit one another perfectly; that is a statistical artefact you are looking at.`*
@@ -502,17 +502,25 @@ Important fact to come up here is that, although GDP per capita is often used as
 
 ```{r}
 tmp_n2 <- tmp %>%
-  select(year, pop, gdp_n3, id_nuts2, gini_n2) %>% 
+  select(year, pop, gdp_n3, id_nuts2, gini_n2, id_nuts0) %>% 
   group_by(id_nuts2, year) %>% 
   mutate(gdp_n2 = sum(gdp_n3), pop_n2 = sum(pop)) %>%
   ungroup() %>%
-  distinct(id_nuts2, year, gdp_n2, pop_n2, gini_n2) %>%
+  distinct(id_nuts2, year, gdp_n2, pop_n2, gini_n2, id_nuts0) %>%
   mutate(gdp_pc_n2 = (gdp_n2 * 1000000)/pop_n2) 
+
+# Generate tmp_n0 with only data on country level for the year 2010
+tmp_n0 <- tmp %>%
+  select(year, pop, gdp_n3, id_nuts2, gini_n2, id_nuts0) %>% 
+  group_by(id_nuts0, year) %>% 
+  mutate(gdp_n0 = sum(gdp_n3), pop_n0 = sum(pop), gini_n0 = sum(gini_n2)) %>%
+  ungroup() %>%
+  distinct(year, gdp_n0, pop_n0, gini_n0, id_nuts0) %>%
+  mutate(gdp_pc_n0 = (gdp_n0 * 1000000)/pop_n0) %>%
+  filter(year == 2010)
 ```
 
-**Log:**
-
-Further are we going to use log data in our codes.
+**Log:** Further are we going to use log data in our codes.
 The question is why are we going to use log?
 A log in R wil transform our data in a way that will help reduce its skew.
 In other words it will reproduce or rescale our data more in a statistical way.
@@ -717,6 +725,17 @@ Coefficients of resolution is important for our next steps in this assignment.
 So the first we are going to do is to analyze all four countries in one table.
 
 ```{r}
+#| label: fig-mlr-scatterplot_fittedline
+#| fig-cap: Corresponding scatter plot with the fitted line  
+ggplot(data = data2010, aes(x = gdp_pc_n2, y = gini_n2)) +
+  geom_point() +
+   geom_smooth(method = "lm", se = FALSE) +
+  theme_bw() +
+  xlab("GDP per capita") +
+  ylab("Gini_n2")
+```
+
+```{r}
 #| label: fig-lm-data2010
 #| fig-cap: Estimate for data2010
 lm_function_plot(data2010)
@@ -833,18 +852,6 @@ $$
 When we look at the graph under, which is related to our question, we can see that the graph Residuals vs Fitted line on the left side is suitable for us.
 
 **Normality:** The population error term is normally distributed with mean zero and variance.
-
-Below we will look at how our data (NL, ES, EL, ...) fit the assumptions of OSL.
-
-The graph, which is related to our assignment is the graph: Residuals vs Fitted values.
-
-```{r}
-#| label: fig-par-plot
-#| fig-cap: Diagnostic plots
-plot(lm.6)
-```
-
-[Endra figur ... What we can analyze here is that in the first graph for Netherlands (NL), we can see the comparison between Residuals and fitted values. The fact of the matter is that we want the red line as flat as possible. When we analyze the first graph we can see that the red line is kind of like a mountain shaped. The fitted values goes from 0.00 to 0.12. The values relies between these numbers.]{.underline}
 
 We could have also discussed Breusch-Pagan Test here.
 This test is used to determine if heteroscedasticy is present in a present regression analysis.
