@@ -1442,6 +1442,63 @@ penaldata %>%
   coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 ```
 
+Now we are going to look at the output values we have got after this panel estimation code.
+Here we are going to use 5% (0.05) significance level when it comes to the t-value estimation.
+
+**country nuts0**:
+
+The first panel estimation shows us the country fixed effect data.
+We are using nuts0 data here for our penal estimation for countries.
+
+The estimation value is very low at -29457,40 which indicates that the country fixed effect decreases by -29457,40. 
+
+The std- error value is on 12153.32.
+We can see that the std-error value is pretty high, which tells us that the values are more spread out and are around the mean in a dataset. 
+
+The T-value here is: -2.4238.
+If the test score value is less than this value, then this indicates that the test of this test is statistically significant.
+But here in this case our statistic significance value is lower than the statistic significance level at 5% divided in two 2,5% (0.025).
+That's why our result here is not statistical significance. 
+ 
+
+**year**
+
+The second panel test shows us the year fixed effect data.
+We are using year dataset here. 
+
+The estimation is more lower than the previous estimation.
+Here the value is -32378.81.
+This shows us how weak the estimation is and this indicates that the effect decreases by -32378.81. 
+ 
+
+The std- error value is on 16700.21.
+We can see that the std-error value is pretty high, which tells us that the values are more spread out and are around the mean in a dataset.
+
+The T-value here is: -1.9388.
+If the test score value is less than this value, then this indicates that the test of this model is statistically significant.
+But here in this case our statistic significance value is lower than the statistic significance level at 5% divided in two 2,5% (0.025).
+That's why our result here is not statistical significance. 
+ 
+
+**Nuts 2**
+
+The third panel estimation shows us the Nuts2 fixed effect data.
+The estimation value is on: -22167.71.
+This is pretty low, which indicates that the Nuts2 effect decreases by -22167.71.
+
+The std-error is on 10578.32.
+This value is high, not as high as the previous one, but this again indicates that our values are more spread out and are more around the mean in the Nuts 2 fixed effect dataset. 
+
+The T-value here is -2.0956.
+So if the test value score is less, then this value, than this indicates that the test of this model is statistically significance.
+This shows us how negative sloped/winkeled our model/estimation is.
+But here in this case our statistic significance value is lower than the statistic significance level at 5% divided in two 2,5% (0.025).
+That's why our result here is not statistical significance. 
+ 
+
+\
+m
+
 ```{r}
 penaldata %>%
   plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
