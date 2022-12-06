@@ -1151,7 +1151,7 @@ Log, logarithm can be defined as the inverse function to exponentiation.
 #| label: tbl-mlr-all_counties
 #| tbl-cap: Multi linear regression model of development (log)
 data2010 <- data2010
-lm.13 = lm(gini_n2 ~ log(gdp_pc_n2) , data2010) %>%
+lm.13 = lm(gini_n2 ~ log(gdp_pc_n2), data2010) %>%
 coeftest(vcov = hccm, save = TRUE)
 lm.14 = lm(gini_n2 ~ log(I(gdp_pc_n2)^2), data2010) %>%
   coeftest(vcov = hccm, save = TRUE)
@@ -1381,8 +1381,7 @@ For Albania it can be a eventual solution to get help from EU.
 We are starting this assignment by using our entire dataset.
 To do that, we are using the penal data formel.
 First of all installing the plm package.
-After installing the package we are generating a code to come up with penal
-estimates.
+After installing the package we are generating a code to come up with penal estimates.
 
 What our aim here to do is that we use our entire datast to estimate the effect of regional developmennt yi on regional inequality GINIWj in a penal setup.
 
@@ -1391,8 +1390,8 @@ penaldata <- tmp %>%
   mutate(id_nuts2 = substr(id_nuts3,1,4))%>%
   group_by(id_nuts2, year) %>%
   mutate(Gini = gini.wtd(GDP_capita, w = pop),
-         gdp_n3 = sum(gdp_n3, na.rm=T),
-         pop_n3 = sum(pop, na.rm=T)) %>%
+         gdp_n3 = sum(gdp_n3, na.rm = T),
+         pop_n3 = sum(pop, na.rm = T)) %>%
   mutate(gdp_n2 = sum(gdp_n3),pop_n2 = sum(pop_n3))%>%
   ungroup() %>%
   #Keeping only 1 obs per NUTS 2
@@ -1408,13 +1407,13 @@ penaldata %>%
   plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
       data = ., 
       index = c("id_nuts0"), 
-      model="within", effect ="twoways") %>% 
+      model = "within", effect = "twoways") %>% 
   coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 
 penaldata %>%
   plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
       data = ., 
-      index = c("id_nuts2"), model= "within", 
+      index = c("id_nuts2"), model = "within", 
       effect = "twoways") %>% 
   coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 
@@ -1431,8 +1430,8 @@ penaldata %>%
   plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
       data = ., 
       index = c("id_nuts0", "id_nuts2", "year"), 
-      model="within", 
-      effect ="twoways") %>% 
+      model = "within", 
+      effect = "twoways") %>% 
   coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 ```
 
