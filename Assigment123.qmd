@@ -3,9 +3,9 @@ title: "MSB104 Assignments"
 editor: visual
 author: Namra Shahid & Marit Rygg Fredheim
 csl: apa-no-ampersand.csl
-format: pdf
-  #html: 
-    #code-fold: true
+format:
+  html: 
+    code-fold: true
 abstract: 'This is an assignment in the subject MSB104 Econometrics. It will study regional inequity of eight different European countries.' 
 ---
 
@@ -84,7 +84,7 @@ $$ y_i = GDP_i / population_i $$
 
 where *i* refers to NUTS3 regions.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include = FALSE}
 #Import data from Eurostat
 gdpfile <- import("nama_10r_3gdp.csv")
 popfile <- import("demo_r_pjanaggr3.csv")
@@ -121,7 +121,7 @@ Like mentioned in this assignment we will calculate GDP per capita, which is bas
 
 To calculate GDP per capita we need to multiply the GDP value with 1 million because it is in million euro and dividing it by the population value.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include = FALSE}
 # Calculate GDP per capita
 tmp %<>%
   mutate(GDP_capita = (gdp_n3 * 1000000)/pop)
@@ -138,18 +138,6 @@ What we can describe from our data (GDP per capita), using metadata description 
 Metadata can be defined as information that is necessary to be able to use and intercept statistics.
 The main function of metadata is to explain data by giving definitions, for example according to our data, region, year, GDP, population and GDP per capita.
 We now have information on GDP per capita in different regions from different countries that we have chosen.
-
-```{r, echo = FALSE}
-#| label: tbl-summary_gdp
-#| tbl-cap: Descriptive statistics
-# Report the essential descriptive statistics 
-# for you data set (Mean, Min, Max,..:)
-tmp %>% 
-  filter(year == 2010) %>%
-  select(gdp_n3, pop, GDP_capita) %>% 
-  # . to stop RStudio complaining about no data
-  st()
-```
 
 Looking at @wealthiest, @tab-least_wealthiest and @tbl-summary_gdp over, we can see substantial differences in region size as well as economic development.
 The largest region, Rest of Dronningen (NL113) is almost 1000 times bigger than the smallest region, which is Agglomeratie Leiden en Bollenstreek (NL337).
@@ -169,7 +157,7 @@ tmp %>%  distinct(id_nuts0, year,.keep_all = TRUE) %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
-When we look at graph 1, we see a common trend in forward growth in all of the countries.
+When we look at @fig-gdp_pc_nuts0, we see a common trend in forward growth in all of the countries.
 Norway´s GDP are on the top (the blue line on top).
 Norway have the highest GDP per capita.
 Albania on the other side have the lowest GDP per capita.
@@ -185,21 +173,6 @@ We see the same trend for the purple line and Poland.
 In the middle the lines are showing the other countries.
 They are mostly slightly rising.
 
-```{r}
-#Appendix
-tmp_1 <- tmp %>% 
-  filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
-  slice_min(GDP_capita, n = 10) %>%  select(id_nuts3)
-
-#| label: fig-gdp_pc_min
-#| fig-cap: Gdp per capita for the 10 poorest regions
-tmp %>%   
-  filter(id_nuts3 %in% tmp_1 $ id_nuts3) %>% 
-  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "GDP per capita")
-```
-
 In @fig-gdp_pc_min we can see the GDP per capita for polish regions.
 If we take a look at the orange line, which refers to PL214, we see that it had its down period to start with.
 Not only (PL214) the orange line, but also all the other regions, does not start good.
@@ -208,23 +181,6 @@ PL214 had its down time between years 2008-2009, most probably because of the fi
 Except from this we see that all of the regions have a stable rising curve.
 All of the ten least wealthy regions are located in Poland.
 We will therefore look closer into Poland in the next part.
-
-```{r}
-#Appendix
-tmp_1 <- tmp %>% 
-  filter(year == 2010) %>%  
-  select(GDP_capita, id_nuts3)  %>% 
-  slice_max(GDP_capita, n = 10) %>%  
-  select(id_nuts3)
-
-#| label: fig-gdp_pc_max
-#| fig-cap: Gdp per capita for the 10 wealthiest regions
-tmp %>%   
-  filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
-  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "GDP per capita")
-```
 
 @fig-gdp_pc_max shows regional GDP per capita for the 10 highest income regions.
 Nine of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway and the region Nordland (NO071).
@@ -238,17 +194,7 @@ In the next part about individual country cases we are going to look closer into
 With this GDP per capita for specific countries, we can easily filter our information/data afterwards in this assignment.
 This can for example be done by finding the wealthiest and least wealthiest regions in each country.
 
-#### GDP per capita for Norway:
-
-```{r, echo = FALSE}
-#Appendix
-#| label: tbl-summary_Norway
-#| tbl-cap: Summary Norway
-tmp %>%
-  filter(id_nuts0 == "NO" , year == 2010) %>%
-  select(gdp_n3, pop, GDP_capita) %>%
-  st()
-```
+#### GDP per capita for Norway
 
 Since Norway is the country with the highest GDP per capita it is interesting to stydy Norway closer.
 When we look at the GDP per capita for Norway, in @tbl-summary_Norway, we can see that there is no such big difference between the values, such as Min and Max, Mean, Std.
@@ -259,63 +205,29 @@ When N is 1, than it makes sense why all these values are same.
 Our dataset only have numbers for one region on NUTS3 level in Norway, even though there should be 19 counties.
 We are therefore going take a closer look at other countries.
 
-#### GDP per capita for Poland
+#### GDP per capita for Netherlands
 
-```{r, echo = FALSE}
-#Appendix
-#| label: tbl-wealthiest_PL
-#| tbl-cap: 3 wealthiest regions in PL
-tmp %>%
-  filter(id_nuts0 == "PL" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) %>%
-  slice_max(GDP_capita, n = 3)
-```
+@tbl-wealthiest_NL
+
+@least_wealthiest_NL
+
+#### GDP per capita for Poland
 
 When we look at @tbl-wealthiest_PL we see the wealthiest regions in Poland.
 There are a difference of over 10 000 gdp per capita from the most wealthiest to the third most wealthy region.
 Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
-
-```{r, echo = FALSE}
-#Appendix
-#| label: tbl-least_wealthiest_PL
-#| tbl-cap: 3 least wealthiest regions in PL
-tmp %>%
-  filter(id_nuts0 == "PL" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) %>%
-  slice_min(GDP_capita, n = 3)
-```
 
 In @tbl-least_wealthiest_PL can we see the least wealthiest regions in Poland.
 We can see that there is big difference between the wealthiest regions from @tbl-least_wealthiest_PL and @tbl-least_wealthiest_PL (least wealthiest regions) in Poland.
 The wealthiest region in Poland are almost 5 times wealthier than the least wealthy region in Poland.
 This shows us that there are big differences in living conditions in Poland.
 
-#### GDP per capita for Greece:
-
-```{r, echo = FALSE}
-#Appendix
-#| label: tbl-wealthiest_EL
-#| tbl-cap: 3 wealthiest regions in EL
-tmp %>%
-  filter(id_nuts0 == "EL" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) %>%
-  slice_max(GDP_capita, n = 3)
-```
+#### GDP per capita for Greece
 
 Except from Norway, Greece are the country with the highest gdp per capita.
 We will therefore take a closer look on Greece.
 Looking at @tbl-wealthiest_EL for the three wealthiest regions in Greece we see the GDP per capita for EL303 (the first region) and EL306 (the second region) and EL301 (the third region).
 If we look at @tbl-least_wealthiest_EL, we can see the least wealthiest regions in Greece.
-
-```{r, echo = FALSE}
-#Appendix
-#| label: tbl-least_wealthiest_EL
-#| tbl-cap: 3 least wealthiest regions in EL
-tmp %>%
-  filter(id_nuts0 == "EL" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) %>%
-  slice_min(GDP_capita, n = 3)
-```
 
 Comparing GDP per capita from @tbl-wealthiest_EL with @tbl-least_wealthiest_EL we can see that there is difference between values in both tables.
 The three wealthiest regions are over twice as wealthy as the least wealthiest.
@@ -333,7 +245,7 @@ where *i* refers to NUTS3 regions and *j* refers to NUTS2 regions.
 The indicators *i* and *j* specify region data for us.
 GINWj/i data shows us different sizes of regions etc.
 
-```{r}
+```{r, echo = FALSE, include = FALSE}
 #gen weighted gini
 #for all
 gini.wtd(tmp$GDP_capita, w = tmp$pop)
@@ -348,16 +260,6 @@ tmp  %<>%
 
 ### Cross country perspective
 
-```{r, echo = FALSE}
-#| label: tbl-summary_gini_n2
-#| fig-cap: Gini_n2 Summary
-tmp %>% 
-  filter(year == 2010) %>%  
-  distinct(id_nuts2, year,.keep_all = TRUE) %>%  
-  select(gini_n2) %>%  
-  st()
-```
-
 The @tbl-summary_gini_n2 shows us descriptive statistics for inequality masseurs for the year 2010.
 In our dataset we have 44 different European NUTS2 regions.
 In averange we can see a very low level of inequality within all regions.
@@ -367,45 +269,17 @@ We look more at this in @fig-gini_netherlands.
 
 ### Individual country cases
 
-```{r, echo = FALSE}
-#| label: fig-gini_netherlands
-#| fig-cap: Gini Netherlands
-tmp %>%
-  filter(id_nuts0 == "NL")  %>% 
-  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
-  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "Gini")
-```
+#### Gini for Netherlands
 
 Studying the level of inequality over time for regions in Netherlands, from @fig-gini_netherlands, we see that most regions follow a common trend.
 There are not a lot of changes over time.
 We also see that one region has 0 for all observations, which means low/no inequality.
 
-```{r, echo = FALSE}
-#| label: fig-gini_poland
-#| fig-cap: Gini Poland
-tmp %>%
-  filter(id_nuts0 == "PL")  %>% 
-  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
-  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "Gini")
-```
+#### Gini for Poland
 
-Skrive noko her
+[Skrive noko om gini Polen her @fig-gini_poland]{.underline}
 
-```{r, echo = FALSE}
-#Appendix
-#| label: fig-gini_greece
-#| fig-cap: Gini Greece
-tmp %>%
-  filter(id_nuts0 == "EL")  %>% 
-  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
-  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "Gini")
-```
+#### Gini for Greece
 
 In @fig-gini_greece we can see descriptive data for Greece.
 If we take a look at the pink line starting on the top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
@@ -420,17 +294,9 @@ This region has a different curve many of the other regions in Greece.
 When we talk about Outlier discussion part its normal to define the word outlier.
 The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
 
-```{r, echo = FALSE}
-#Appendix
-#| label: fig-outlier
-#| fig-cap: Outliers
-ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
-  geom_point()
-```
-
 ### Discuss briefly if there are noteworthy outliers:
 
-When we take a look at some kind of noteworthy outliers between these countries, we can take a look at the graph 5.
+@fig-outlier When we take a look at some kind of noteworthy outliers between these countries, we can take a look at the graph 5.
 We can point out here that Ireland (IE) have some weird appearance in this graph.
 We can see that somehow some outliers emerge for Ireland.
 It start with a point, than suddenly have a big gap before the Gini starts raising again.
@@ -492,7 +358,7 @@ In the first part of this assignment we will use the same data that were present
 So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.
 [To study Growth and inequity, it is essential for us to look at and focus on GDP per capita. GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective. Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD. (sjekk for eventuell gjentakting frå ass 1)]{.underline}
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include = FALSE}
 tmp_n2 <- tmp %>%
   select(year, pop, gdp_n3, id_nuts2, gini_n2, id_nuts0) %>% 
   group_by(id_nuts2, year) %>% 
@@ -512,14 +378,7 @@ tmp_n0 <- tmp %>%
   filter(year == 2010)
 ```
 
-**Log:** Further are we going to use log data in our codes.
-The question is why are we going to use log?
-A log in R will transform our data in a way that will help reduce its skew.
-In other words it will reproduce or rescale our data more in a statistical way.
-
-```{r, echo = FALSE}
-#| label: tbl-stastics_log_gdppc
-#| tbl-cap: Summary Statistics
+```{r, echo = FALSE, include = FALSE}
 data2010 <- tmp_n2 %>%
 
 # level of economic development = log(gdp per capita)
@@ -527,10 +386,12 @@ data2010 <- tmp_n2 %>%
   # create column to easily filter by country
   mutate(id_nuts0 = substr(id_nuts2,1,2)) %>%
   filter(year == 2010)
-
-data2010 %>%
-  st(.)
 ```
+
+**Log:** Further are we going to use log data in our codes.
+The question is why are we going to use log?
+A log in R will transform our data in a way that will help reduce its skew.
+In other words it will reproduce or rescale our data more in a statistical way.
 
 Now when we look at the @tbl-stastics_log_gdppc we can see that some values/variables (gini values) are equal to 0.
 What value 0 expresses is that there is perfect equality, where all the values are the same.
@@ -551,7 +412,7 @@ In @tbl-stastics_log_gdppc we see that we are missing two of our countries, whic
 The reason behind this is because our dataset have no observations for ALbania an Ireland in the year 2010.
 Because we don´t have values of these countries we are not going to focus on these countries in this part.
 
-```{r}
+```{r, echo = FALSE, include = FALSE}
 data2010 <- data2010 %>%
   filter(gini_n2 > 0)
 IE2010 <- data2010 %>%
@@ -703,6 +564,8 @@ Countries which we are going to use as a estimation for our plots are: Spain (ES
 Coefficients of resolution is important for our next steps in this assignment.
 So the first we are going to do is to analyze all four countries in one table.
 
+[Skal me ha med eller uten log?]{.underline}
+
 ```{r}
 #| label: fig-mlr-scatterplot_fitted
 #| fig-cap:  line
@@ -723,12 +586,6 @@ ggplot(data = data2010, aes(x = log(gdp_pc_n2), y = gini_n2)) +
   theme_bw() +
   xlab("GDP per capita (log)") +
   ylab("Gini_n2")
-```
-
-```{r}
-#| label: fig-lm-data2010
-#| fig-cap: Estimate for data2010
-lm_function_plot(data2010)
 ```
 
 The graph @fig-mlr-scatterplot_fitted shows us that when prosperity increases, income and GDP per capita are less different.
@@ -770,11 +627,7 @@ reg1 %>%
   xlab("predicted values") + ylab("residuals")
 ```
 
-```{r}
-#| label: fig-lm-data2010-res
-#| fig-cap: Residuals all countries 
-lm_residuals_plot(data2010)
-```
+[Skrive om @fig-lm-res_pred, grafen over.]{.underline}
 
 What we can see from this graph @fig-lm-data2010 is a ascending linear regression.
 For example the region in Netherlands NL32 North Holland has high GDP per capita, and at the same time high Gini value.
@@ -803,6 +656,8 @@ y can be defined as the response (dependent) variable, m is the slope, x is the 
 What advantages we get after using this scatter plot is that we get the so called strength, direction and form of the relationship that can be defined.
 
 Classical assumptions of OLS contains:
+
+[Skrive om OSL som passar til våre data ikkje berre generelt.]{.underline}
 
 **Linearity:** As long as the model which we are focusing on satisfies the OLS assumptions for linear regression, the estimates will be good.
 Here the population relationship is linear.
@@ -866,7 +721,7 @@ Finally the 'demo_r\_pjangroup.csv' shows us the population on 1 January by age 
 This dataset shows us population and social conditions.
 This data set contains information of usually resident population and represents the number of inhabitants of a given area on 1st January of the year.
 
-```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE}
+```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE, include = FALSE}
 #Import new data from Eurostat
 demo <- read_csv('demo_r_pjangroup.csv') %>%
   filter(TIME_PERIOD == "2010" & unit == "NR" & (grepl('IE..', geo) | grepl('PL..', geo) | grepl('ES..', geo) | grepl('SI..', geo) | grepl('NL..', geo) | grepl('NO..', geo) | grepl('AL..', geo))) %>%
@@ -888,7 +743,7 @@ infra <- read_csv('tran_r_vehst.csv') %>%
   select(id_nuts2, year, infra1)
 ```
 
-```{r}
+```{r, echo = FALSE, include = FALSE}
 data2010 <- tmp_n2 %>%
   left_join(edu, by = c("year", "id_nuts2")) %>%
   left_join(infra, by = c("year", "id_nuts2")) %>%
@@ -992,26 +847,16 @@ $$
 H_a: β ≠ 0
 $$
 
+[Gjere dei tre neste "på nytt" med tall frå tabell over. Har teke vekk tre små tabellar som Andre meinte var overflødig.]{.underline}
+
 #### Education
 
-```{r}
-#| label: tbl-inference-edu
-#| tbl-cap: Education linear model
-lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
-```
-
-What we can find here in @tbl-inference-edu is that education has its p-value on 0.79.
+What we can find here in @tbl-inference-edu (bortevekk) is that education has its p-value on 0.79.
 The estimation value is on the intercept 0.05.
 A large p value, indicated a weak evidence against the null hypothesis.
 Therefore we can not reject it.
 
 #### Infrastructure
-
-```{r}
-#| label: tbl-inference-infra
-#| tbl-cap: Infrastructure linear model
-lm(gini_n2 ~ infra1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
-```
 
 When wee look at the p value for the infrastructure, we find that the p value is 0.68.
 A large p-value indicates that it is a weak evidence against the null hypothesis, so you fail to reject it.
@@ -1019,14 +864,7 @@ In this case p-value on 0.68 is pretty high and there is weak evidence against t
 
 #### Demographics
 
-```{r}
-#| label: tbl-inference-demo
-#| tbl-cap: Demographics linear model
-lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
-#qt(0.95,100)
-```
-
-Here in @tbl-inference-demo the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
+Here in @tbl-inference-demo (bortevekk) the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
 
 # 3 Assignment 3
 
@@ -1525,6 +1363,8 @@ WE can here conclude by saying that our result here is statistically significanc
 
 #### Appendix
 
+Assignment 1
+
 ```{r}
 #| label: tab-wealthiest
 #| fig-cap: Wealthies regions
@@ -1544,11 +1384,175 @@ tmp %>%
 ```
 
 ```{r}
-#table(tbl-summary_gdp)
+#| label: tbl-summary_gdp
+#| tbl-cap: Descriptive statistics
+# Report the essential descriptive statistics 
+# for you data set (Mean, Min, Max,..:)
+tmp %>% 
+  filter(year == 2010) %>%
+  select(gdp_n3, pop, GDP_capita) %>% 
+  # . to stop RStudio complaining about no data
+  st()
 ```
 
 ```{r}
-#table(tab-least_wealthiest)
+tmp_1 <- tmp %>% 
+  filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
+  slice_min(GDP_capita, n = 10) %>%  select(id_nuts3)
+
+#| label: fig-gdp_pc_min
+#| fig-cap: Gdp per capita for the 10 poorest regions
+tmp %>%   
+  filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
+```
+
+```{r}
+tmp_1 <- tmp %>% 
+  filter(year == 2010) %>%  
+  select(GDP_capita, id_nuts3)  %>% 
+  slice_max(GDP_capita, n = 10) %>%  
+  select(id_nuts3)
+
+#| label: fig-gdp_pc_max
+#| fig-cap: Gdp per capita for the 10 wealthiest regions
+tmp %>%   
+  filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
+  ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
+```
+
+```{r}
+#| label: tbl-summary_Norway
+#| tbl-cap: Summary Norway
+tmp %>%
+  filter(id_nuts0 == "NO", year == 2010) %>%
+  select(gdp_n3, pop, GDP_capita) %>%
+  st()
+```
+
+```{r}
+#| label: tbl-wealthiest_NL
+#| tbl-cap: 3 wealthiest regions in NL
+tmp %>%
+  filter(id_nuts0 == "NL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+```{r}
+#| label: tbl-least_wealthiest_NL
+#| tbl-cap: 3 wealthiest regions in EL
+tmp %>%
+  filter(id_nuts0 == "NL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+```{r}
+#| label: tbl-wealthiest_PL
+#| tbl-cap: 3 wealthiest regions in PL
+tmp %>%
+  filter(id_nuts0 == "PL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+```{r}
+#| label: tbl-least_wealthiest_PL
+#| tbl-cap: 3 least wealthiest regions in PL
+tmp %>%
+  filter(id_nuts0 == "PL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+```{r}
+#| label: tbl-wealthiest_EL
+#| tbl-cap: 3 wealthiest regions in EL
+tmp %>%
+  filter(id_nuts0 == "EL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_max(GDP_capita, n = 3)
+```
+
+```{r}
+#Appendix
+#| label: tbl-least_wealthiest_EL
+#| tbl-cap: 3 least wealthiest regions in EL
+tmp %>%
+  filter(id_nuts0 == "EL" , year == 2010) %>%
+  select(id_nuts3, GDP_capita) %>%
+  slice_min(GDP_capita, n = 3)
+```
+
+```{r}
+#| label: tbl-summary_gini_n2
+#| fig-cap: Gini_n2 Summary
+tmp %>% 
+  filter(year == 2010) %>%  
+  distinct(id_nuts2, year,.keep_all = TRUE) %>%  
+  select(gini_n2) %>%  
+  st()
+```
+
+```{r}
+#| label: fig-gini_netherlands
+#| fig-cap: Gini Netherlands
+tmp %>%
+  filter(id_nuts0 == "NL")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
+
+```{r}
+#| label: fig-gini_poland
+#| fig-cap: Gini Poland
+tmp %>%
+  filter(id_nuts0 == "PL")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
+
+```{r}
+#| label: fig-gini_greece
+#| fig-cap: Gini Greece
+tmp %>%
+  filter(id_nuts0 == "EL")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
+
+```{r}
+#| label: fig-outlier
+#| fig-cap: Outliers
+ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
+  geom_point()
+```
+
+```{r}
+#| label: tbl-stastics_log_gdppc
+#| tbl-cap: Summary Statistics
+data2010 %>%
+  st(.)
+```
+
+| label: tbl-log-gdppc
+| 
+
+eventuelt og: multi_linear_regression_model_1
+
+```{r}
+
 ```
 
 #### References
