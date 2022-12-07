@@ -514,7 +514,7 @@ tmp_n0 <- tmp %>%
 
 **Log:** Further are we going to use log data in our codes.
 The question is why are we going to use log?
-A log in R wil transform our data in a way that will help reduce its skew.
+A log in R will transform our data in a way that will help reduce its skew.
 In other words it will reproduce or rescale our data more in a statistical way.
 
 ```{r, echo = FALSE}
@@ -656,7 +656,7 @@ The table shows how much an increase in X impact Y.
 Spain is the only country that has a negative impact.
 The formula which we have worked with above can clearly show us the relationship/connection between these different variables.
 
-From @tbl-stastics_log_gdppc we see for Poland (PL) that there is 10 observations and the coefficient of determination R2 is 0.398.
+From @tbl-log-gdppc we see for Poland (PL) that there is 10 observations and the coefficient of determination R2 is 0.398.
 What we see here for Spain (ES) is that there is there is 11 obersvations and the coefficient of determination R2 is 0.
 As mentioned the value 0 can be due to low fitness of the model.
 
@@ -731,10 +731,10 @@ ggplot(data = data2010, aes(x = log(gdp_pc_n2), y = gini_n2)) +
 lm_function_plot(data2010)
 ```
 
-The graph shows us that when prosperity increases, income and GDP per capita are less different.
+The graph @fig-mlr-scatterplot_fitted shows us that when prosperity increases, income and GDP per capita are less different.
 To figure out the effect or the connection between regional inequality and regional development, we will be using the linear regression model.
 
-On this graph we can see Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
+On this graph @fig-mlr-scatterplot_fitted we can see Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis.
 
 Now we are going to look at a simple regression model for our 4 countries.
 In this case: Spain (ES), Poland (PL), Netherlands (NL) and Slovenia (SI).
@@ -776,11 +776,13 @@ reg1 %>%
 lm_residuals_plot(data2010)
 ```
 
-[Endra figur ... What we can see from this graph is a ascending linear regression. For example the region in Poland PL51 Dolnoslaskie has high GDP per capita, and at the same time high Gini value.]{.underline}
+What we can see from this graph @fig-lm-data2010 is a ascending linear regression.
+For example the region in Netherlands NL32 North Holland has high GDP per capita, and at the same time high Gini value.
 
-[Fjerna figur ... What we see here from this graph is a regression analysis for Netherlands. We can see different type of data spread all over the graph. NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph. It is also the region which is furthest away from the regression line.]{.underline}
-
-[Fjerna figur ... This graph for Spain (ES) shows us a regression line. We can analyze that the slope/line is negative. What we can see here is how far away those regions are from the regression line. We can analyze that there are many region dots further from the mean value.]{.underline}
+What we see here from this graph @fig-lm-data2010 is a regression analysis for Netherlands.
+We can see different type of data spread all over the graph.
+NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph.
+It is also the region which is furthest away from the regression line.
 
 ### Classical assumptions of OSL
 
@@ -998,7 +1000,7 @@ $$
 lm(gini_n2 ~ edu1 , data = NL2010) %>% tidy()%>% kable(., digits=2)
 ```
 
-What we can find here is that education has its p-value on 0.79.
+What we can find here in @tbl-inference-edu is that education has its p-value on 0.79.
 The estimation value is on the intercept 0.05.
 A large p value, indicated a weak evidence against the null hypothesis.
 Therefore we can not reject it.
@@ -1024,7 +1026,7 @@ lm(gini_n2 ~ demo1, data = NL2010) %>% tidy()%>% kable(., digits=4)
 #qt(0.95,100)
 ```
 
-Here the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
+Here in @tbl-inference-demo the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
 
 # 3 Assignment 3
 
