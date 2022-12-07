@@ -1415,14 +1415,14 @@ penaldata %>%
 Now we are going to look at the output values we have got after this panel estimation code.
 Here we are going to use 5% (0.05) significance level when it comes to the t-value estimation.
 
-**country nuts0**:
+**Nuts0**:
 
 The first panel estimation shows us the country fixed effect data.
 We are using nuts0 data here for our penal estimation for countries.
 
 The estimation value is very low at -29457,40 which indicates that the country fixed effect decreases by -29457,40. 
 
-The std- error value is on 12153.32.
+The standard-error value is on 12153.32.
 We can see that the std-error value is pretty high, which tells us that the values are more spread out and are around the mean in a dataset. 
 
 The T-value here is: -2.4238.
@@ -1431,7 +1431,7 @@ But here in this case our statistic significance value is lower than the statist
 That's why our result here is not statistical significance. 
  
 
-**year**
+**Year**
 
 The second panel test shows us the year fixed effect data.
 We are using year dataset here. 
@@ -1441,7 +1441,7 @@ Here the value is -32378.81.
 This shows us how weak the estimation is and this indicates that the effect decreases by -32378.81. 
  
 
-The std- error value is on 16700.21.
+The standard-error value is on 16700.21.
 We can see that the std-error value is pretty high, which tells us that the values are more spread out and are around the mean in a dataset.
 
 The T-value here is: -1.9388.
@@ -1456,7 +1456,7 @@ The third panel estimation shows us the Nuts2 fixed effect data.
 The estimation value is on: -22167.71.
 This is pretty low, which indicates that the Nuts2 effect decreases by -22167.71.
 
-The std-error is on 10578.32.
+The standard-error is on 10578.32.
 This value is high, not as high as the previous one, but this again indicates that our values are more spread out and are more around the mean in the Nuts 2 fixed effect dataset. 
 
 The T-value here is -2.0956.
@@ -1494,6 +1494,24 @@ penaldata %>%
       model= "within", effect = "twoways") %>% 
   coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
 ```
+
+**Nuts0 & Year**
+
+Here in this code we are combining Nuts0 data and Year data.
+
+The estimation value here is -25960.0 for both Nuts0 and Year.
+This value is pretty negative, which indicates that the Nuts0 and Year together decreases by -25960.0.
+
+The standard-error value is on 20534.5.
+This is a positive and pretty high value.
+This value tells us ho spread our variables are.
+We can here say that our variables from Nuts0 and Year is pretty spread.
+
+The T-value here is -1.2642.
+If we use the significance level 0.05 (5%) here.
+Than we can conclude by here saying that this indicates that the test of this model is is statistically significance.
+This is because our T-value is lower than the statistic significance level at 5%, devided into 2= 2.5%= 0.025.
+WE can here conclude by saying that our result here is statistically significance.
 
 -   *`Clean up`*
 
