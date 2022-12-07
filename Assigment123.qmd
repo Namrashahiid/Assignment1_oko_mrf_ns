@@ -186,12 +186,13 @@ In the middle the lines are showing the other countries.
 They are mostly slightly rising.
 
 ```{r}
+#Appendix
 tmp_1 <- tmp %>% 
   filter(year == 2010) %>%  select(GDP_capita, id_nuts3) %>% 
   slice_min(GDP_capita, n = 10) %>%  select(id_nuts3)
 
-#| label: fig-gdp_pc_pl
-#| fig-cap: Gdp per capita for Poland
+#| label: fig-gdp_pc_min
+#| fig-cap: Gdp per capita for the 10 poorest regions
 tmp %>%   
   filter(id_nuts3 %in% tmp_1 $ id_nuts3) %>% 
   ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
@@ -199,22 +200,25 @@ tmp %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
-Here we can see the GDP per capita for polish regions.
+In @fig-gdp_pc_min we can see the GDP per capita for polish regions.
 If we take a look at the orange line, which refers to PL214, we see that it had its down period to start with.
 Not only (PL214) the orange line, but also all the other regions, does not start good.
 PL214 (the orange line) had it´s real rise after 2010.
 PL214 had its down time between years 2008-2009, most probably because of the financial crisis, which caused chaos in the whole world.
 Except from this we see that all of the regions have a stable rising curve.
+All of the ten least wealthy regions are located in Poland.
+We will therefore look closer into Poland in the next part.
 
 ```{r}
+#Appendix
 tmp_1 <- tmp %>% 
-  filter(year==2010) %>%  
+  filter(year == 2010) %>%  
   select(GDP_capita, id_nuts3)  %>% 
   slice_max(GDP_capita, n = 10) %>%  
   select(id_nuts3)
 
-#| label: fig-gdp_pc_nl
-#| fig-cap: Gdp per capita for Netherlands
+#| label: fig-gdp_pc_max
+#| fig-cap: Gdp per capita for the 10 wealthiest regions
 tmp %>%   
   filter(id_nuts3 %in% tmp_1$id_nuts3) %>% 
   ggplot(aes(x = year, y = GDP_capita, fill = id_nuts3, color = id_nuts3)) +
@@ -222,11 +226,12 @@ tmp %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
-This table shows regional GDP per capita for the 10 highest income regions.
+@fig-gdp_pc_max shows regional GDP per capita for the 10 highest income regions.
 Nine of them are regions from the Netherlands which starts with NL\*\*\* and the last one refers to Norway and the region Nordland (NO071).
 We can see here that region in Netherlands NL113 (the orange line) shows us that it´s on the top of all other regions in Netherlands and surprisingly Norway NO071 (the pink line).
 Its most probably, because the region in Norway are only based on one specific region.
 We can say that this region Nordland (NO071) has low GDP per capita, compared to some of the regions in the Netherlands, such as NL113.
+In the next part about individual country cases we are going to look closer into the Netherlands.
 
 ### Individual country cases
 
@@ -236,6 +241,7 @@ This can for example be done by finding the wealthiest and least wealthiest regi
 #### GDP per capita for Norway:
 
 ```{r, echo = FALSE}
+#Appendix
 #| label: tbl-summary_Norway
 #| tbl-cap: Summary Norway
 tmp %>%
@@ -245,7 +251,7 @@ tmp %>%
 ```
 
 Since Norway is the country with the highest GDP per capita it is interesting to stydy Norway closer.
-When we look at the GDP per capita for Norway, we can see that there is no such big difference between the values under summary statistics, such as Min and Max, Mean, Std.
+When we look at the GDP per capita for Norway, in @tbl-summary_Norway, we can see that there is no such big difference between the values, such as Min and Max, Mean, Std.
 Dev, Pctl.
 The values are exactly the same.
 The reason behind this is that N value is 1.
@@ -253,38 +259,10 @@ When N is 1, than it makes sense why all these values are same.
 Our dataset only have numbers for one region on NUTS3 level in Norway, even though there should be 19 counties.
 We are therefore going take a closer look at other countries.
 
-#### GDP per capita for Spain:
-
-```{r, echo = FALSE}
-#| label: tbl-wealthiest_ES
-#| tbl-cap: 3 wealthiest regions in ES
-tmp %>%
-  filter(id_nuts0 == "ES" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) %>%
-  slice_max(GDP_capita, n = 3)
-```
-
-Looking at this table for the three wealthiest regions in Spain we see the GDP per capita for ES211 (the first region) and ES300 (the second region) and ES212 (the third region).
-There is no such big difference in them.
-The observation between these regions are somehow consistent.
-If we look at our next table 4, we can see the least wealthiest regions in Spain.
-
-```{r, echo = FALSE}
-#| label: tbl-least_wealthiest_ES
-#| tbl-cap: 3 least wealthiest regions in ES
-tmp %>%
-  filter(id_nuts0 == "ES" , year == 2010) %>%
-  select(id_nuts3, GDP_capita) %>%
-  slice_min(GDP_capita, n = 3)
-```
-
-When we look at this table 4, we can see the least wealthiest regions in Spain.
-Comparing GDP per capita from table 4 with table 3 we can see that there is difference between values in both tables.
-The three wealthiest regions are twice as wealthy as the least wealthiest.
-
 #### GDP per capita for Poland
 
 ```{r, echo = FALSE}
+#Appendix
 #| label: tbl-wealthiest_PL
 #| tbl-cap: 3 wealthiest regions in PL
 tmp %>%
@@ -293,11 +271,12 @@ tmp %>%
   slice_max(GDP_capita, n = 3)
 ```
 
-When we look at table 5 we see the wealthiest regions in Poland.
+When we look at @tbl-wealthiest_PL we see the wealthiest regions in Poland.
 There are a difference of over 10 000 gdp per capita from the most wealthiest to the third most wealthy region.
 Next we are going to see the GDP per capita for the least wealthiest regions in Poland.
 
 ```{r, echo = FALSE}
+#Appendix
 #| label: tbl-least_wealthiest_PL
 #| tbl-cap: 3 least wealthiest regions in PL
 tmp %>%
@@ -306,37 +285,40 @@ tmp %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-We can here see the least wealthiest regions in Poland.
-We can see that there is big difference between the wealthiest regions from table 5 and table 6 (least wealthiest regions) in Poland.
+In @tbl-least_wealthiest_PL can we see the least wealthiest regions in Poland.
+We can see that there is big difference between the wealthiest regions from @tbl-least_wealthiest_PL and @tbl-least_wealthiest_PL (least wealthiest regions) in Poland.
 The wealthiest region in Poland are almost 5 times wealthier than the least wealthy region in Poland.
 This shows us that there are big differences in living conditions in Poland.
 
-#### GDP per capita for Slovenia
+#### GDP per capita for Greece:
 
 ```{r, echo = FALSE}
-#| label: tbl-wealthiest_SI
-#| tbl-cap: 3 wealthiest regions in SI
+#Appendix
+#| label: tbl-wealthiest_EL
+#| tbl-cap: 3 wealthiest regions in EL
 tmp %>%
-  filter(id_nuts0 == "SI" , year == 2010) %>%
+  filter(id_nuts0 == "EL" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_max(GDP_capita, n = 3)
 ```
 
-When we look at table 7 we see the wealthiest regions in Slovenia.
+Except from Norway, Greece are the country with the highest gdp per capita.
+We will therefore take a closer look on Greece.
+Looking at @tbl-wealthiest_EL for the three wealthiest regions in Greece we see the GDP per capita for EL303 (the first region) and EL306 (the second region) and EL301 (the third region).
+If we look at @tbl-least_wealthiest_EL, we can see the least wealthiest regions in Greece.
 
 ```{r, echo = FALSE}
-#| label: tbl-least_wealthiest_SI
-#| tbl-cap: 3 least wealthiest regions in SI
+#Appendix
+#| label: tbl-least_wealthiest_EL
+#| tbl-cap: 3 least wealthiest regions in EL
 tmp %>%
-  filter(id_nuts0 == "SI" , year == 2010) %>%
+  filter(id_nuts0 == "EL" , year == 2010) %>%
   select(id_nuts3, GDP_capita) %>%
   slice_min(GDP_capita, n = 3)
 ```
 
-Here we see the least wealthiest regions in Slovenia.
-In comparison to the wealthiest regions in Slovenia there are not that big gap.
-Compared to the other countries we have looked at (Poland and Spain), there are smaller differences between the richest and the poorest regions.
-Slovenia is generally not that rich compared to the other countries in graph 1.
+Comparing GDP per capita from @tbl-wealthiest_EL with @tbl-least_wealthiest_EL we can see that there is difference between values in both tables.
+The three wealthiest regions are over twice as wealthy as the least wealthiest.
 
 ## 1.3 Regional inequity measures
 
@@ -366,7 +348,9 @@ tmp  %<>%
 
 ### Cross country perspective
 
-```{r}
+```{r, echo = FALSE}
+#| label: tbl-summary_gini_n2
+#| fig-cap: Gini_n2 Summary
 tmp %>% 
   filter(year == 2010) %>%  
   distinct(id_nuts2, year,.keep_all = TRUE) %>%  
@@ -374,14 +358,16 @@ tmp %>%
   st()
 ```
 
-The data over tell us descriptive statistics for inequality masseurs for the year 2010.
+The @tbl-summary_gini_n2 shows us descriptive statistics for inequality masseurs for the year 2010.
 In our dataset we have 44 different European NUTS2 regions.
 In averange we can see a very low level of inequality within all regions.
 Even the maximum inequality is vey low with 0,199.
 We can also see that mean is 0, which means that some regions have no inequality.
-We look more at this in the next graph.
+We look more at this in @fig-gini_netherlands.
 
-```{r}
+### Individual country cases
+
+```{r, echo = FALSE}
 #| label: fig-gini_netherlands
 #| fig-cap: Gini Netherlands
 tmp %>%
@@ -392,34 +378,42 @@ tmp %>%
    labs(x = "Year", y = "Gini")
 ```
 
-Studying the level of inequality over time for regions in Netherlands we see that most regions follow a common trend.
+Studying the level of inequality over time for regions in Netherlands, from @fig-gini_netherlands, we see that most regions follow a common trend.
 There are not a lot of changes over time.
-This is for example shown in the graph over NUTS2 regions in the Netherlands.
 We also see that one region has 0 for all observations, which means low/no inequality.
 
-```{r}
-#| label: fig-gini_spain
-#| fig-cap: Gini Spain
+```{r, echo = FALSE}
+#| label: fig-gini_poland
+#| fig-cap: Gini Poland
 tmp %>%
-  filter(id_nuts0 == "ES")  %>% 
+  filter(id_nuts0 == "PL")  %>% 
   distinct(id_nuts2, year,.keep_all = TRUE) %>% 
   ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "Gini")
 ```
 
-In Graph 4 here we can see descriptive data for Spain.
-If we take a look at the green dots on top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
-ES30 is the wealthiest of all others.
-If we take a look at last dots, which are pink dots flat on the 0 line on the x-axis.
-The reason behind this most probably because the region has no inequality as discusses earlier.
-In this graph over level of inequality over time for Spain, there are some exceptions compared to the graph for Nederlands.
-Taking a closer look at the light blue dotted line, we see that it is starting quite low, around 0,04, and increasing to almost 0,06 over 20 years.
-This region has a different curve than the rest of the regions in Spain.
+Skrive noko her
 
-### Individual country cases
+```{r, echo = FALSE}
+#Appendix
+#| label: fig-gini_greece
+#| fig-cap: Gini Greece
+tmp %>%
+  filter(id_nuts0 == "EL")  %>% 
+  distinct(id_nuts2, year,.keep_all = TRUE) %>% 
+  ggplot(aes(x = year, y = gini_n2, fill = id_nuts2, color = id_nuts2)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Gini")
+```
 
-[Skal me ha det? Såg han hadde det på html eksempelet på canvas.]{.underline}
+In @fig-gini_greece we can see descriptive data for Greece.
+If we take a look at the pink line starting on the top, we can see that it started pretty good at start, than had its fell down in around 2008-2009.
+EL30 is the wealthiest of all regions.
+It starts pretty high at 0,11 and ends at 0,175.
+In this graph over level of inequality over time for Greece, there are some exceptions compared to the graph for Nederlands.
+Taking a closer look at the light blue line, we see that it is starting around 0,07, and decrecing to almost 0,00 over 20 years.
+This region has a different curve many of the other regions in Greece.
 
 ## 2.5 Outlier discussion
 
@@ -427,6 +421,7 @@ When we talk about Outlier discussion part its normal to define the word outlier
 The definition of this word is when a value or an observation is distant from other observation, that is to say, a data point that differs significantly from other data points.
 
 ```{r, echo = FALSE}
+#Appendix
 #| label: fig-outlier
 #| fig-cap: Outliers
 ggplot(tmp, aes(x = id_nuts0, y = gini_n2)) +
@@ -720,6 +715,17 @@ ggplot(data = data2010, aes(x = gdp_pc_n2, y = gini_n2)) +
 ```
 
 ```{r}
+#| label: fig-mlr-scatterplot_fitted_log
+#| fig-cap:  line
+ggplot(data = data2010, aes(x = log(gdp_pc_n2), y = gini_n2)) +
+  geom_point() +
+   geom_smooth(method = "lm", se = FALSE) +
+  theme_bw() +
+  xlab("GDP per capita (log)") +
+  ylab("Gini_n2")
+```
+
+```{r}
 #| label: fig-lm-data2010
 #| fig-cap: Estimate for data2010
 lm_function_plot(data2010)
@@ -736,22 +742,9 @@ We can see that the line on this graph is negative, this indicates that one of v
 The line on y-axis is on around value 0.12 and on x-axis on ca.
 12.0.
 
-The dots or the different colors indicates the regions in those 4 countries mentioned above.
+The dots indicates the regions in those 4 countries mentioned above.
 
-[Fjerna figur.. Graph 8 shows us the estimation plotted for Spain (ES). We can see that it lies in the middle and is more flat a like horizontal line on the graph. We can see different regions from Spain spread all over the graph. The slope/line is on around 0.03 on y-axis and it is not touching or crossing the x-axis. We can analyze that the line on the graph is going a little towards the x-axis. There is no region that are crossing or touching the horizontal line.]{.underline}
-
-[Fjerna figur ... We find that the slope/line here for Netherlands (NL) is positive. It seems like NL34 Zeelandic Flanders is approximately touching the slope/line in the graph. All other regions are spread all over.]{.underline}
-
-```{r}
-#| label: fig-lm-Poland
-#| fig-cap: Estimate for Poland
-lm_function_plot(PL2010)
-```
-
-We find that the slope/line here for Poland (PL) is also positive as for Netherlands (NL) above.
-The slope/line is on 0.05 on y-axis.
-
-**Plot the residual against the predicted values of your model:**
+**Plot the residual against the predicted values of your model**
 
 In this next part we are analyzing residual, which is the difference between the observed value and the mean value, that the model predict for that specific observation.
 In the next four graphs are we analyzing for same countries above.
@@ -764,13 +757,6 @@ Residual = Observed value - Predicted value
 $$
 
 ```{r}
-#Plot the residuals against the predicted values of your model
-#reg1 <- lm(price ~ lotsize + sqrft + bdrms, data = hprice1) 4
-#plot5
-#reg %>% 6
-  #ggplot(aes(x = fitted(reg), y = resid(reg))) +7
-  #geom_point(color = "darkslategray", size = 3) +8
-  #theme_simple + xlab("predicted values") + ylab("residuals")
 #| label: fig-lm-res_pred
 #| fig-cap: Residuals against predicted 
 #Plot the residuals against the predicted values of your model
@@ -1488,8 +1474,7 @@ Lets suppose if the p-value is less than a certain significance level (5%= 0.05)
 Here in our case for the Nuts0 data the Pr t value for Nuts0 on country level is on 0.01558.
 Our 0.05 (5%).
 We can then say that the p-value is less then the significance level on 0.05.
-This indicates that the variable is statistically significant.
-\
+This indicates that the variable is statistically significant.\
 
 For the Year data the Pr t value for Year on country level is on 0.05278.
 Our 0.05 (5%).
