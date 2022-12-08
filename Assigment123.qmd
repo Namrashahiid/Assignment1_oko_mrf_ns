@@ -139,7 +139,7 @@ Metadata can be defined as information that is necessary to be able to use and i
 The main function of metadata is to explain data by giving definitions, for example according to our data, region, year, GDP, population and GDP per capita.
 We now have information on GDP per capita in different regions from different countries that we have chosen.
 
-Looking at @wealthiest, @tab-least_wealthiest and @tbl-summary_gdp over, we can see substantial differences in region size as well as economic development.
+Looking at @tab-wealthiest, @tab-least_wealthiest and @tbl-summary_gdp, we can see substantial differences in region size as well as economic development.
 The largest region, Rest of Dronningen (NL113) is almost 1000 times bigger than the smallest region, which is Agglomeratie Leiden en Bollenstreek (NL337).
 We also see a big difference in gdp per capita.
 The least wealthiest region of our dataset is in Poland, Nowotarski (PL219) and has a gdp per capita of 5652, while the wealthiest region Rest og Groningen (NL113) has a gdp per capita of 55857.
@@ -207,9 +207,15 @@ We are therefore going take a closer look at other countries.
 
 #### GDP per capita for Netherlands
 
-@tbl-wealthiest_NL
+The @tbl-wealthiest_NL which we are working on shows us 3 richest regions in Netherlands.
+The richest region in Netherlands is NL113 (Rest of Groningen).
+This region had GDP per capita on 55857.89.
 
-@least_wealthiest_NL
+The @least_wealthiest_NL shows us the poorest region in Netherlands is NL111 (East Groningen).
+The GDP per capita on 17983.67.
+
+The richest region in the Netherlands is ca.
+3 times richer than the poorest.
 
 #### GDP per capita for Poland
 
@@ -262,7 +268,7 @@ tmp  %<>%
 
 The @tbl-summary_gini_n2 shows us descriptive statistics for inequality masseurs for the year 2010.
 In our dataset we have 44 different European NUTS2 regions.
-In averange we can see a very low level of inequality within all regions.
+In average we can see a very low level of inequality within all regions.
 Even the maximum inequality is vey low with 0,199.
 We can also see that mean is 0, which means that some regions have no inequality.
 We look more at this in @fig-gini_netherlands.
@@ -277,7 +283,12 @@ We also see that one region has 0 for all observations, which means low/no inequ
 
 #### Gini for Poland
 
-[Skrive noko om gini Polen her @fig-gini_poland]{.underline}
+The graph @fig-gini_poland shows us the descriptive data for Poland.
+If we look at PL84 (Makroregion) the pink line.
+It started pretty low and suddenly in year ca 2012-2013 it rised pretty high.
+Most probably it is because of some NA values dont have values for those year in the start.
+Than suddenly it gets values and raises.
+Other lines are somehow the same.
 
 #### Gini for Greece
 
@@ -299,7 +310,7 @@ The definition of this word is when a value or an observation is distant from ot
 @fig-outlier When we take a look at some kind of noteworthy outliers between these countries, we can take a look at the graph 5.
 We can point out here that Ireland (IE) have some weird appearance in this graph.
 We can see that somehow some outliers emerge for Ireland.
-It start with a point, than suddenly have a big gap before the Gini starts raising again.
+It start with a point, than suddenly have a big gap before the gini starts raising again.
 Than the gap continues and suddenly gini is back.
 There is also a big difference in regional inequity for the different regions in Ireland.
 
