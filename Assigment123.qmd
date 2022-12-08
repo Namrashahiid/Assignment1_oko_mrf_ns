@@ -356,7 +356,9 @@ In this assignment we are going to have our main focus on the NUTS2 level region
 In the first part of this assignment we will use the same data that were presented in the last assignment.
 
 So the first task in this assignment is to estimate the effect of regional development yj on regional inequality GINIWj for the year 2010.
-[To study Growth and inequity, it is essential for us to look at and focus on GDP per capita. GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective. Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD. (sjekk for eventuell gjentakting frå ass 1)]{.underline}
+To study Growth and inequity, it is essential for us to look at and focus on GDP per capita.
+GDP per capita is a indicator of economic performance and is very normal to use to analyse standards of living and for economical perspective.
+Important fact to come up here is that, although GDP per capita is often used as a broad measure of average living standards, but high GDP per capita not necessarily mean high level of households disposable income, a key measure of average material capita in the OECD.
 
 ```{r, echo = FALSE, include = FALSE}
 tmp_n2 <- tmp %>%
@@ -400,7 +402,7 @@ The reason behind the values 0, can also be because of that maybe one of the val
 Therefore this leads us to gini values 0.
 We can also see that, many values are the same.
 
-On the other hand we can see that, there is max, mean Std.Dev value that are not 0, but very close to zero on the first line.
+On the other hand we can see that, there is max, mean Standard deviation value that are not 0, but very close to zero on the first line.
 Now the question is, whats the solution to those values of 0.
 One important thing here to point out is that the reason behind that the values are equal to zero can be because of maybe there are some data/values that are lost or not there for this specific year which we have chosen.
 
@@ -409,7 +411,7 @@ What we can see is that Norway (NO) only have 1 variable, that is because it is 
 On the other side we see Spain (ES) have 19 variables.
 
 In @tbl-stastics_log_gdppc we see that we are missing two of our countries, which are: Albania (AL) and Ireland (IE).
-The reason behind this is because our dataset have no observations for ALbania an Ireland in the year 2010.
+The reason behind this is because our dataset have no observations for Albania an Ireland in the year 2010.
 Because we don´t have values of these countries we are not going to focus on these countries in this part.
 
 ```{r, echo = FALSE, include = FALSE}
@@ -518,7 +520,7 @@ Spain is the only country that has a negative impact.
 The formula which we have worked with above can clearly show us the relationship/connection between these different variables.
 
 From @tbl-log-gdppc we see for Poland (PL) that there is 10 observations and the coefficient of determination R2 is 0.398.
-What we see here for Spain (ES) is that there is there is 11 obersvations and the coefficient of determination R2 is 0.
+What we see here for Spain (ES) is that there is there is 11 observations and the coefficient of determination R2 is 0.
 As mentioned the value 0 can be due to low fitness of the model.
 
 **Regression analysis:**
@@ -564,21 +566,8 @@ Countries which we are going to use as a estimation for our plots are: Spain (ES
 Coefficients of resolution is important for our next steps in this assignment.
 So the first we are going to do is to analyze all four countries in one table.
 
-[Skal me ha med eller uten log?]{.underline}
-
 ```{r}
 #| label: fig-mlr-scatterplot_fitted
-#| fig-cap:  line
-ggplot(data = data2010, aes(x = gdp_pc_n2, y = gini_n2)) +
-  geom_point() +
-   geom_smooth(method = "lm", se = FALSE) +
-  theme_bw() +
-  xlab("GDP per capita") +
-  ylab("Gini_n2")
-```
-
-```{r}
-#| label: fig-mlr-scatterplot_fitted_log
 #| fig-cap:  line
 ggplot(data = data2010, aes(x = log(gdp_pc_n2), y = gini_n2)) +
   geom_point() +
@@ -627,15 +616,9 @@ reg1 %>%
   xlab("predicted values") + ylab("residuals")
 ```
 
-[Skrive om @fig-lm-res_pred, grafen over.]{.underline}
-
-What we can see from this graph @fig-lm-data2010 is a ascending linear regression.
-For example the region in Netherlands NL32 North Holland has high GDP per capita, and at the same time high Gini value.
-
-What we see here from this graph @fig-lm-data2010 is a regression analysis for Netherlands.
-We can see different type of data spread all over the graph.
-NL11 region i Netherlands East Groningen has the highest GDP per capita and Gini according to this Graph.
-It is also the region which is furthest away from the regression line.
+What we can see from this graph @fig-lm-res_pred is that the observations are pretty spread.
+On the y-axis we find the residuals and on the x-axis there are the predicted observations.
+In the middle the observations are pretty close.
 
 ### Classical assumptions of OSL
 
@@ -657,7 +640,7 @@ What advantages we get after using this scatter plot is that we get the so calle
 
 Classical assumptions of OLS contains:
 
-[Skrive om OSL som passar til våre data ikkje berre generelt.]{.underline}
+THANKS :\*
 
 **Linearity:** As long as the model which we are focusing on satisfies the OLS assumptions for linear regression, the estimates will be good.
 Here the population relationship is linear.
@@ -768,7 +751,7 @@ NL2010 <- data2010 %>%
   filter(id_nuts0 == "NL") 
 ```
 
-## **Estimate MLR**
+## **Estimate Multiple Regression**
 
 After focusing on simple regression model, are we now moving on to multiple regression model.
 Question is what is multiple regression model?
@@ -816,7 +799,7 @@ multi_linear_regression_model_1(data2010)
 
 ### Discuss the overall fit of your model:
 
-What has happend here is that we get many values that are 0.
+What has happen here is that we get many values that are 0.
 The reason behind this can be that we have many repeating regions (example: 16 ES11 regions).
 We came to a solution some days ago, but suddenly at the last minute the problem occurred.
 
@@ -847,37 +830,24 @@ $$
 H_a: β ≠ 0
 $$
 
-[Gjere dei tre neste "på nytt" med tall frå tabell over. Har teke vekk tre små tabellar som Andre meinte var overflødig.]{.underline}
-
 #### Education
 
-What we can find here in @tbl-inference-edu (bortevekk) is that education has its p-value on 0.79.
+What we can find here in @multi_linear_regression_model_1 is that education has its p-value on 0.
 The estimation value is on the intercept 0.05.
-A large p value, indicated a weak evidence against the null hypothesis.
-Therefore we can not reject it.
+A small p value, indicated a strong evidence against the null hypothesis.
+Therefore we have to reject it.
 
 #### Infrastructure
 
-When wee look at the p value for the infrastructure, we find that the p value is 0.68.
-A large p-value indicates that it is a weak evidence against the null hypothesis, so you fail to reject it.
-In this case p-value on 0.68 is pretty high and there is weak evidence against the null hypothesis.
+When wee look at the p value for the infrastructure, we find that the p value is 0.011.
+A small p-value indicates that it is a weak evidence against the null hypothesis, so we have to reject it.
+In this case p-value on 0.011 is pretty high and there is weak evidence against the null hypothesis.
 
 #### Demographics
 
-Here in @tbl-inference-demo (bortevekk) the p-value is 0.8794, which again is not possible to reject, because there is weak evidence against the null hypothesis.
+Here in @multi_linear_regression_model_1 the p-value is 0.007, which again is possible to reject, because there is strong evidence against the null hypothesis.
 
 # 3 Assignment 3
-
-*`Things to improve:`*
-
-*`Econometric discussion:`*
-
--   *`“If we look at No Greece model, we can see that the p-value is: 0.059. If we now take initially the significance level 0.05 (5%). We can here conclude by saying, that we are not able to reject the null hypothesis, because the p-value is higher than the significance level:” The p-value you are interpreting here is the one related to the Ftest. Please think about what the model F test is supposed to tell us. As you stated before you have to look at the p-values of the individual estimates e.g. The stars and you can say for example that the effect of GDP on Gini is -0.002 so negative and significant at a 10% level (just one star)`*
--   *`You did not interpret the coefficients or the difference between them or the interpretation of the interaction effect model.`*
--   *`“(intercept) value, which is 0.534, we can say here that it is pretty high, which can indicate that there in a interaction between log, and in all countries.” This is wrong and just the value that the gini takes if all other variables would be zero.`*
--   *`“… value under interaction is 0.221, which is higher than the previous one…” That is in general true the new models outperform the others when looking at all data. However, the highest R2 (0.495) you have observed when only estimating using Greece data`*
--   *`“We can see from Figure 12 that the green line starts negatively, and suddenly start getting positive after 10.3 according to the x-axis.” It would be good to use the variables hear with their names. E.g. if GDP is low and increases the polynomial estimates of degree 3 suggest that inequality (gini increases) at a GDP of ruffly exp(9.1) the effect turns around inequality starts to decrease….`*
--   *`You have actually not answered the question, do you believe that the correlations you found can be interpreted as causal?`*
 
 In this assignment are we going to focus on Alternative function forms.
 First we are going to test if the effect of development is significantly different for different subset of countries in your data set.
@@ -1200,7 +1170,7 @@ To do that, we are using the penal data formel.
 First of all installing the plm package.
 After installing the package we are generating a code to come up with penal estimates.
 
-What our aim here to do is that we use our entire datast to estimate the effect of regional developmennt yi on regional inequality GINIWj in a penal setup.
+What our aim here to do is that we use our entire dataset to estimate the effect of regional development yi on regional inequality GINIWj in a penal setup.
 
 ```{r}
 penaldata <- tmp %>%
@@ -1547,6 +1517,7 @@ data2010 %>%
 ```
 
 | label: tbl-log-gdppc
+| 
 | 
 
 eventuelt og: multi_linear_regression_model_1
