@@ -61,11 +61,6 @@ Finally we will be doing a penal estimate.
 
 -   *`When talking about data sources regarding monetary variables a statement about the prices values is based upon is essential. GDP in constant prices vs. GDP in current prices?`*
 
-*`Programming:`*
-
--   *`distinct(id_nuts0, year,.keep_all = TRUE)`*
-    -   *`this code only gives the first distinct value for the group country year not the max or min for this you would need to sort the data first by GDP pc for example.`*
-
 ### 1.1 Data
 
 The main task in this assignment will be to study regional inequality from 2000-2020 for our selected European countries.
@@ -155,7 +150,8 @@ tmp %>%  distinct(id_nuts0, year,.keep_all = TRUE) %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
-To take a closer look at which counties in our dataset are the poorest and richest, we look at @fig-gdp_pc_nuts0. We see a common trend in forward growth in all of the countries.
+To take a closer look at which counties in our dataset are the poorest and richest, we look at @fig-gdp_pc_nuts0.
+We see a common trend in forward growth in all of the countries.
 Norway´s GDP are on the top (the blue line on top).
 Norway have the highest GDP per capita.
 Albania on the other side have the lowest GDP per capita.
@@ -297,7 +293,7 @@ In this graph over level of inequality over time for Greece, there are some exce
 Taking a closer look at the light blue line, we see that it is starting around 0,07, and decrecing to almost 0,00 over 20 years.
 This region has a different curve than many of the other regions in Greece.
 
-## 2.5 Outlier discussion
+## 1.5 Outlier discussion
 
 In this next part we are going to discuss outliers.
 To start we are defining the word outlier.
@@ -305,7 +301,8 @@ The definition of this word is when a value or an observation is distant from ot
 
 ### Discuss briefly if there are noteworthy outliers:
 
-When we take a look at some kind of noteworthy outliers between these countries, we can take a look at @fig-outlier. What we can point out here is that Ireland (IE) have some weird appearance in this graph.
+When we take a look at some kind of noteworthy outliers between these countries, we can take a look at @fig-outlier.
+What we can point out here is that Ireland (IE) have some weird appearance in this graph.
 We can see that some outliers emerge for Ireland.
 It start with a point, than have a big gap before the gini starts raising again.
 Then the gap continues and suddenly gini is back.
@@ -331,14 +328,6 @@ All the mentioned outliers except from the one with zero inequity are not do to 
 However we need to test later the sensitivity of our findings regarding the presence of these borderline observations.
 
 # 2 Assignment 2
-
-*`Things to improve`*
-
-*`Econometric discussion:`*
-
--   *`“We can see by looking at this method what Y value would be when X = 0.” I do not understand what you aim to say with this. Do you mean the constant?`*
-
--   *`“What we can see from this graph is a estimate. The parameters we are looking at here is: Log GDP per capita on the x-axis and Gini nuts 2 values at the y-axis. If we call these parameters with econometric language, we call them β1 and β2 values. We call these values prediction of the depended variable, fitted values.” I do not understand what you aim to say with this.`*
 
 ## 2.1 Regional development and regional inequality
 
@@ -384,7 +373,8 @@ data2010 <- tmp_n2 %>%
 
 **Log:** Further are we going to use log data in our codes.
 The question is why are we going to use log?
-[A log in R will transform our data in a way that will help reduce its skew. In other words it will reproduce or rescale our data more in a statistical way. (Pkt. 2 frå Andre: I do not understand what you aim to say with this.]{.underline}
+Log is a method which transforms the data, in not a very easy way, but it creates the best log transformed data in a statistical way.
+The log can be defined as an built in function in R, which is used to compute the logarithm of the specific value.
 
 Now when we look at the @tbl-stastics_log_gdppc we can see that some values/variables (gini values) are equal to 0.
 What value 0 expresses is that there is perfect equality, where all the values are the same.
@@ -528,9 +518,6 @@ $$ Regional inequality_i = \beta_1 + \beta_2Regional development_i+u_im$$
 
 ### Discuss the goodness of fit of your estimated model
 
--   *`“If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high. It is the highest value, which is 1.000.” Tow observations always fit one another perfectly; that is a statistical artefact you are looking at.`*
--   *`“This R2 coefficient of determination can be defined as a regression problem metric, that help the performance or the result of the model in R to be better.” Please read up on what R2 is supposed / able to tell us.`*
-
 First of all we can see that there is data for only 5 countries.
 The countries are: Slovenia (SI), Spain (ES), Netherlands (NL), Poland (PL) and Greece (EL).
 If we plus the values R2 for all 4 countries, we get a value over 1.
@@ -539,7 +526,9 @@ We are here looking at R2, which is value for coefficient of determination.
 This R2 model does not tell whether your chosen model is fit or not.
 R2 shows us how much variation of a dependent variable is explained by the independent variable in a regression model, because it is a statistical measure.
 
-[If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high. It is the highest value, which is 1.000. The fact of the matter is that two values always fit one and other perfectly. (pkt. 1 over)]{.underline}
+If we look at the R2 value for country Slovenia (SI), we can see that it is pretty high.
+It is the highest value, which is 1.000.
+The fact of the matter is that a line always fits perfect between two values.
 
 There is two observations that always fit one another perfectly; that is called a statistical artefact.
 R2 has range of values form 0 to 1.
@@ -679,8 +668,9 @@ Finally the 'demo_r\_pjangroup.csv' shows us the population on 1st January by ag
 This dataset shows us population and social conditions.
 It contains information of usually resident population and represents the number of inhabitants of a given area on 1st of January of the year.
 
-We have chosen these tree because we want to see if and how stock of vehicles, educational attainment level and population, effect growth and inequality.
-[We think that a rich country have more vehicles and a higher educational attainment. We also believe that a country with a higher population have more variety in living conditions.]{.underline}
+We have chosen these three because we want to see if and how stock of vehicles, educational attainment level and population, effect growth and inequality.
+We think that a rich country have more vehicles and a higher educational attainment.
+We also believe that a country with a higher population have more variety in living conditions.
 
 ```{r, echo = FALSE, show_col_types = FALSE, warning = FALSE, include = FALSE}
 #Import new data from Eurostat
@@ -775,22 +765,28 @@ multi_linear_regression_model_1(data2010)
 
 ```
 
-[Give a small interpretation of your findings!!]{.underline}
+We are now giving a small interpretation of our regression model:
+
+In this regression model the first model (1) has 45 observations, with R2 value 0.060.
+R2 shows us if our dependent variable has an effect or not.
+This R2 value for model 1, is not so high.
+This tells us that our dependent variable has not so much effect.
+Model 2, 3, 4 and 5 has 32 observations in total.
+But the R2 values are different.
+If R2 value increases for each new model, than we have an connection.
+We can conclude by saying that the models does not nececarily have an connection because it starts with and connection between model 1 and 2, than suddenly it dissapear from model 3 and 4.
+The connection continues between model 4 and 5.
 
 ### Discuss the overall fit of your model:
 
-[Nye tall no, men teksten er ikkje bytta ut...]{.underline}
+If we now discuss the overall fit of our model now:
 
-[What has happen here is that we get many values that are 0. The reason behind this can be that we have many repeating regions (example: 16 ES11 regions). We came to a solution some days ago, but suddenly at the last minute the problem occurred.]{.underline}
-
-[If we analyze or discuss our table above we find we can see that education, infra and life.exp has 0 as value. We see that Netherlands and Poland has same quantity of values. We are going to analyze Netherlands here, because this is country which we have looked at much in our assignment. What we are analyzing here: education, infrastructure, transport and demography.]{.underline}
+Our model does not have constant R2 values.
+We are now using a 0.05 (5%) significance level.
+Our R2 values are higher than the significance level of 0.05.
+This indicates that there is an significant correlation of the determination.
 
 ### Discuss the inference related to your findings
-
--   *`When talking about “Inference” you only consider simple regression models with the t-test you conduct as you never have more than one explanatory variable in your model.`*
--   *`“In this case p-value on 0.68 is pretty high and there is weak evidence against the null hypothesis.” In economics, week is between 0.05 and 0.1 above is plain insignificant.`*
-
-"Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings."
 
 For this last part we are looking at the same five counties as before.
 We will now test and analyze is if the variables has an effect upon growth and inequality.
@@ -809,7 +805,11 @@ $$
 
 **Education**
 
-What we can find here in @multi_linear_regression_model_1 is that education has its p-value on 0 [(Kor finne du den?)]{.underline}.
+What we can find here in @multi_linear_regression_model_1 is that education has its p-value on 0.
+Now when the p-value is a probability, than it can not exceed 1.
+The p-value has to be between 0-1.
+In our case we find a value on: 52.442.
+Therefore we are calling our p-value 0 in this case.
 The estimation value is on the intercept 0.05.
 A small p value, indicated a strong evidence against the null hypothesis.
 Therefore we have to reject it.
@@ -824,7 +824,7 @@ In this case p-value on 0.011 is pretty high and there is weak evidence against 
 
 Here in @multi_linear_regression_model_1 the p-value is 0.007, which again is possible to reject, because there is strong evidence against the null hypothesis.
 
-[Til slutt på 2, konkludere hypotesene? Kelais kan me konkludera? We think that a rich country have more vehicles and a higher educational attainment. We also believe that a country with a higher population have more variety in living conditions.]{.underline}
+We can conclude by saying, that we don't see a connection between our variables: vehicles, education attainment and population.
 
 # 3 Assignment 3
 
@@ -879,7 +879,7 @@ Now if we are using a two-tailed test with a significance level of for example 0
 0.025 per side, in other words test half of the alpha to testing the statistical significance in one side/tail and half on the other side.
 
 If we look at *No Greece* model, we can see that the p-value is: 0.059.
-Initially we use [(kan me bruke use for detta?)]{.underline} the significance level 0.05 (5%).
+Initially we use the significance level 0.05 (5%).
 The p-value we are interpreting here is related to F-test.
 Now the question is, what does the F-test tell us?
 F-test tell us how to compare two variances.
@@ -949,7 +949,7 @@ $$
 0.016<0.05
 $$
 
-We can see that totally there is 45 observation (N) for all countries.
+We can see that totally there is 45 observations (N) for all countries.
 
 The R-spuared ($R^2$) tell us how well the model which we are working on is fitting our data.
 $R^2$ measures the relationship between the predicted variable and response variable.
@@ -971,9 +971,10 @@ In @tbl-mlr-all_counties we see that the interaction value for log(gdp_pc_n2):GR
 Therefore can we conclude with that log can be an alternative functional form that fits our model better.
 
 The conclusion here is going to be that the given data on this table fits more than the previous one, because the $R^2$ value under interaction on previous table was 0.161 and on this table the $R^2$ value under interaction is 0.221, which is higher than the previous one.
-[We aim to have a bigger $R^2$ value.]{.underline} We can conclude here by saying that the regression analysis for our all countries is somehow better than the previous analysis.
-Log, $log^2$ and $log^3$ is a better functional form for our estimates on the relationship between $y_i$ and $GINIW_j$.
-[However, the highest R2, which is 0.495 have we observed, when we have only estimated for the Greece data. (Vil berre at me nett ser øve i lag)]{.underline}
+We aim to have a bigger $R^2$ value.
+We can conclude here by saying that the regression analysis for our all countries is somehow better than the previous analysis.
+Log, $log^2$ and $log^3$ is a better functional form for our estimates on the relationship between $y_i$ and \$GINIW_j\$.
+The highest $R^2$ value which we have observed is 0.495.
 
 ### Corresponding scatter plots with the estimate line
 
@@ -1021,7 +1022,9 @@ In comparison with line in @fig-lm-data2010, we can see that these lines fit our
 
 ### Verbal interpretation of our estimate coefficients
 
-[We can see from @fig-mlr-scatterplot_fittedline that if the GDP is low and increases the quadratic estimates of degree 3, it suggest that inequality gini increases at a GDP of approximately exponential (9.1) the effect turns around the inequality starts to decrease. (Dele opp setningen/sette inn komma)]{.underline}
+We can see from @fig-mlr-scatterplot_fittedline that GDP is low and increases the quadratic estimates of degree 3.
+This suggest that inequality gini increases at a GDP of approximately exponential (9.1).
+The effect turns around and the inequality starts to decrease.
 
 If we look at the grey line and go one step forward from 8.8 to 9.2 on the GDP per capita (log), than gini goes from 0.8 to approximately 0.12.
 On the other side if we look at the green line, if we go forward on the x-axis (GDP per capita (log)) and go from approximately from 8.8 to 9.2 than the grey line decreases from ca 0.14 to 0.9 according to the y-axis (gini).
@@ -1030,8 +1033,9 @@ If we compare linear regression with polynomial regression, then we can say that
 In linear regression the effect is logically the same all the way.
 
 Correlation between variables play an important role in a descriptive analysis.
-[If we look at if there is any correlation between the variables the value is 0.221.]{.underline} An interpretation which is between 0-0.30 is considered as negligible or in other words weak correlation.
-So we can say that this 0.221 value is a weak correlation between the interpted values we have found.
+To look at if there is any correlation between the variables, we have to use the value 0.221.
+An interpretation which is between 0-0.30 is considered as negligible or in other words weak correlation.
+So we can say that this 0.221 value is a weak correlation between the interpreted values we have found.
 
 ### Test for heteroskedasticity
 
@@ -1064,7 +1068,7 @@ $$
 F=\frac{R^2_{\widehat{u}^{2}/k}}{1-R^2_{\widehat{u}^{2}}/(n-k-1)}
 $$
 
-[We will in this test use the significanse level 0,05 to test for heteroskedasticity(?).]{.underline}
+We will in this test use the significanse level 0,05 to test for heteroskedasticity
 
 ```{r}
 #Estimate  lineær
@@ -1105,19 +1109,20 @@ First of all, causal interpretation rests on regression analysis.
 Regression coefficients or a correlation can really be attributed to the causal effect on for example X on Y, or the opposite.
 Causal inference can be defined as a special case, where the goal is to predict if we could choose different options.
 
-[What we have seen so far is a interpreting regression predictevly.]{.underline} We have had many values that we have used for our inputs.
+What we have seen so far is a interpreting regression predictevly.
+We have had many values that we have used for our inputs.
 The tables and figures from our previous tasks have allowed us to see different values of several inputs.
 In our case we have seen that, most of the times we have not for example rejected the null hypothesis, which indicates that we accept the model and the values in our previous tasks.
 So most probably we would have used the same method all the way to solve our previous tasks.
 
-[And therefore ... no we can not interpret the estimates as causal. Svare på oppgåva.]{.underline}
+And therefore we can conclude by saying that we can not interpret the estimates as causal.
 
 ## 3.4 Potential remedies for eventual problems
 
 Eventual problems that can occur, can be for example that a country have to low GDP per capita.
 Then a solution can be that EU comes and helps the country with economical and financial support.
 First it is important to come up with that the EU´s economic and fiscal rules promote economic stability and growth.
-[This could be one of the eventual problems that can occur.]{.underline} In our case this could potentially be Albania.
+In our case this could potentially be Albania.
 We see from @fig-gdp_pc_nuts0, that Albania has the lowest GDP per capita, in comparison to the other countries.
 EU gives potential countries financial support for development.
 This can be the reason why EU, wants to help and make sure that the country is doing well financially.
@@ -1127,22 +1132,8 @@ For Albania it can be a eventual solution to get help from EU.
 
 ## 4.1 Penal estimates
 
-### Data
-
-*`New estimates`*
-
--   *`Penal Estimates`*
-
-    -   *`Use your entire data set to estimate the effect of regional development yj on regional inequality GINIWj in a penal setup. Present estimates that contain the following fixed effects separately and jointly:`*
-
-        -   *`country fixed effects,`*
-
-        -   *`year fixed effects`*
-
-        -   *`NUTS 2 fixed effects`*
-
 We are starting this assignment by using the same data as we used from assignment 1.
-[To do that, we are using the penal data formel. (For å bruke dataen som me har brukt før?)]{.underline} Our aim is to use our entire dataset to estimate the effect of regional development yi on regional inequality GINIWj in a penal setup.
+Our aim is to use our entire dataset to estimate the effect of regional development yi on regional inequality GINIWj in a penal setup.
 
 ```{r}
 penaldata <- tmp %>%
@@ -1227,7 +1218,7 @@ Continuing the standard-error value is on 12153.32.
 We can see that the std-error value is pretty high, which tells us that the values are more spread out and are around the mean in the dataset. 
 
 The T-value here is: -2.4238.
-If the test score value is less than this value, then this indicates that [the test of this test]{.underline} is statistically significant.
+If the test score value is less than this value, then this indicates that the test of this observation is statistically significant.
 But here in this case our statistic significance value is lower than the statistic significance level at 5% divided in two 2,5% (0.025).
 That's why our result here is not statistical significance. 
  
@@ -1269,31 +1260,19 @@ That's why our result here is not statistical significance. 
 **Pr (\>\|t\|)**
 
 The Pr (\>\|t\|) represents the p-value related with the value in the t value column.
-Lets suppose the p-value is less than a certain significance level (5%= 0.05), [then the variable is statistically significance relationship.]{.underline}
+Lets suppose the p-value is less than a certain significance level (5%= 0.05), then the variable is statistically significance in relationship.
 
 Here in our case for the NUTS0 data the Pr t value for NUTS0 on country level is on 0.01558.
-[Our 0.05 (5%)]{.underline}.
 We can then say that the p-value is less then the significance level on 0.05.
 This indicates that the variable is statistically significant.\
 
 For the year data the Pr t value for year on country level is on 0.05278.
-[Our 0.05 (5%)]{.underline}.
 We can then say that the p-value here is higher then the significance level on 0.05.
 This indicates that the variable is not statistically significant.
 
-Now for the NUTS2 data the Pr t value for [NUTS2 on country level]{.underline} is on 0.03635.
-[Our 0.05 (5%)]{.underline}.
+Now for the NUTS2 data the Pr t value for NUTS2 on regional level is on 0.03635.
 We can then say that the p-value is less than the significance level on 0.05.
 This indicates that the variable is statistically significant.
-
-```{r}
-penaldata %>%
-  plm(gini_n3 ~ GDP_capita + I(GDP_capita^2), 
-      data = ., 
-      index = c("id_nuts0", "year"), 
-      model= "within", effect = "twoways") %>% 
-  coeftest(vcov. = vcovHC, type = "HC1", save = TRUE)
-```
 
 **Nuts0 & Year**
 
@@ -1312,13 +1291,25 @@ Than we can conclude by saying that this indicates that the test of this model i
 This is because our T-value is lower than the statistic significance level at 5%, devided into 2= 2.5%= 0.025.
 We can conclude by saying that our result here is statistically significance.
 
--   
+## Conclusion
 
-    -   [*`Write a consistent document that discusses the hypothesis that we can observe a significant and positive effect of development on regional inequality for your set of countries. !!!!`*]{.underline}
+In this paper we have looked at data and descriptive, cross-sectional estimates, alternative functional forms and penal estimates.
+In assignment 1 we have seen that both GDP-per capita and gini had a stable growth in all of our selected countries.
+We have seen that the financial crisis (2008-2009) had an big effect upon many of our countries, but that the countries also quickly recovered.
 
-    -   *`Your final submission must have less than 10.000 words, three tables and five figures. Appendix and references not included.`*
+In assignment 2 we have looked at relationship between regional development and regional inequality.
+We alo looked at further determinants of regional inequality, by using new data of transport infrastructure, education and demographics.
+We did not found any effect between these new variables and regional development and inequality.
 
-## Conclusion/Ending/Something
+Assignment 3 has shown us, alternative functional forms for our dataset.
+We found out that polynomial function on 2nd and 3rd degree fitted our dataset better than linear regression.
+
+Further in assignment 4 we used our entire dataset to estimate the regional development and inequality in a penal dataset.
+What we have found out in this assignment is different observations, when it comes to values: standard-error, T-value and penal estimation.
+The values which we got from the table, showed us how much effect it had upon our observations.
+
+Finally, we would like to conclude by saying that: We have learned use of statistical methods to develop theories.
+We have also tested hypothesis in economics.
 
 #### Appendix
 
